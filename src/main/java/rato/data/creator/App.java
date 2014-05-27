@@ -1,22 +1,31 @@
 package rato.data.creator;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 
+import rato.data.creator.io.ArgsReader;
+
+/**
+ * アプリケーション実行用クラスです。
+ *
+ * @author toshiya
+ *
+ */
 public class App {
+
 	public static void main(String[] args) {
-		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-		System.out.println("INPUT : ");
+
 		try {
-			String line;
-			while ((line = reader.readLine()) != null) {	// ユーザーの一行の入力を待つ
-				if ("q".equals(line)) {
+			ArgsReader reader = new ArgsReader(System.in);
+
+			System.out.println("出力ファイルタイプを選択してください。");
+			System.out.println("c:CSV x:XML q:終了する");
+
+			while (reader.readLine()) { // ユーザーの一行の入力を待つa
+				if ("q".equals(reader.getArg().getValue())) {
 					break;
 				}
 
-				System.out.println("OUTPUT : " + line);
-				System.out.println("\n INPUT : ");
+				System.out.println("OUTPUT : " + reader.getArg().getValue());
 			}
 			reader.close();
 			System.out.println("\nPROGRAM END");
@@ -24,5 +33,7 @@ public class App {
 			e.printStackTrace();
 			System.exit(-1);
 		}
+
 	}
+
 }
