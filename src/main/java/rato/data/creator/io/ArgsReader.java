@@ -65,7 +65,7 @@ public class ArgsReader {
      * <p>読み込み中のコマンドライン入力情報を取得します。</p>
      * @return 読み込み中のコマンドライン入力情報
      */
-    public InputValue getArg() {
+    public InputValue getInputValue() {
         return inputValue;
     }
 

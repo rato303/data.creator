@@ -21,11 +21,11 @@ public class App {
 			System.out.println("c:CSV x:XML q:終了する");
 
 			while (reader.readLine()) { // ユーザーの一行の入力を待つa
-				if ("q".equals(reader.getArg().getValue())) {
+				if ("q".equals(reader.getInputValue().getValue())) {
 					break;
 				}
 
-				System.out.println("OUTPUT : " + reader.getArg().getValue());
+				System.out.println("OUTPUT : " + reader.getInputValue().getValue());
 			}
 			reader.close();
 			System.out.println("\nPROGRAM END");
