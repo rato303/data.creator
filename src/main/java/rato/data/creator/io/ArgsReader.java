@@ -5,68 +5,68 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import rato.data.creator.bo.Arg;
+import rato.data.creator.bo.InputValue;
 
 /**
- * 引数を読み込むバッファリーダーです。
+ * <p>引数を読み込むバッファリーダーです。</p>
  *
  * @author toshiya
  *
  */
 public class ArgsReader {
 
-	/** コマンドラインの読み込み用バッファリーダー */
-	private BufferedReader argsReader;
+    /** コマンドラインの読み込み用バッファリーダー */
+    private BufferedReader argsReader;
 
-	/** 読み込み中のコマンドライン入力情報 */
-	private Arg arg;
+    /** 読み込み中のコマンドライン入力情報 */
+    private InputValue inputValue;
 
-	/**
-	 * <p>
-	 * コンストラクタ
-	 * </p>
-	 *
-	 * @param in
-	 *            コマンドラインの入力情報 {@link System#in}
-	 */
-	public ArgsReader(InputStream in) {
-		this.argsReader = new BufferedReader(new InputStreamReader(in));
-		this.arg = new Arg();
-	}
+    /**
+     * <p>
+     * コンストラクタ
+     * </p>
+     *
+     * @param in
+     *            コマンドラインの入力情報 {@link System#in}
+     */
+    public ArgsReader(InputStream in) {
+        this.argsReader = new BufferedReader(new InputStreamReader(in));
+        this.inputValue = new InputValue();
+    }
 
-	/**
-	 * <p>
-	 * コマンドラインの情報を読み込みます。
-	 * </p>
-	 *
-	 * @return 読み込めた場合は「true」読み込めなかった場合は「false」を返します。
-	 */
-	public boolean readLine() {
-		try {
-			this.arg.setValue(this.argsReader.readLine());
-		} catch (IOException e) {
-			this.arg.clear();
-		}
-		return this.arg.isNotEmpty();
-	}
+    /**
+     * <p>
+     * コマンドラインの情報を読み込みます。
+     * </p>
+     *
+     * @return 読み込めた場合は「true」読み込めなかった場合は「false」を返します。
+     */
+    public boolean readLine() {
+        try {
+            this.inputValue.setValue(this.argsReader.readLine());
+        } catch (IOException e) {
+            this.inputValue.clear();
+        }
+        return this.inputValue.isNotEmpty();
+    }
 
-	/**
-	 * ストリームを閉じます。
-	 *
-	 * @see BufferedReader#close()
-	 *
-	 * @throws IOException
-	 */
-	public void close() throws IOException {
-		this.argsReader.close();
-	}
+    /**
+     * <p>ストリームを閉じます。</p>
+     *
+     * @see BufferedReader#close()
+     *
+     * @throws IOException
+     */
+    public void close() throws IOException {
+        this.argsReader.close();
+    }
 
-	/**
-	 * 読み込み中のコマンドライン入力情報を取得します。
-	 * @return 読み込み中のコマンドライン入力情報
-	 */
-	public Arg getArg() {
-	    return arg;
-	}
+    /**
+     * <p>読み込み中のコマンドライン入力情報を取得します。</p>
+     * @return 読み込み中のコマンドライン入力情報
+     */
+    public InputValue getArg() {
+        return inputValue;
+    }
 
 }
