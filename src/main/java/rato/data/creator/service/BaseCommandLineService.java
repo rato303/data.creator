@@ -31,6 +31,8 @@ public abstract class BaseCommandLineService implements CommandLineService {
             return new CommandLineServiceResultBo();
         }
 
+        this.doValidate(inputValue);
+
         return this.mainProcess(inputValue);
     }
 
@@ -40,6 +42,13 @@ public abstract class BaseCommandLineService implements CommandLineService {
      * @return 各コマンドライン処理のメッセージキー
      */
     protected abstract String getQuestionMessageKey();
+
+    /**
+     * 入力された値のチェックを行います。
+     *
+     * @param inputValue 入力された値
+     */
+    protected abstract void doValidate(InputValue inputValue);
 
     /**
      * 各コマンドライン処理をするサービスの主処理を実行します。

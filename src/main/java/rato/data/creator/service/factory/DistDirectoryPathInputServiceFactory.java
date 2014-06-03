@@ -1,6 +1,6 @@
 package rato.data.creator.service.factory;
 
-import rato.data.creator.service.DistDirectoryPathInputService;
+import rato.data.creator.service.setting.DistDirectoryPathInputService;
 
 public class DistDirectoryPathInputServiceFactory implements CommandLineServiceFactory<DistDirectoryPathInputService> {
 

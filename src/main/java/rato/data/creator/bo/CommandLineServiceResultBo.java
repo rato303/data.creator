@@ -6,7 +6,7 @@ import rato.data.creator.service.CommandLineService;
 import rato.data.creator.service.factory.CommandLineServiceFactory;
 
 /**
- * <p>コマンドライン処理をするサービスの処理結果を格納するビジネスオブジェクトです。</p>
+ * <p>コマンドライン処理をするサービスの処理結果です。</p>
  *
  * @author toshiya
  *

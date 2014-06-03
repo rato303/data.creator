@@ -5,7 +5,7 @@ import java.io.IOException;
 import rato.data.creator.bo.CommandLineServiceResultBo;
 import rato.data.creator.io.ArgsReader;
 import rato.data.creator.service.CommandLineService;
-import rato.data.creator.service.TableConfFilePathInputService;
+import rato.data.creator.service.setting.TableConfFilePathInputService;
 
 /**
  * アプリケーション実行用クラスです。
