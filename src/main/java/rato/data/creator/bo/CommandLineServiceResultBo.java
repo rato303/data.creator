@@ -2,6 +2,7 @@ package rato.data.creator.bo;
 
 import java.io.Serializable;
 
+import rato.data.creator.service.CommandLineService;
 import rato.data.creator.service.factory.CommandLineServiceFactory;
 
 /**
@@ -16,7 +17,7 @@ public class CommandLineServiceResultBo implements Serializable {
     private static final long serialVersionUID = -1389195551324371770L;
 
     /** 次のコマンドライン処理をするサービスのファクトリ */
-    private CommandLineServiceFactory factory;
+    private CommandLineServiceFactory<? extends CommandLineService> factory;
 
     /**
      * コンストラクタ
@@ -30,7 +31,7 @@ public class CommandLineServiceResultBo implements Serializable {
      *
      * @param factory 次のコマンドライン処理をするサービスのファクトリ
      */
-    public CommandLineServiceResultBo(CommandLineServiceFactory factory) {
+    public CommandLineServiceResultBo(CommandLineServiceFactory<? extends CommandLineService> factory) {
         super();
         this.factory = factory;
     }
@@ -39,7 +40,7 @@ public class CommandLineServiceResultBo implements Serializable {
      * 次のコマンドライン処理をするサービスのファクトリを取得します。
      * @return 次のコマンドライン処理をするサービスのファクトリ
      */
-    public CommandLineServiceFactory getFactory() {
+    public CommandLineServiceFactory<? extends CommandLineService> getFactory() {
         return factory;
     }
 
