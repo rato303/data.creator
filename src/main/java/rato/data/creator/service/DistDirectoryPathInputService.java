@@ -18,14 +18,13 @@ public class DistDirectoryPathInputService extends BaseCommandLineService {
     }
 
     @Override
-    public void question() {
-        System.out.println("処理結果の出力ディレクトリを入力してください。");
-        System.out.println("q:終了する");
+    protected CommandLineServiceResultBo mainProcess(InputValue inputValue) {
+        return new CommandLineServiceResultBo();
     }
 
     @Override
-    protected CommandLineServiceResultBo mainProcess(InputValue inputValue) {
-        return new CommandLineServiceResultBo();
+    protected String getQuestionMessageKey() {
+        return "question.dist.dir";
     }
 
 }

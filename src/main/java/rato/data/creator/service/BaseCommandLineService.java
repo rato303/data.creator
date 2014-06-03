@@ -1,5 +1,7 @@
 package rato.data.creator.service;
 
+import java.util.ResourceBundle;
+
 import rato.data.creator.bo.CommandLineServiceResultBo;
 import rato.data.creator.bo.InputValue;
 
@@ -11,10 +13,19 @@ import rato.data.creator.bo.InputValue;
 public abstract class BaseCommandLineService implements CommandLineService {
 
     /* (non-Javadoc)
+     * @see rato.data.creator.service.CommandLineService#question()
+     */
+    @Override
+    public final void question() {
+        ResourceBundle bundle = ResourceBundle.getBundle("message");
+        System.out.println(bundle.getString(this.getQuestionMessageKey()));
+    }
+
+    /* (non-Javadoc)
      * @see rato.data.creator.service.CommandLineService#execute(rato.data.creator.bo.InputValue)
      */
     @Override
-    public CommandLineServiceResultBo execute(InputValue inputValue) {
+    public final CommandLineServiceResultBo execute(InputValue inputValue) {
 
         if ("q".equals(inputValue.getValue())) {    // TODO 列挙型にする
             return new CommandLineServiceResultBo();
@@ -22,6 +33,13 @@ public abstract class BaseCommandLineService implements CommandLineService {
 
         return this.mainProcess(inputValue);
     }
+
+    /**
+     * 各コマンドライン処理のメッセージキーを取得します。
+     *
+     * @return 各コマンドライン処理のメッセージキー
+     */
+    protected abstract String getQuestionMessageKey();
 
     /**
      * 各コマンドライン処理をするサービスの主処理を実行します。

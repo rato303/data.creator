@@ -21,14 +21,13 @@ public class TableConfFilePathInputService extends BaseCommandLineService {
     }
 
     @Override
-    public void question() {
-        System.out.println("テーブル定義ファイルのファイルパスを入力してください。");
-        System.out.println("q:終了する");
+    protected CommandLineServiceResultBo mainProcess(InputValue inputValue) {
+        return new CommandLineServiceResultBo(new DistDirectoryPathInputServiceFactory());
     }
 
     @Override
-    protected CommandLineServiceResultBo mainProcess(InputValue inputValue) {
-        return new CommandLineServiceResultBo(new DistDirectoryPathInputServiceFactory());
+    protected String getQuestionMessageKey() {
+        return "question.table.conf.file";
     }
 
 }

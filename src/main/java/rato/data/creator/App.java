@@ -39,8 +39,6 @@ public class App {
                 /*
                  * 設問終了時に行をさらに追加するか、終了するかを聞く
                  */
-
-                System.out.println("OUTPUT : " + reader.getInputValue().getValue());
             }
 
             reader.close();
