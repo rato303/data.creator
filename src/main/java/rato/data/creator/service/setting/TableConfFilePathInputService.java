@@ -18,7 +18,7 @@ public class TableConfFilePathInputService extends SettingCommandLineService {
      * コンストラクタ
      */
     public TableConfFilePathInputService() {
-        super();
+        super(null);
     }
 
     @Override
@@ -33,7 +33,7 @@ public class TableConfFilePathInputService extends SettingCommandLineService {
 
     @Override
     protected CommandLineServiceResultBo configurationMainProcess(ConfigurationBo configurationBo, InputValue inputValue) {
-        return new CommandLineServiceResultBo(new DistDirectoryPathInputServiceFactory());
+        return new CommandLineServiceResultBo(new DistDirectoryPathInputServiceFactory(configurationBo));
     }
 
 }

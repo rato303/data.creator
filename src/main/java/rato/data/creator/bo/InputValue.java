@@ -2,6 +2,8 @@ package rato.data.creator.bo;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * 入力値情報です。
  *
@@ -62,7 +64,7 @@ public class InputValue implements Serializable {
      * @return 未入力の場合は「true」入力状態の場合は「false」
      */
     public boolean isEmpty() {
-        return this.value == null;
+        return StringUtils.isEmpty(this.value);
     }
 
     /**

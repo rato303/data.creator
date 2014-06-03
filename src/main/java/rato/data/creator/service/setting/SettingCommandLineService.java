@@ -15,6 +15,15 @@ public abstract class SettingCommandLineService extends BaseCommandLineService {
     /** アプリケーションの設定情報 */
     private ConfigurationBo configurationBo;
 
+    /**
+     * コンストラクタ
+     *
+     * @param configurationBo アプリケーションの設定情報
+     */
+    public SettingCommandLineService(ConfigurationBo configurationBo) {
+    	this.configurationBo = configurationBo;
+    }
+
     /* (non-Javadoc)
      * @see rato.data.creator.service.BaseCommandLineService#mainProcess(rato.data.creator.bo.InputValue)
      */
