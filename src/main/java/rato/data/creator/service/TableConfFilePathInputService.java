@@ -2,18 +2,21 @@ package rato.data.creator.service;
 
 import rato.data.creator.bo.CommandLineServiceResultBo;
 import rato.data.creator.bo.InputValue;
+import rato.data.creator.service.factory.DistDirectoryPathInputServiceFactory;
 
 /**
- * <p>テーブル定義ファイルのファイルパスを処理するサービスクラスです。</p>
+ * <p>
+ * テーブル定義ファイルのファイルパスを処理するサービスクラスです。
+ * </p>
  *
  * @author toshiya
  */
-public class InputTableConfFilePathService extends BaseCommandLineService {
+public class TableConfFilePathInputService extends BaseCommandLineService {
 
     /**
      * コンストラクタ
      */
-    public InputTableConfFilePathService() {
+    public TableConfFilePathInputService() {
         super();
     }
 
@@ -25,8 +28,7 @@ public class InputTableConfFilePathService extends BaseCommandLineService {
 
     @Override
     protected CommandLineServiceResultBo mainProcess(InputValue inputValue) {
-        CommandLineServiceResultBo result = new CommandLineServiceResultBo();
-        return result;
+        return new CommandLineServiceResultBo(new DistDirectoryPathInputServiceFactory());
     }
 
 }

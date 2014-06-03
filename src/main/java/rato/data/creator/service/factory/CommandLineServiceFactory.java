@@ -1,18 +1,22 @@
-package rato.data.creator.service;
+package rato.data.creator.service.factory;
+
+import rato.data.creator.service.CommandLineService;
 
 /**
  * <p>コマンドライン処理をするサービスのファクトリです。</p>
  *
+ * @param <S> コマンドライン処理をするサービスクラス
+ *
  * @author toshiya
  *
  */
-public interface CommandLineServiceFactory {
+public interface CommandLineServiceFactory<S extends CommandLineService> {
 
     /**
      * コマンドライン処理をするサービスを生成します。
      *
      * @return コマンドライン処理をするサービスのインスタンス
      */
-    CommandLineService create();
+    S create();
 
 }

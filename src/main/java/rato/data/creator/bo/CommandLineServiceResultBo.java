@@ -2,7 +2,7 @@ package rato.data.creator.bo;
 
 import java.io.Serializable;
 
-import rato.data.creator.service.CommandLineServiceFactory;
+import rato.data.creator.service.factory.CommandLineServiceFactory;
 
 /**
  * <p>コマンドライン処理をするサービスの処理結果を格納するビジネスオブジェクトです。</p>

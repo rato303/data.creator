@@ -5,7 +5,7 @@ import java.io.IOException;
 import rato.data.creator.bo.CommandLineServiceResultBo;
 import rato.data.creator.io.ArgsReader;
 import rato.data.creator.service.CommandLineService;
-import rato.data.creator.service.InputTableConfFilePathService;
+import rato.data.creator.service.TableConfFilePathInputService;
 
 /**
  * アプリケーション実行用クラスです。
@@ -20,21 +20,13 @@ public class App {
         try {
             ArgsReader reader = new ArgsReader(System.in);
 
-            CommandLineService service = new InputTableConfFilePathService();
+            CommandLineService service = new TableConfFilePathInputService();
             CommandLineServiceResultBo result = null;
 
             service.question();
 
             while (reader.readLine()) {
 
-                // TODO 終了ロジックのサービスを作成
-                if ("q".equals(reader.getInputValue().getValue())) {
-                    break;
-                }
-
-                /*
-                 * メッセージ出力
-                 */
                 result = service.execute(reader.getInputValue());
 
                 if (result.hasNotNextServiceFactory()) {
@@ -44,12 +36,7 @@ public class App {
                 service = result.getFactory().create();
 
                 service.question();
-
                 /*
-                 * 出力先フォルダ
-                 * ↓
-                 * テーブル定義ファイルからコマンドライン引数の設問を出力
-                 * ↓
                  * 設問終了時に行をさらに追加するか、終了するかを聞く
                  */
 
