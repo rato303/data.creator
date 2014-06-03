@@ -2,7 +2,10 @@ package rato.data.creator;
 
 import java.io.IOException;
 
+import rato.data.creator.bo.CommandLineServiceResultBo;
 import rato.data.creator.io.ArgsReader;
+import rato.data.creator.service.CommandLineService;
+import rato.data.creator.service.InputTableConfFilePathService;
 
 /**
  * アプリケーション実行用クラスです。
@@ -17,13 +20,10 @@ public class App {
         try {
             ArgsReader reader = new ArgsReader(System.in);
 
-            /* TODO
-             * ArgsSelectServiceインタフェースの作成
-             * ArgsInputServiceインタフェースの作成
-             * └FilePathInputServiceクラスの作成
-             */
-            System.out.println("出力ファイルタイプを選択してください。");
-            System.out.println("c:CSV q:終了する");
+            CommandLineService service = new InputTableConfFilePathService();
+            CommandLineServiceResultBo result = null;
+
+            service.question();
 
             while (reader.readLine()) {
 
@@ -32,12 +32,33 @@ public class App {
                     break;
                 }
 
-                System.out.println("テーブル定義ファイルのファイルパスを入力してください。");
+                /*
+                 * メッセージ出力
+                 */
+                result = service.execute(reader.getInputValue());
+
+                if (result.hasNotNextServiceFactory()) {
+                    break;
+                }
+
+                service = result.getFactory().create();
+
+                service.question();
+
+                /*
+                 * 出力先フォルダ
+                 * ↓
+                 * テーブル定義ファイルからコマンドライン引数の設問を出力
+                 * ↓
+                 * 設問終了時に行をさらに追加するか、終了するかを聞く
+                 */
 
                 System.out.println("OUTPUT : " + reader.getInputValue().getValue());
             }
+
             reader.close();
             System.out.println("\nPROGRAM END");
+
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(-1);

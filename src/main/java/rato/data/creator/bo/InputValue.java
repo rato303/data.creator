@@ -1,12 +1,17 @@
 package rato.data.creator.bo;
 
+import java.io.Serializable;
+
 /**
  * 入力値情報です。
  *
  * @author toshiya
  *
  */
-public class InputValue {
+public class InputValue implements Serializable {
+
+    /** シリアルID */
+    private static final long serialVersionUID = -505260395564380005L;
 
     /** 入力値 */
     private String value;

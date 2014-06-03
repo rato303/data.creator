@@ -2,6 +2,7 @@
  * サービスクラスを配置するパッケージです。
  */
 /**
- * package-info
+ * @author toshiya
+ *
  */
 package rato.data.creator.service;
