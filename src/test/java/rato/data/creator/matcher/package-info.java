@@ -1,7 +1,8 @@
-/*
- * $Id$
+/**
+ * jUnitで使用するMatcherクラスを配置するパッケージです。
  */
 /**
- * package-info
+ * @author toshiya
+ *
  */
 package rato.data.creator.matcher;
