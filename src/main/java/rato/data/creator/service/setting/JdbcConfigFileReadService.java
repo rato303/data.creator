@@ -1,5 +1,11 @@
 package rato.data.creator.service.setting;
 
+import static rato.data.creator.bo.DatabaseConnectionInfoBo.PROPERTY_KEY_JDBC_DRIVER_CLASS;
+import static rato.data.creator.bo.DatabaseConnectionInfoBo.PROPERTY_KEY_JDBC_PASSWORD;
+import static rato.data.creator.bo.DatabaseConnectionInfoBo.PROPERTY_KEY_JDBC_SCHEMA;
+import static rato.data.creator.bo.DatabaseConnectionInfoBo.PROPERTY_KEY_JDBC_URL;
+import static rato.data.creator.bo.DatabaseConnectionInfoBo.PROPERTY_KEY_JDBC_USER;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -9,6 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import rato.data.creator.bo.CommandLineServiceResultBo;
 import rato.data.creator.bo.ConfigurationBo;
+import rato.data.creator.bo.DatabaseConnectionInfoBo;
 import rato.data.creator.bo.InputValue;
 import rato.data.creator.exception.RetryException;
 import rato.data.creator.service.factory.DistDirectoryPathInputServiceFactory;
@@ -60,23 +67,26 @@ public class JdbcConfigFileReadService extends SettingCommandLineService {
 
 		Properties properties = this.propertiesFileLoad(jdbcConfigFile);
 
-		if (StringUtils.isBlank(properties.getProperty("jdbc.driver.class"))) {
+		if (StringUtils.isBlank(properties
+				.getProperty(PROPERTY_KEY_JDBC_DRIVER_CLASS))) {
 			this.throwRetryException("error.jdbc.driver.class.name.empty");
 		}
 
-		if (StringUtils.isBlank(properties.getProperty("jdbc.url"))) {
+		if (StringUtils.isBlank(properties.getProperty(PROPERTY_KEY_JDBC_URL))) {
 			this.throwRetryException("error.jdbc.url.empty");
 		}
 
-		if (StringUtils.isBlank(properties.getProperty("jdbc.schema"))) {
+		if (StringUtils.isBlank(properties
+				.getProperty(PROPERTY_KEY_JDBC_SCHEMA))) {
 			this.throwRetryException("error.jdbc.schema.empty");
 		}
 
-		if (StringUtils.isBlank(properties.getProperty("jdbc.user"))) {
+		if (StringUtils.isBlank(properties.getProperty(PROPERTY_KEY_JDBC_USER))) {
 			this.throwRetryException("error.jdbc.user.empty");
 		}
 
-		if (StringUtils.isBlank(properties.getProperty("jdbc.password"))) {
+		if (StringUtils.isBlank(properties
+				.getProperty(PROPERTY_KEY_JDBC_PASSWORD))) {
 			this.throwRetryException("error.jdbc.password.empty");
 		}
 
@@ -87,6 +97,11 @@ public class JdbcConfigFileReadService extends SettingCommandLineService {
 	@Override
 	protected CommandLineServiceResultBo configurationMainProcess(
 			ConfigurationBo configurationBo, InputValue inputValue) {
+
+		configurationBo
+				.setDatabaseConnectionInfoBo(new DatabaseConnectionInfoBo(this
+						.propertiesFileLoad(new File(inputValue.getValue()))));
+
 		return new CommandLineServiceResultBo(
 				new DistDirectoryPathInputServiceFactory(configurationBo));
 	}

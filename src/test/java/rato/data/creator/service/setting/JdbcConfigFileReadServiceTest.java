@@ -1,10 +1,13 @@
 package rato.data.creator.service.setting;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Properties;
 
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
@@ -12,10 +15,13 @@ import org.junit.rules.ExpectedException;
 import org.junit.rules.TemporaryFolder;
 
 import rato.data.creator.bo.CommandLineServiceResultBo;
+import rato.data.creator.bo.ConfigurationBo;
+import rato.data.creator.bo.DatabaseConnectionInfoBo;
 import rato.data.creator.bo.InputValue;
 import rato.data.creator.exception.RetryException;
 import rato.data.creator.matcher.RetryExceptionMatcher;
 import rato.data.creator.rules.TestFixtureResource;
+import rato.data.creator.service.factory.DistDirectoryPathInputServiceFactory;
 import rato.data.creator.service.factory.JdbcConfigFileReadServiceFactory;
 
 public class JdbcConfigFileReadServiceTest {
@@ -31,6 +37,11 @@ public class JdbcConfigFileReadServiceTest {
 	@Rule
 	public TestFixtureResource testFixtureResource = new TestFixtureResource();
 
+	@Before
+	public void before() {
+		this.service = new JdbcConfigFileReadService();
+	}
+
 	@Test
 	public void test設定ファイルの入力値が未入力の場合() {
 		this.thrown.expect(RetryException.class);
@@ -39,7 +50,6 @@ public class JdbcConfigFileReadServiceTest {
 				new CommandLineServiceResultBo(
 						new JdbcConfigFileReadServiceFactory())));
 
-		this.service = new JdbcConfigFileReadService();
 		this.service.validateProcess(new InputValue(""));
 	}
 
@@ -55,7 +65,6 @@ public class JdbcConfigFileReadServiceTest {
 				new CommandLineServiceResultBo(
 						new JdbcConfigFileReadServiceFactory())));
 
-		this.service = new JdbcConfigFileReadService();
 		this.service.validateProcess(new InputValue(testConfFile
 				.getAbsolutePath()));
 	}
@@ -69,7 +78,6 @@ public class JdbcConfigFileReadServiceTest {
 				new CommandLineServiceResultBo(
 						new JdbcConfigFileReadServiceFactory())));
 
-		this.service = new JdbcConfigFileReadService();
 		this.service.validateProcess(new InputValue(this.testFixtureResource
 				.getTestFixtureResource("jdbc.properties")));
 	}
@@ -83,7 +91,6 @@ public class JdbcConfigFileReadServiceTest {
 				new CommandLineServiceResultBo(
 						new JdbcConfigFileReadServiceFactory())));
 
-		this.service = new JdbcConfigFileReadService();
 		this.service.validateProcess(new InputValue(this.testFixtureResource
 				.getTestFixtureResource("jdbc.properties")));
 	}
@@ -91,13 +98,11 @@ public class JdbcConfigFileReadServiceTest {
 	@Test
 	public void test設定ファイルにjdbcUrlが設定されていない場合() {
 		this.thrown.expect(RetryException.class);
-		this.thrown
-				.expectMessage("指定されたデータベース接続定義ファイルにはjdbc.urlが設定されていません。");
+		this.thrown.expectMessage("指定されたデータベース接続定義ファイルにはjdbc.urlが設定されていません。");
 		this.thrown.expect(new RetryExceptionMatcher(
 				new CommandLineServiceResultBo(
 						new JdbcConfigFileReadServiceFactory())));
 
-		this.service = new JdbcConfigFileReadService();
 		this.service.validateProcess(new InputValue(this.testFixtureResource
 				.getTestFixtureResource("jdbc.properties")));
 	}
@@ -105,13 +110,11 @@ public class JdbcConfigFileReadServiceTest {
 	@Test
 	public void test設定ファイルにjdbcUrlが記述されていない場合() {
 		this.thrown.expect(RetryException.class);
-		this.thrown
-				.expectMessage("指定されたデータベース接続定義ファイルにはjdbc.urlが設定されていません。");
+		this.thrown.expectMessage("指定されたデータベース接続定義ファイルにはjdbc.urlが設定されていません。");
 		this.thrown.expect(new RetryExceptionMatcher(
 				new CommandLineServiceResultBo(
 						new JdbcConfigFileReadServiceFactory())));
 
-		this.service = new JdbcConfigFileReadService();
 		this.service.validateProcess(new InputValue(this.testFixtureResource
 				.getTestFixtureResource("jdbc.properties")));
 	}
@@ -125,7 +128,6 @@ public class JdbcConfigFileReadServiceTest {
 				new CommandLineServiceResultBo(
 						new JdbcConfigFileReadServiceFactory())));
 
-		this.service = new JdbcConfigFileReadService();
 		this.service.validateProcess(new InputValue(this.testFixtureResource
 				.getTestFixtureResource("jdbc.properties")));
 	}
@@ -139,7 +141,6 @@ public class JdbcConfigFileReadServiceTest {
 				new CommandLineServiceResultBo(
 						new JdbcConfigFileReadServiceFactory())));
 
-		this.service = new JdbcConfigFileReadService();
 		this.service.validateProcess(new InputValue(this.testFixtureResource
 				.getTestFixtureResource("jdbc.properties")));
 	}
@@ -147,13 +148,11 @@ public class JdbcConfigFileReadServiceTest {
 	@Test
 	public void test設定ファイルにユーザー名が設定されていない場合() {
 		this.thrown.expect(RetryException.class);
-		this.thrown
-				.expectMessage("指定されたデータベース接続定義ファイルにはjdbc.userが設定されていません。");
+		this.thrown.expectMessage("指定されたデータベース接続定義ファイルにはjdbc.userが設定されていません。");
 		this.thrown.expect(new RetryExceptionMatcher(
 				new CommandLineServiceResultBo(
 						new JdbcConfigFileReadServiceFactory())));
 
-		this.service = new JdbcConfigFileReadService();
 		this.service.validateProcess(new InputValue(this.testFixtureResource
 				.getTestFixtureResource("jdbc.properties")));
 	}
@@ -161,13 +160,11 @@ public class JdbcConfigFileReadServiceTest {
 	@Test
 	public void test設定ファイルにユーザー名が記述されていない場合() {
 		this.thrown.expect(RetryException.class);
-		this.thrown
-				.expectMessage("指定されたデータベース接続定義ファイルにはjdbc.userが設定されていません。");
+		this.thrown.expectMessage("指定されたデータベース接続定義ファイルにはjdbc.userが設定されていません。");
 		this.thrown.expect(new RetryExceptionMatcher(
 				new CommandLineServiceResultBo(
 						new JdbcConfigFileReadServiceFactory())));
 
-		this.service = new JdbcConfigFileReadService();
 		this.service.validateProcess(new InputValue(this.testFixtureResource
 				.getTestFixtureResource("jdbc.properties")));
 	}
@@ -181,7 +178,6 @@ public class JdbcConfigFileReadServiceTest {
 				new CommandLineServiceResultBo(
 						new JdbcConfigFileReadServiceFactory())));
 
-		this.service = new JdbcConfigFileReadService();
 		this.service.validateProcess(new InputValue(this.testFixtureResource
 				.getTestFixtureResource("jdbc.properties")));
 	}
@@ -195,7 +191,6 @@ public class JdbcConfigFileReadServiceTest {
 				new CommandLineServiceResultBo(
 						new JdbcConfigFileReadServiceFactory())));
 
-		this.service = new JdbcConfigFileReadService();
 		this.service.validateProcess(new InputValue(this.testFixtureResource
 				.getTestFixtureResource("jdbc.properties")));
 	}
@@ -214,7 +209,23 @@ public class JdbcConfigFileReadServiceTest {
 
 	@Test
 	public void test設定ファイルが正しく記述されていた場合() {
-		fail("まだ実装されていません");
+		ConfigurationBo configurationBo = new ConfigurationBo();
+		Properties properties = new Properties();
+		properties.setProperty("jdbc.driver.class", "oracle.jdbc.driver.OracleDriver");
+		properties.setProperty("jdbc.url", "jdbc:oracle:thin:@172.20.95.45:1522:orcl");
+		properties.setProperty("jdbc.schema", "ZKT005");
+		properties.setProperty("jdbc.user", "ZKT005");
+		properties.setProperty("jdbc.password", "ZKT005");
+		configurationBo.setDatabaseConnectionInfoBo(new DatabaseConnectionInfoBo(properties));
+
+		CommandLineServiceResultBo expected = new CommandLineServiceResultBo(
+				new DistDirectoryPathInputServiceFactory(configurationBo));
+
+		CommandLineServiceResultBo actual = this.service
+				.mainProcess(new InputValue(this.testFixtureResource
+						.getTestFixtureResource("jdbc.properties")));
+
+		assertEquals(expected, actual);
 	}
 
 }
