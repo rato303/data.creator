@@ -1,6 +1,7 @@
 package rato.data.creator.service.setting;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 
@@ -21,129 +22,131 @@ import rato.data.creator.service.factory.DistDirectoryPathInputServiceFactory;
  */
 public class DistDirectoryPathInputServiceTest {
 
-	private DistDirectoryPathInputService service;
+    // TemporaryFolderを使用するようにする
 
-	private static final String EXISTS_PATH = "exists_test_dir";
+    private DistDirectoryPathInputService service;
 
-	private static final String NOT_EXISTS_PATH = "not_exists_test_dir";
+    private static final String EXISTS_PATH = "exists_test_dir";
 
-	/**
-	 * テスト用のディレクトリを作成します。
-	 */
-	@BeforeClass
-	public static void beforeClass() {
-		File existsPath = new File(getCurrentProjectPath(EXISTS_PATH));
-		existsPath.mkdirs();
-		File notExistsPath = new File(getCurrentProjectPath(NOT_EXISTS_PATH));
-		notExistsPath.delete();
-	}
+    private static final String NOT_EXISTS_PATH = "not_exists_test_dir";
 
-	@AfterClass
-	public static void afterClass() {
-		File existsPath = new File(getCurrentProjectPath(EXISTS_PATH));
-		existsPath.delete();
-		File notExistsPath = new File(getCurrentProjectPath(NOT_EXISTS_PATH));
-		notExistsPath.delete();
-	}
+    /**
+     * テスト用のディレクトリを作成します。
+     */
+    @BeforeClass
+    public static void beforeClass() {
+        File existsPath = new File(getCurrentProjectPath(EXISTS_PATH));
+        existsPath.mkdirs();
+        File notExistsPath = new File(getCurrentProjectPath(NOT_EXISTS_PATH));
+        notExistsPath.delete();
+    }
 
-	private static String getCurrentProjectPath(String target) {
-		String currentProjectPath = new File(".").getAbsoluteFile().getParent();
-		return currentProjectPath + System.getProperty("file.separator")
-				+ target;
-	}
+    @AfterClass
+    public static void afterClass() {
+        File existsPath = new File(getCurrentProjectPath(EXISTS_PATH));
+        existsPath.delete();
+        File notExistsPath = new File(getCurrentProjectPath(NOT_EXISTS_PATH));
+        notExistsPath.delete();
+    }
 
-	/**
-	 * <p>
-	 * 出力メッセージキー取得テスト
-	 * </p>
-	 * <p>
-	 * 期待値
-	 * </p>
-	 * <ul>
-	 * <li>question.dist.dirが取得できること</li>
-	 * </ul>
-	 */
-	@Test
-	public void testGetQuestionMessageKey() {
-		ConfigurationBo configurationBo = new ConfigurationBo();
-		this.service = new DistDirectoryPathInputService(configurationBo);
-		assertEquals("question.dist.dir", this.service.getQuestionMessageKey());
-	}
+    private static String getCurrentProjectPath(String target) {
+        String currentProjectPath = new File(".").getAbsoluteFile().getParent();
+        return currentProjectPath + System.getProperty("file.separator")
+                + target;
+    }
 
-	/**
-	 * <p>
-	 * 入力値が未入力の場合のテスト
-	 * </p>
-	 * <p>
-	 * 期待値
-	 * </p>
-	 * <ul>
-	 * <li>{@link DistDirectoryPathInputServiceFactory}のファクトリが取得できること</li>
-	 * </ul>
-	 *
-	 */
-	@Test
-	public void testConfigurationMainProcess_inputEmpty() {
-		ConfigurationBo configurationBo = new ConfigurationBo();
-		this.service = new DistDirectoryPathInputService(configurationBo);
+    /**
+     * <p>
+     * 出力メッセージキー取得テスト
+     * </p>
+     * <p>
+     * 期待値
+     * </p>
+     * <ul>
+     * <li>question.dist.dirが取得できること</li>
+     * </ul>
+     */
+    @Test
+    public void testGetQuestionMessageKey() {
+        ConfigurationBo configurationBo = new ConfigurationBo();
+        this.service = new DistDirectoryPathInputService(configurationBo);
+        assertEquals("question.dist.dir", this.service.getQuestionMessageKey());
+    }
 
-		InputValue inputValue = new InputValue();
-		CommandLineServiceResultBo actual = this.service
-				.mainProcess(inputValue);
+    /**
+     * <p>
+     * 入力値が未入力の場合のテスト
+     * </p>
+     * <p>
+     * 期待値
+     * </p>
+     * <ul>
+     * <li>{@link DistDirectoryPathInputServiceFactory}のファクトリが取得できること</li>
+     * </ul>
+     *
+     */
+    @Test
+    public void testConfigurationMainProcess_inputEmpty() {
+        ConfigurationBo configurationBo = new ConfigurationBo();
+        this.service = new DistDirectoryPathInputService(configurationBo);
 
-		assertTrue(actual.getFactory() instanceof DistDirectoryPathInputServiceFactory);
-	}
+        InputValue inputValue = new InputValue();
+        CommandLineServiceResultBo actual = this.service
+                .mainProcess(inputValue);
 
-	/**
-	 * <p>
-	 * 入力値のディレクトリが存在しない場合のテスト
-	 * </p>
-	 * <p>
-	 * 期待値
-	 * </p>
-	 * <ul>
-	 * <li>入力値のディレクトリが作成されること</li>
-	 * <li>アプリケーション設定情報に入力値が設定されること</li>
-	 * </ul>
-	 */
-	@Test
-	public void testConfigurationMainProcess_notExistDistDirectory() {
-		ConfigurationBo configurationBo = new ConfigurationBo();
-		this.service = new DistDirectoryPathInputService(configurationBo);
+        assertTrue(actual.getFactory() instanceof DistDirectoryPathInputServiceFactory);
+    }
 
-		String input = getCurrentProjectPath(NOT_EXISTS_PATH);
+    /**
+     * <p>
+     * 入力値のディレクトリが存在しない場合のテスト
+     * </p>
+     * <p>
+     * 期待値
+     * </p>
+     * <ul>
+     * <li>入力値のディレクトリが作成されること</li>
+     * <li>アプリケーション設定情報に入力値が設定されること</li>
+     * </ul>
+     */
+    @Test
+    public void testConfigurationMainProcess_notExistDistDirectory() {
+        ConfigurationBo configurationBo = new ConfigurationBo();
+        this.service = new DistDirectoryPathInputService(configurationBo);
 
-		InputValue inputValue = new InputValue(input);
-		this.service.mainProcess(inputValue);
+        String input = getCurrentProjectPath(NOT_EXISTS_PATH);
 
-		assertTrue(new File(input).exists());
-		assertEquals(input, configurationBo.getDistDirectoryPath());
-	}
+        InputValue inputValue = new InputValue(input);
+        this.service.mainProcess(inputValue);
 
-	/**
-	 * <p>
-	 * 入力値のディレクトリが存在する場合のテスト
-	 * </p>
-	 * <p>
-	 * 期待値
-	 * </p>
-	 * <ul>
-	 * <li>入力値のディレクトリが存在していること</li>
-	 * <li>アプリケーション設定情報に入力値が設定されること</li>
-	 * </ul>
-	 */
-	@Test
-	public void testConfigurationMainProcess_existDistDirectory() {
-		ConfigurationBo configurationBo = new ConfigurationBo();
-		this.service = new DistDirectoryPathInputService(configurationBo);
+        assertTrue(new File(input).exists());
+        assertEquals(input, configurationBo.getDistDirectoryPath());
+    }
 
-		String input = getCurrentProjectPath(EXISTS_PATH);
+    /**
+     * <p>
+     * 入力値のディレクトリが存在する場合のテスト
+     * </p>
+     * <p>
+     * 期待値
+     * </p>
+     * <ul>
+     * <li>入力値のディレクトリが存在していること</li>
+     * <li>アプリケーション設定情報に入力値が設定されること</li>
+     * </ul>
+     */
+    @Test
+    public void testConfigurationMainProcess_existDistDirectory() {
+        ConfigurationBo configurationBo = new ConfigurationBo();
+        this.service = new DistDirectoryPathInputService(configurationBo);
 
-		InputValue inputValue = new InputValue(input);
-		this.service.mainProcess(inputValue);
+        String input = getCurrentProjectPath(EXISTS_PATH);
 
-		assertTrue(new File(input).exists());
-		assertEquals(input, configurationBo.getDistDirectoryPath());
-	}
+        InputValue inputValue = new InputValue(input);
+        this.service.mainProcess(inputValue);
+
+        assertTrue(new File(input).exists());
+        assertEquals(input, configurationBo.getDistDirectoryPath());
+    }
 
 }

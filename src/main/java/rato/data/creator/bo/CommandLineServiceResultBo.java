@@ -2,6 +2,9 @@ package rato.data.creator.bo;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import rato.data.creator.service.CommandLineService;
 import rato.data.creator.service.factory.CommandLineServiceFactory;
 
@@ -51,6 +54,22 @@ public class CommandLineServiceResultBo implements Serializable {
      */
     public boolean hasNotNextServiceFactory() {
         return this.factory == null;
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object paramObject) {
+        return EqualsBuilder.reflectionEquals(this, paramObject);
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        return HashCodeBuilder.reflectionHashCode(this);
     }
 
 }

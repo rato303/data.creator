@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 /**
  * アプリケーションの設定情報です。
+ *
+ * @author toshiya
  */
 public class ConfigurationBo implements Serializable {
 

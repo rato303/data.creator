@@ -4,6 +4,7 @@ import java.util.ResourceBundle;
 
 import rato.data.creator.bo.CommandLineServiceResultBo;
 import rato.data.creator.bo.InputValue;
+import rato.data.creator.exception.RetryException;
 
 /**
  * <p>コマンドライン処理をするサービスの基底クラスです。</p>
@@ -26,14 +27,19 @@ public abstract class BaseCommandLineService implements CommandLineService {
      */
     @Override
     public final CommandLineServiceResultBo execute(InputValue inputValue) {
+        CommandLineServiceResultBo result;
 
         if ("q".equals(inputValue.getValue())) {    // TODO 列挙型にする
             return new CommandLineServiceResultBo();
         }
 
-        this.doValidate(inputValue);
+        result = this.doValidate(inputValue);
 
-        return this.mainProcess(inputValue);
+        if (result == null) {
+            result = this.mainProcess(inputValue);
+        }
+
+        return result;
     }
 
     /**
@@ -48,7 +54,7 @@ public abstract class BaseCommandLineService implements CommandLineService {
      *
      * @param inputValue 入力された値
      */
-    protected abstract void doValidate(InputValue inputValue);
+    protected abstract void validateProcess(InputValue inputValue);
 
     /**
      * 各コマンドライン処理をするサービスの主処理を実行します。
@@ -58,5 +64,16 @@ public abstract class BaseCommandLineService implements CommandLineService {
      * @return コマンドラインの処理結果
      */
     protected abstract CommandLineServiceResultBo mainProcess(InputValue inputValue);
+
+    private CommandLineServiceResultBo doValidate(InputValue inputValue) {
+        try {
+            this.validateProcess(inputValue);
+        } catch (RetryException e) {
+            ResourceBundle bundle = ResourceBundle.getBundle("message");
+            System.out.println(bundle.getString(e.getMessage()));
+            return e.getCommandLineServiceResultBo();
+        }
+        return null;    // TODO CommandLineServiceResultBoにNullパターンオブジェクトを適用する
+    }
 
 }

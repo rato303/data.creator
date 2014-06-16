@@ -35,7 +35,7 @@ public class DistDirectoryPathInputService extends SettingCommandLineService {
 	 * チェック処理はありません。
 	 */
 	@Override
-	protected void doValidate(InputValue inputValue) {
+	protected void validateProcess(InputValue inputValue) {
 	}
 
 	/**

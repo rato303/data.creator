@@ -5,7 +5,7 @@ import java.io.IOException;
 import rato.data.creator.bo.CommandLineServiceResultBo;
 import rato.data.creator.io.ArgsReader;
 import rato.data.creator.service.CommandLineService;
-import rato.data.creator.service.setting.TableConfFilePathInputService;
+import rato.data.creator.service.setting.JdbcConfigFileReadService;
 
 /**
  * アプリケーション実行用クラスです。
@@ -20,7 +20,7 @@ public class App {
         try {
             ArgsReader reader = new ArgsReader(System.in);
 
-            CommandLineService service = new TableConfFilePathInputService();
+            CommandLineService service = new JdbcConfigFileReadService();
             CommandLineServiceResultBo result = null;
 
             service.question();
