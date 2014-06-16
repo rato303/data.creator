@@ -69,8 +69,7 @@ public abstract class BaseCommandLineService implements CommandLineService {
         try {
             this.validateProcess(inputValue);
         } catch (RetryException e) {
-            ResourceBundle bundle = ResourceBundle.getBundle("message");
-            System.out.println(bundle.getString(e.getMessage()));
+            System.out.println(e.getMessage());
             return e.getCommandLineServiceResultBo();
         }
         return null;    // TODO CommandLineServiceResultBoにNullパターンオブジェクトを適用する
