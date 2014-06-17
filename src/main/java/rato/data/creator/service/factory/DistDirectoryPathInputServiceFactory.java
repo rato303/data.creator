@@ -3,7 +3,6 @@ package rato.data.creator.service.factory;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import rato.data.creator.bo.ConfigurationBo;
 import rato.data.creator.service.setting.DistDirectoryPathInputService;
 
 /**
@@ -14,20 +13,16 @@ import rato.data.creator.service.setting.DistDirectoryPathInputService;
 public class DistDirectoryPathInputServiceFactory implements
 		CommandLineServiceFactory<DistDirectoryPathInputService> {
 
-	/** アプリケーションの設定情報 */
-	private ConfigurationBo configurationBo;
-
 	/**
 	 * コンストラクタ
 	 */
-	public DistDirectoryPathInputServiceFactory(ConfigurationBo configurationBo) {
+	public DistDirectoryPathInputServiceFactory() {
 		super();
-		this.configurationBo = configurationBo;
 	}
 
 	@Override
 	public DistDirectoryPathInputService create() {
-		return new DistDirectoryPathInputService(this.configurationBo);
+		return new DistDirectoryPathInputService();
 	}
 
     /* (non-Javadoc)

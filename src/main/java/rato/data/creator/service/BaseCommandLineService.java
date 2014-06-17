@@ -3,6 +3,7 @@ package rato.data.creator.service;
 import java.util.ResourceBundle;
 
 import rato.data.creator.bo.CommandLineServiceResultBo;
+import rato.data.creator.bo.ConfigurationBo;
 import rato.data.creator.bo.InputValue;
 import rato.data.creator.exception.RetryException;
 
@@ -19,14 +20,14 @@ public abstract class BaseCommandLineService implements CommandLineService {
     @Override
     public final void question() {
         ResourceBundle bundle = ResourceBundle.getBundle("message");
-        System.out.println(bundle.getString(this.getQuestionMessageKey()));
+        System.out.println(this.getQuestionMessage(bundle));
     }
 
     /* (non-Javadoc)
      * @see rato.data.creator.service.CommandLineService#execute(rato.data.creator.bo.InputValue)
      */
     @Override
-    public final CommandLineServiceResultBo execute(InputValue inputValue) {
+    public final CommandLineServiceResultBo execute(ConfigurationBo configurationBo, InputValue inputValue) {
         CommandLineServiceResultBo result;
 
         if ("q".equals(inputValue.getValue())) {    // TODO 列挙型にする
@@ -36,7 +37,7 @@ public abstract class BaseCommandLineService implements CommandLineService {
         result = this.doValidate(inputValue);
 
         if (result == null) {
-            result = this.mainProcess(inputValue);
+            result = this.mainProcess(configurationBo, inputValue);
         }
 
         return result;
@@ -45,9 +46,11 @@ public abstract class BaseCommandLineService implements CommandLineService {
     /**
      * 各コマンドライン処理のメッセージキーを取得します。
      *
+     * @param bundle メッセージ取得用リソース
+     *
      * @return 各コマンドライン処理のメッセージキー
      */
-    protected abstract String getQuestionMessageKey();
+    protected abstract String getQuestionMessage(ResourceBundle bundle);
 
     /**
      * 入力された値のチェックを行います。
@@ -63,7 +66,7 @@ public abstract class BaseCommandLineService implements CommandLineService {
      *
      * @return コマンドラインの処理結果
      */
-    protected abstract CommandLineServiceResultBo mainProcess(InputValue inputValue);
+    protected abstract CommandLineServiceResultBo mainProcess(ConfigurationBo configurationBo, InputValue inputValue);
 
     private CommandLineServiceResultBo doValidate(InputValue inputValue) {
         try {

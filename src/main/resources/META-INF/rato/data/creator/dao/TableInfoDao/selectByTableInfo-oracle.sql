@@ -4,6 +4,6 @@ SELECT
 FROM
   USER_TAB_COMMENTS UTC
 WHERE
-/*%if tableName != null */
+/*%if @isNotBlank(tableName) */
   UTC.TABLE_NAME LIKE /* @prefix(tableName) */'T%' ESCAPE '$'
 /*%end*/

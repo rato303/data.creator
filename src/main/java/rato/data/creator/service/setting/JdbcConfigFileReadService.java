@@ -4,7 +4,9 @@ import static rato.data.creator.config.DataBaseConfig.*;
 import static rato.data.creator.util.ResourceUtil.*;
 
 import java.io.File;
+import java.text.MessageFormat;
 import java.util.Properties;
+import java.util.ResourceBundle;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -13,8 +15,10 @@ import rato.data.creator.bo.ConfigurationBo;
 import rato.data.creator.bo.InputValue;
 import rato.data.creator.config.DataBaseConfig;
 import rato.data.creator.exception.RetryException;
+import rato.data.creator.service.BaseCommandLineService;
 import rato.data.creator.service.factory.DistDirectoryPathInputServiceFactory;
 import rato.data.creator.service.factory.JdbcConfigFileReadServiceFactory;
+import rato.data.creator.util.ResourceUtil;
 
 /**
  * <p>
@@ -23,38 +27,27 @@ import rato.data.creator.service.factory.JdbcConfigFileReadServiceFactory;
  *
  * @author toshiya
  */
-public class JdbcConfigFileReadService extends SettingCommandLineService {
-
-	/**
-	 * {@link JdbcConfigFileReadService}を生成します。
-	 */
-	public JdbcConfigFileReadService() {
-		super(new ConfigurationBo());
-	}
-
-	/**
-	 * アプリケーションの設定情報を保持した{@link JdbcConfigFileReadService}を生成します。
-	 *
-	 * @param configurationBo
-	 *            アプリケーションの設定情報
-	 */
-	public JdbcConfigFileReadService(ConfigurationBo configurationBo) {
-		super(configurationBo);
-	}
+public class JdbcConfigFileReadService extends BaseCommandLineService {
 
 	@Override
-	protected String getQuestionMessageKey() {
-		return "question.table.conf.file";
+	protected String getQuestionMessage(ResourceBundle bundle) {
+		return MessageFormat.format(
+				bundle.getString("question.table.conf.file"),
+				this.getDefaultPath());
 	}
 
 	@Override
 	protected void validateProcess(InputValue inputValue) {
 
+		String tagetPath;
+
 		if (inputValue.isEmpty()) {
-			this.throwRetryException("error.jdbc.file.path.empty");
+			tagetPath = this.getDefaultPath();
+		} else {
+			tagetPath = inputValue.getValue();
 		}
 
-		File jdbcConfigFile = new File(inputValue.getValue());
+		File jdbcConfigFile = new File(tagetPath);
 
 		if (!jdbcConfigFile.exists()) {
 			this.throwRetryException("error.jdbc.file.not.found");
@@ -90,14 +83,17 @@ public class JdbcConfigFileReadService extends SettingCommandLineService {
 	}
 
 	@Override
-	protected CommandLineServiceResultBo configurationMainProcess(
+	protected CommandLineServiceResultBo mainProcess(
 			ConfigurationBo configurationBo, InputValue inputValue) {
 
-		configurationBo.setDataBaseConfig(new DataBaseConfig(
-				propertiesFileLoad(inputValue.getValue())));
+		String tagetPath = StringUtils.defaultIfBlank(inputValue.getValue(),
+				this.getDefaultPath());
 
-		return new CommandLineServiceResultBo(
-				new DistDirectoryPathInputServiceFactory(configurationBo));
+		configurationBo.setDataBaseConfig(new DataBaseConfig(
+				propertiesFileLoad(tagetPath)));
+
+		return new CommandLineServiceResultBo(configurationBo,
+				new DistDirectoryPathInputServiceFactory());
 	}
 
 	/**
@@ -111,6 +107,15 @@ public class JdbcConfigFileReadService extends SettingCommandLineService {
 	private void throwRetryException(String messageKey) {
 		throw new RetryException(messageKey,
 				new JdbcConfigFileReadServiceFactory());
+	}
+
+	/**
+	 * データベース接続情報ファイルのデフォルトパスを取得します。
+	 *
+	 * @return データベース接続情報ファイルのデフォルトパス
+	 */
+	private String getDefaultPath() {
+		return ResourceUtil.getExecutePath("config", "jdbc.properties");
 	}
 
 }

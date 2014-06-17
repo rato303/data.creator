@@ -3,6 +3,8 @@ package rato.data.creator;
 import java.io.IOException;
 
 import rato.data.creator.bo.CommandLineServiceResultBo;
+import rato.data.creator.bo.ConfigurationBo;
+import rato.data.creator.config.DataBaseConfig;
 import rato.data.creator.io.ArgsReader;
 import rato.data.creator.service.CommandLineService;
 import rato.data.creator.service.setting.JdbcConfigFileReadService;
@@ -17,6 +19,9 @@ public class App {
 
 	public static void main(String[] args) {
 
+		ConfigurationBo configuration = new ConfigurationBo();
+		DataBaseConfig dataBaseConfig = null;
+
 		try {
 			ArgsReader reader = new ArgsReader(System.in);
 
@@ -27,7 +32,16 @@ public class App {
 
 			while (reader.readLine()) {
 
-				result = service.execute(reader.getInputValue());
+				dataBaseConfig = configuration.getDataBaseConfig();
+
+				if (dataBaseConfig.getDataSource() != null) {// メソッド化
+					if (!dataBaseConfig.getLocalTransaction().isActive()) {
+						System.out.println("トランザクションを開始しました。");
+						dataBaseConfig.getLocalTransaction().begin();
+					}
+				}
+
+				result = service.execute(configuration, reader.getInputValue());
 
 				if (result.hasNotNextServiceFactory()) {
 					break;
@@ -45,6 +59,10 @@ public class App {
 			e.printStackTrace();
 			System.exit(-1);
 		} finally {
+			if (dataBaseConfig != null) {// メソッド化
+				dataBaseConfig.getLocalTransaction().rollback();
+				System.out.println("トランザクションをロールバックしました。");
+			}
 			System.out.println("\nPROGRAM END");
 		}
 

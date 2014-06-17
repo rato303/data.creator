@@ -88,8 +88,7 @@ public class DataBaseConfig extends DomaAbstractConfig {
 		this.jdbcSchema = properties.getProperty(PROPERTY_KEY_JDBC_SCHEMA);
 		this.userName = properties.getProperty(PROPERTY_KEY_JDBC_USER);
 		this.password = properties.getProperty(PROPERTY_KEY_JDBC_PASSWORD);
-
-		dataSource = this.createDataSource();
+		this.dataSource = this.createDataSource();
 	}
 
 	@Override

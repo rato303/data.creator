@@ -29,11 +29,35 @@ public final class ResourceUtil {
 	}
 
 	/**
+	 * アプリケーションの実行パスを取得します。
+	 *
+	 * @return アプリケーションの実行パス
+	 */
+	public static String getExecutePath() {
+		return System.getProperty("user.dir");
+	}
+
+	/**
+	 * アプリケーションの実行パス配下のパスを取得します。
+	 *
+	 * @return パスの配列を全てシステムのファイル区切り文字で連結したパス
+	 */
+	public static String getExecutePath(String... pathArr) {
+		StrBuilder result = new StrBuilder();
+		result.append(getExecutePath());
+		for (String path : pathArr) {
+			result.append(FILE_SEPARATOR);
+			result.append(path);
+		}
+		return result.toString();
+	}
+
+	/**
 	 * <p>
-	 * クラスローダーから取得した実行パスを取得します。
+	 * クラスローダーから取得したカレントパスを取得します。
 	 * </p>
 	 *
-	 * @return 実行パス
+	 * @return クラスローダーから取得したカレントパス
 	 */
 	public static String getCurrentFilePath() {
 		return getCurrentFilePath(ResourceUtil.class);
@@ -41,12 +65,12 @@ public final class ResourceUtil {
 
 	/**
 	 * <p>
-	 * クラスローダーから取得した実行パスを取得します。
+	 * クラスローダーから取得したカレントパスを取得します。
 	 * </p>
 	 *
 	 * @param clazz クラスローダーを取得するクラス
 	 *
-	 * @return 実行パス
+	 * @return クラスローダーから取得したカレントパス
 	 */
 	public static String getCurrentFilePath(Class<?> clazz) {
 		return clazz.getResource("/").getPath();

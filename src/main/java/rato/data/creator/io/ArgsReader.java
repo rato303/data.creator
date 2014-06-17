@@ -42,12 +42,15 @@ public class ArgsReader {
      * @return 読み込めた場合は「true」読み込めなかった場合は「false」を返します。
      */
     public boolean readLine() {
+    	boolean result;
         try {
             this.inputValue.setValue(this.argsReader.readLine());
+            result = true;
         } catch (IOException e) {
             this.inputValue.clear();
+            result = false;
         }
-        return this.inputValue.isNotEmpty();
+        return result;
     }
 
     /**

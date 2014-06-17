@@ -12,68 +12,84 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class InputValue implements Serializable {
 
-    /** シリアルID */
-    private static final long serialVersionUID = -505260395564380005L;
+	/** シリアルID */
+	private static final long serialVersionUID = -505260395564380005L;
 
-    /** 入力値 */
-    private String value;
+	/** 入力値 */
+	private String value;
 
-    /**
-     * コンストラクタ
-     */
-    public InputValue() {
-        super();
-        this.value = null;
-    }
+	/**
+	 * コンストラクタ
+	 */
+	public InputValue() {
+		super();
+		this.value = null;
+	}
 
-    /**
-     * コンストラクタ
-     *
-     * @param arg 入力情報
-     */
-    public InputValue(String arg) {
-        this.value = arg;
-    }
+	/**
+	 * コンストラクタ
+	 *
+	 * @param arg
+	 *            入力情報
+	 */
+	public InputValue(String arg) {
+		this.value = arg;
+	}
 
-    /**
-     * 入力値を取得します。
-     * @return 入力値
-     */
-    public String getValue() {
-        return value;
-    }
+	/**
+	 * 入力値を取得します。
+	 *
+	 * @return 入力値
+	 */
+	public String getValue() {
+		return value;
+	}
 
-    /**
-     * 入力値を設定します。
-     * @param arg 入力値
-     */
-    public void setValue(String arg) {
-        this.value = arg;
-    }
+	/**
+	 * 入力値を大文字に変換した値を取得します。
+	 *
+	 * @return 入力値を大文字に変換した値
+	 */
+	public String getUpperValue() {
+		if (this.isEmpty()) {
+			return this.value;
+		}
+		return this.value.toUpperCase();
+	}
 
-    /**
-     * 入力値をクリアします。
-     */
-    public void clear() {
-        this.value = null;
-    }
+	/**
+	 * 入力値を設定します。
+	 *
+	 * @param arg
+	 *            入力値
+	 */
+	public void setValue(String arg) {
+		this.value = arg;
+	}
 
-    /**
-     * 入力値が未入力か判定します。
-     *
-     * @return 未入力の場合は「true」入力状態の場合は「false」
-     */
-    public boolean isEmpty() {
-        return StringUtils.isEmpty(this.value);
-    }
+	/**
+	 * 入力値をクリアします。
+	 */
+	public void clear() {
+		this.value = null;
+	}
 
-    /**
-     * 入力値が入力状態か判定します。
-     *
-     * @return 入力状態の場合は「true」未入力の場合は「false」
-     */
-    public boolean isNotEmpty() {
-        return !this.isEmpty();
-    }
+	/**
+	 * 入力値が未入力か判定します。
+	 *
+	 * @return 未入力の場合は「true」入力状態の場合は「false」
+	 */
+	public boolean isEmpty() {
+		return StringUtils.isEmpty(this.value);
+	}
+
+	/**
+	 * 入力値が入力状態か判定します。
+	 *
+	 * @return 入力状態の場合は「true」未入力の場合は「false」
+	 */
+	public boolean isNotEmpty() {
+		return !this.isEmpty();
+	}
 
 }

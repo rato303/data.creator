@@ -42,17 +42,6 @@ public class JdbcConfigFileReadServiceTest {
 	}
 
 	@Test
-	public void test設定ファイルの入力値が未入力の場合() {
-		this.thrown.expect(RetryException.class);
-		this.thrown.expectMessage("データベース接続定義ファイルのファイルパスは必須です。");
-		this.thrown.expect(new RetryExceptionMatcher(
-				new CommandLineServiceResultBo(
-						new JdbcConfigFileReadServiceFactory())));
-
-		this.service.validateProcess(new InputValue(""));
-	}
-
-	@Test
 	public void test設定ファイルが存在しない場合() throws IOException {
 		File testDir = folder.newFolder("unknown");
 		File testConfFile = new File(testDir.getAbsolutePath()
@@ -208,21 +197,30 @@ public class JdbcConfigFileReadServiceTest {
 
 	@Test
 	@Ignore
+	public void test設定ファイルの入力値が未入力の場合() {
+		// TODO
+	}
+
+	@Test
+	@Ignore
 	public void test設定ファイルが正しく記述されていた場合() {
 		ConfigurationBo configurationBo = new ConfigurationBo();
 		Properties properties = new Properties();
-		properties.setProperty("jdbc.driver.class", "oracle.jdbc.driver.OracleDriver");
-		properties.setProperty("jdbc.url", "jdbc:oracle:thin:@172.20.95.45:1522:orcl");
+		properties.setProperty("jdbc.driver.class",
+				"oracle.jdbc.driver.OracleDriver");
+		properties.setProperty("jdbc.url",
+				"jdbc:oracle:thin:@172.20.95.45:1522:orcl");
 		properties.setProperty("jdbc.schema", "ZKT005");
 		properties.setProperty("jdbc.user", "ZKT005");
 		properties.setProperty("jdbc.password", "ZKT005");
 		configurationBo.setDataBaseConfig(new DataBaseConfig(properties));
 
 		CommandLineServiceResultBo expected = new CommandLineServiceResultBo(
-				new DistDirectoryPathInputServiceFactory(configurationBo));
+				new DistDirectoryPathInputServiceFactory());
 
-		CommandLineServiceResultBo actual = this.service
-				.mainProcess(new InputValue(this.testFixtureResource
+		CommandLineServiceResultBo actual = this.service.mainProcess(
+				configurationBo,
+				new InputValue(this.testFixtureResource
 						.getTestFixtureResource("jdbc.properties")));
 
 		// TODO DataSourceのequalsメソッドが標準の為エラーになる
