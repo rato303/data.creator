@@ -42,7 +42,7 @@ public class FindSelectTableInputService extends BaseCommandLineService {
 				.getDataBaseConfig().getDataSource());
 
 		List<TableInfo> tableInfos = this.tableInfoDao
-				.selectByTableInfo(inputValue.getUpperValue());
+				.findByTableInfo(inputValue.getUpperValue());
 
 		if (tableInfos.size() == 0) {
 			// TODO 入力した名称のテーブルがありませんでした。入力しなおしてください。

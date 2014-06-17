@@ -6,12 +6,36 @@ import org.seasar.doma.Dao;
 import org.seasar.doma.Select;
 
 import rato.data.creator.config.DataBaseConfig;
+import rato.data.creator.entity.ColumnInfo;
 import rato.data.creator.entity.TableInfo;
 
 @Dao(config = DataBaseConfig.class)
 public interface TableInfoDao {
 
+	/**
+	 * <p>
+	 * テーブル名を部分一致で検索します。
+	 * </p>
+	 *
+	 * @param tableName
+	 *            テーブル名(前方一致)
+	 *
+	 * @return 条件に合致するレコード
+	 */
 	@Select
-	List<TableInfo> selectByTableInfo(String tableName);
+	List<TableInfo> findByTableInfo(String tableName);
+
+	/**
+	 * <p>
+	 * 指定されたテーブルのカラム情報を取得します。
+	 * </p>
+	 *
+	 * @param tableName
+	 *            テーブル名(完全一致)
+	 *
+	 * @return 条件に合致するレコード
+	 */
+	@Select
+	List<ColumnInfo> selectByColmnInfo(String tableName);
 
 }

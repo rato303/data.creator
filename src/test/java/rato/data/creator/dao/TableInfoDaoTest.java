@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import rato.data.creator.config.DataBaseConfig;
 import rato.data.creator.dao.impl.TableInfoDaoImpl;
+import rato.data.creator.entity.ColumnInfo;
 import rato.data.creator.entity.TableInfo;
 import rato.data.creator.util.ResourceUtil;
 
@@ -38,9 +39,20 @@ public class TableInfoDaoTest {
 
 	@Test
 	public void testSelectByTableInfo() {
-		List<TableInfo> actualList = this.tableInfoDao.selectByTableInfo("T_");
+		List<TableInfo> actualList = this.tableInfoDao.findByTableInfo("T_");
 		for (TableInfo tableInfo : actualList) {
 			System.out.println(tableInfo.tableName);
+		}
+		// TODO テスト用のddlを作成
+		// TODO dbunitの組み込み
+		// TODO アサーション用のメソッド作成
+	}
+
+	@Test
+	public void testFindByTableInfo() {
+		List<ColumnInfo> actualList = this.tableInfoDao.selectByColmnInfo("T_TOCHI_TOKI");
+		for (ColumnInfo columnInfo : actualList) {
+			System.out.println(columnInfo.columnName);
 		}
 		// TODO テスト用のddlを作成
 	}
