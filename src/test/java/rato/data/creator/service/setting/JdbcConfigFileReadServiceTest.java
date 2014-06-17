@@ -14,9 +14,7 @@ import org.junit.rules.ExpectedException;
 import org.junit.rules.TemporaryFolder;
 
 import rato.data.creator.bo.CommandLineServiceResultBo;
-import rato.data.creator.bo.ConfigurationBo;
 import rato.data.creator.bo.InputValue;
-import rato.data.creator.config.DataBaseConfig;
 import rato.data.creator.exception.RetryException;
 import rato.data.creator.matcher.RetryExceptionMatcher;
 import rato.data.creator.rules.TestFixtureResource;
@@ -204,7 +202,6 @@ public class JdbcConfigFileReadServiceTest {
 	@Test
 	@Ignore
 	public void test設定ファイルが正しく記述されていた場合() {
-		ConfigurationBo configurationBo = new ConfigurationBo();
 		Properties properties = new Properties();
 		properties.setProperty("jdbc.driver.class",
 				"oracle.jdbc.driver.OracleDriver");
@@ -213,7 +210,6 @@ public class JdbcConfigFileReadServiceTest {
 		properties.setProperty("jdbc.schema", "ZKT005");
 		properties.setProperty("jdbc.user", "ZKT005");
 		properties.setProperty("jdbc.password", "ZKT005");
-		configurationBo.setDataBaseConfig(new DataBaseConfig(properties));
 
 		CommandLineServiceResultBo expected = new CommandLineServiceResultBo(
 				new DistDirectoryPathInputServiceFactory());

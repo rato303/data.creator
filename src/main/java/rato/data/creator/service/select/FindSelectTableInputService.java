@@ -40,7 +40,7 @@ public class FindSelectTableInputService extends BaseCommandLineService {
 	protected CommandLineServiceResultBo mainProcess(
 			CommandLineServiceResultBo beforeResult, InputValue inputValue) {
 		this.tableInfoDao = new TableInfoDaoImpl(beforeResult
-				.getConfigurationBo().getDataBaseConfig().getDataSource());
+				.getDataBaseConfig().getDataSource());
 
 		List<TableInfo> tableInfos = this.tableInfoDao
 				.selectByTableInfo(inputValue.getUpperValue());
@@ -56,6 +56,7 @@ public class FindSelectTableInputService extends BaseCommandLineService {
 
 		return new CommandLineServiceResultBo(
 				beforeResult.getConfigurationBo(),
+				beforeResult.getDataBaseConfig(),
 				new FindSelectTableInputServiceFactory(), tableInfos);
 	}
 

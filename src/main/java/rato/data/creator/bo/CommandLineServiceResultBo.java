@@ -7,6 +7,7 @@ import java.util.List;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import rato.data.creator.config.DataBaseConfig;
 import rato.data.creator.entity.TableInfo;
 import rato.data.creator.service.CommandLineService;
 import rato.data.creator.service.factory.CommandLineServiceFactory;
@@ -30,6 +31,9 @@ public class CommandLineServiceResultBo implements Serializable {
 	/** アプリケーションの設定情報 */
 	private ConfigurationBo configurationBo;
 
+	/** データベース接続情報 */
+	private DataBaseConfig dataBaseConfig;
+
 	/** テーブル情報検索結果 */
 	private List<TableInfo> tableInfos;
 
@@ -37,7 +41,7 @@ public class CommandLineServiceResultBo implements Serializable {
 	 * コンストラクタ
 	 */
 	public CommandLineServiceResultBo() {
-		this(new ConfigurationBo(), null, new ArrayList<TableInfo>(0));
+		this(new ConfigurationBo(), new DataBaseConfig(), null, new ArrayList<TableInfo>(0));
 	}
 
 	/**
@@ -47,7 +51,7 @@ public class CommandLineServiceResultBo implements Serializable {
 	 *            アプリケーションの設定情報
 	 */
 	public CommandLineServiceResultBo(ConfigurationBo configurationBo) {
-		this(configurationBo, null, new ArrayList<TableInfo>(0));
+		this(configurationBo, new DataBaseConfig(), null, new ArrayList<TableInfo>(0));
 	}
 
 	/**
@@ -58,7 +62,20 @@ public class CommandLineServiceResultBo implements Serializable {
 	 */
 	public CommandLineServiceResultBo(
 			CommandLineServiceFactory<? extends CommandLineService> factory) {
-		this(new ConfigurationBo(), factory, new ArrayList<TableInfo>(0));
+		this(new ConfigurationBo(), new DataBaseConfig(), factory, new ArrayList<TableInfo>(0));
+	}
+
+	/**
+	 * コンストラクタ
+	 *
+	 * @param factory
+	 *            次のコマンドライン処理をするサービスのファクトリ
+	 */
+	public CommandLineServiceResultBo(ConfigurationBo configurationBo,
+			DataBaseConfig dataBaseConfig,
+			CommandLineServiceFactory<? extends CommandLineService> factory) {
+		this(configurationBo, dataBaseConfig, factory,
+				new ArrayList<TableInfo>(0));
 	}
 
 	/**
@@ -71,10 +88,12 @@ public class CommandLineServiceResultBo implements Serializable {
 	 *            次のコマンドライン処理をするサービスのファクトリ
 	 */
 	public CommandLineServiceResultBo(ConfigurationBo configurationBo,
+			DataBaseConfig dataBaseConfig,
 			CommandLineServiceFactory<? extends CommandLineService> factory,
 			List<TableInfo> tableInfos) {
 		super();
 		this.configurationBo = configurationBo;
+		this.dataBaseConfig = dataBaseConfig;
 		this.factory = factory;
 		this.tableInfos = tableInfos;
 	}
@@ -141,6 +160,15 @@ public class CommandLineServiceResultBo implements Serializable {
 	 */
 	public ConfigurationBo getConfigurationBo() {
 		return configurationBo;
+	}
+
+	/**
+	 * データベース接続情報を取得します。
+	 *
+	 * @return データベース接続情報
+	 */
+	public DataBaseConfig getDataBaseConfig() {
+		return dataBaseConfig;
 	}
 
 	/**

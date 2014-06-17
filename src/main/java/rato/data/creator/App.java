@@ -30,14 +30,8 @@ public class App {
 
 			while (reader.readLine()) {
 
-				dataBaseConfig = result.getConfigurationBo().getDataBaseConfig();
-
-				if (dataBaseConfig.getDataSource() != null) {// メソッド化
-					if (!dataBaseConfig.getLocalTransaction().isActive()) {
-						System.out.println("トランザクションを開始しました。");
-						dataBaseConfig.getLocalTransaction().begin();
-					}
-				}
+				dataBaseConfig = result.getDataBaseConfig();
+				dataBaseConfig.begin();
 
 				result = service.execute(result, reader.getInputValue());
 

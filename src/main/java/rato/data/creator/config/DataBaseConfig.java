@@ -119,6 +119,21 @@ public class DataBaseConfig extends DomaAbstractConfig {
 	}
 
 	/**
+	 * <p>
+	 * トランザクションが開始されていない場合にトランザクションを開始します。
+	 * </p>
+	 * DataSouceがnullの場合や{@link LocalTransaction#isActive()}が「true」の場合は何も実行しません。
+	 */
+	public void begin() {
+		if (this.dataSource != null) {
+			LocalTransaction localTransaction = this.getLocalTransaction();
+			if (!localTransaction.isActive()) {
+				localTransaction.begin();
+			}
+		}
+	}
+
+	/**
 	 * JDBC接続に使用するドライバークラスのFQDNを取得します。
 	 *
 	 * @return JDBC接続に使用するドライバークラスのFQDN

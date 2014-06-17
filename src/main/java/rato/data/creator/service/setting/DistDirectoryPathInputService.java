@@ -59,6 +59,7 @@ public class DistDirectoryPathInputService extends BaseCommandLineService {
 
 		return new CommandLineServiceResultBo(
 				beforeResult.getConfigurationBo(),
+				beforeResult.getDataBaseConfig(),
 				new FindSelectTableInputServiceFactory());
 	}
 
