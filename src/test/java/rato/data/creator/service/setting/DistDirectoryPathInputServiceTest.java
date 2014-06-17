@@ -11,7 +11,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import rato.data.creator.bo.CommandLineServiceResultBo;
-import rato.data.creator.bo.ConfigurationBo;
 import rato.data.creator.bo.InputValue;
 import rato.data.creator.service.factory.DistDirectoryPathInputServiceFactory;
 
@@ -27,7 +26,7 @@ public class DistDirectoryPathInputServiceTest {
 
 	private DistDirectoryPathInputService service;
 
-	private ConfigurationBo configurationBo;
+	private CommandLineServiceResultBo beforeCommandLineServiceResultBo;
 
 	private static final String EXISTS_PATH = "exists_test_dir";
 
@@ -58,34 +57,25 @@ public class DistDirectoryPathInputServiceTest {
 				+ target;
 	}
 
+	/**
+	 * 事前処理
+	 */
 	@Before
 	public void setUp() {
 		this.service = new DistDirectoryPathInputService();
-	}
-
-	/**
-	 * <p>
-	 * 入力値が未入力の場合のテスト
-	 * </p>
-	 * <p>
-	 * 期待値
-	 * </p>
-	 * <ul>
-	 * <li>{@link DistDirectoryPathInputServiceFactory}のファクトリが取得できること</li>
-	 * </ul>
-	 *
-	 */
-	@Test
-	public void testConfigurationMainProcess_inputEmpty() {
-		// SetUp
-		InputValue inputValue = new InputValue();
-		CommandLineServiceResultBo beforeCommandLineServiceResultBo = new CommandLineServiceResultBo(
+		this.beforeCommandLineServiceResultBo = new CommandLineServiceResultBo(
 				new CommandLineServiceResultBo(),
 				new DistDirectoryPathInputServiceFactory());
+	}
+
+	@Test
+	public void 入力値が未入力の場合ファクトリクラスがDistDirectoryPathInputServiceFactoryである事() {
+		// SetUp
+		InputValue inputValue = new InputValue();
 
 		// Exercise
 		CommandLineServiceResultBo actual = this.service.mainProcess(
-				beforeCommandLineServiceResultBo, inputValue);
+				this.beforeCommandLineServiceResultBo, inputValue);
 
 		// Verify
 		assertThat(
@@ -93,54 +83,36 @@ public class DistDirectoryPathInputServiceTest {
 				is(true));
 	}
 
-	/**
-	 * <p>
-	 * 入力値のディレクトリが存在しない場合のテスト
-	 * </p>
-	 * <p>
-	 * 期待値
-	 * </p>
-	 * <ul>
-	 * <li>入力値のディレクトリが作成されること</li>
-	 * <li>アプリケーション設定情報に入力値が設定されること</li>
-	 * </ul>
-	 */
 	@Test
-	public void testConfigurationMainProcess_notExistDistDirectory() {
-		this.service = new DistDirectoryPathInputService();
-
+	public void 入力値のディレクトリが存在しない場合入力値のディレクトリが作成され設定情報に入力値が設定されている事() {
+		// SetUp
 		String excepted = getCurrentProjectPath(NOT_EXISTS_PATH);
-
 		InputValue inputValue = new InputValue(excepted);
-		this.service.mainProcess(new CommandLineServiceResultBo(), inputValue);
 
+		// Exercise
+		CommandLineServiceResultBo actual = this.service.mainProcess(
+				this.beforeCommandLineServiceResultBo, inputValue);
+
+		// Verify
 		assertThat(new File(excepted).exists(), is(true));
-		assertThat(configurationBo.getDistDirectoryPath(), is(excepted));
+		assertThat(actual.getConfigurationBo().getDistDirectoryPath(),
+				is(excepted));
 	}
 
-	/**
-	 * <p>
-	 * 入力値のディレクトリが存在する場合のテスト
-	 * </p>
-	 * <p>
-	 * 期待値
-	 * </p>
-	 * <ul>
-	 * <li>入力値のディレクトリが存在していること</li>
-	 * <li>アプリケーション設定情報に入力値が設定されること</li>
-	 * </ul>
-	 */
 	@Test
-	public void testConfigurationMainProcess_existDistDirectory() {
-		this.service = new DistDirectoryPathInputService();
-
+	public void 入力値のディレクトリが存在する場合入力値のディレクトリが存在し設定情報に入力値が設定されている事() {
+		// SetUp
 		String expected = getCurrentProjectPath(EXISTS_PATH);
-
 		InputValue inputValue = new InputValue(expected);
-		this.service.mainProcess(new CommandLineServiceResultBo(), inputValue);
 
+		// Exercise
+		CommandLineServiceResultBo actual = this.service.mainProcess(
+				this.beforeCommandLineServiceResultBo, inputValue);
+
+		// Verify
 		assertThat(new File(expected).exists(), is(true));
-		assertThat(configurationBo.getDistDirectoryPath(), is(expected));
+		assertThat(actual.getConfigurationBo().getDistDirectoryPath(),
+				is(expected));
 	}
 
 }
