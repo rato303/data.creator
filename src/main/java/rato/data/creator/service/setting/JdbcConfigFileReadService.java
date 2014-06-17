@@ -1,25 +1,22 @@
 package rato.data.creator.service.setting;
 
-import static rato.data.creator.bo.DatabaseConnectionInfoBo.PROPERTY_KEY_JDBC_DRIVER_CLASS;
-import static rato.data.creator.bo.DatabaseConnectionInfoBo.PROPERTY_KEY_JDBC_PASSWORD;
-import static rato.data.creator.bo.DatabaseConnectionInfoBo.PROPERTY_KEY_JDBC_SCHEMA;
-import static rato.data.creator.bo.DatabaseConnectionInfoBo.PROPERTY_KEY_JDBC_URL;
-import static rato.data.creator.bo.DatabaseConnectionInfoBo.PROPERTY_KEY_JDBC_USER;
+import static rato.data.creator.config.DataBaseConfig.*;
+import static rato.data.creator.util.ResourceUtil.*;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.Properties;
+import java.util.ResourceBundle;
 
 import org.apache.commons.lang3.StringUtils;
 
 import rato.data.creator.bo.CommandLineServiceResultBo;
-import rato.data.creator.bo.ConfigurationBo;
-import rato.data.creator.bo.DatabaseConnectionInfoBo;
 import rato.data.creator.bo.InputValue;
+import rato.data.creator.config.DataBaseConfig;
 import rato.data.creator.exception.RetryException;
+import rato.data.creator.service.BaseCommandLineService;
 import rato.data.creator.service.factory.DistDirectoryPathInputServiceFactory;
-import rato.data.creator.service.factory.JdbcConfigFileReadServiceFactory;
+import rato.data.creator.util.ResourceUtil;
 
 /**
  * <p>
@@ -28,66 +25,57 @@ import rato.data.creator.service.factory.JdbcConfigFileReadServiceFactory;
  *
  * @author toshiya
  */
-public class JdbcConfigFileReadService extends SettingCommandLineService {
+public class JdbcConfigFileReadService extends BaseCommandLineService {
 
-	/**
-	 * {@link JdbcConfigFileReadService}を生成します。
-	 */
-	public JdbcConfigFileReadService() {
-		super(new ConfigurationBo());
-	}
-
-	/**
-	 * アプリケーションの設定情報を保持した{@link JdbcConfigFileReadService}を生成します。
-	 *
-	 * @param configurationBo
-	 *            アプリケーションの設定情報
-	 */
-	public JdbcConfigFileReadService(ConfigurationBo configurationBo) {
-		super(configurationBo);
+	@Override
+	protected String getQuestionMessage(ResourceBundle bundle) {
+		return MessageFormat.format(
+				bundle.getString("question.table.conf.file"),
+				this.getDefaultPath());
 	}
 
 	@Override
-	protected String getQuestionMessageKey() {
-		return "question.table.conf.file";
-	}
+	protected void validateProcess(CommandLineServiceResultBo beforeResult,
+			InputValue inputValue) {
 
-	@Override
-	protected void validateProcess(InputValue inputValue) {
+		String tagetPath;
 
 		if (inputValue.isEmpty()) {
-			this.throwRetryException("error.jdbc.file.path.empty");
+			tagetPath = this.getDefaultPath();
+		} else {
+			tagetPath = inputValue.getValue();
 		}
 
-		File jdbcConfigFile = new File(inputValue.getValue());
+		File jdbcConfigFile = new File(tagetPath);
 
 		if (!jdbcConfigFile.exists()) {
-			this.throwRetryException("error.jdbc.file.not.found");
+			this.throwRetryException("error.jdbc.file.not.found", beforeResult);
 		}
 
-		Properties properties = this.propertiesFileLoad(jdbcConfigFile);
+		Properties properties = propertiesFileLoad(jdbcConfigFile);
 
 		if (StringUtils.isBlank(properties
 				.getProperty(PROPERTY_KEY_JDBC_DRIVER_CLASS))) {
-			this.throwRetryException("error.jdbc.driver.class.name.empty");
+			this.throwRetryException("error.jdbc.driver.class.name.empty",
+					beforeResult);
 		}
 
 		if (StringUtils.isBlank(properties.getProperty(PROPERTY_KEY_JDBC_URL))) {
-			this.throwRetryException("error.jdbc.url.empty");
+			this.throwRetryException("error.jdbc.url.empty", beforeResult);
 		}
 
 		if (StringUtils.isBlank(properties
 				.getProperty(PROPERTY_KEY_JDBC_SCHEMA))) {
-			this.throwRetryException("error.jdbc.schema.empty");
+			this.throwRetryException("error.jdbc.schema.empty", beforeResult);
 		}
 
 		if (StringUtils.isBlank(properties.getProperty(PROPERTY_KEY_JDBC_USER))) {
-			this.throwRetryException("error.jdbc.user.empty");
+			this.throwRetryException("error.jdbc.user.empty", beforeResult);
 		}
 
 		if (StringUtils.isBlank(properties
 				.getProperty(PROPERTY_KEY_JDBC_PASSWORD))) {
-			this.throwRetryException("error.jdbc.password.empty");
+			this.throwRetryException("error.jdbc.password.empty", beforeResult);
 		}
 
 		// TODO jdbcドライバクラスが読み込めるかチェック
@@ -95,15 +83,15 @@ public class JdbcConfigFileReadService extends SettingCommandLineService {
 	}
 
 	@Override
-	protected CommandLineServiceResultBo configurationMainProcess(
-			ConfigurationBo configurationBo, InputValue inputValue) {
+	protected CommandLineServiceResultBo mainProcess(
+			CommandLineServiceResultBo beforeResult, InputValue inputValue) {
 
-		configurationBo
-				.setDatabaseConnectionInfoBo(new DatabaseConnectionInfoBo(this
-						.propertiesFileLoad(new File(inputValue.getValue()))));
+		String tagetPath = StringUtils.defaultIfBlank(inputValue.getValue(),
+				this.getDefaultPath());
 
-		return new CommandLineServiceResultBo(
-				new DistDirectoryPathInputServiceFactory(configurationBo));
+		return new CommandLineServiceResultBo(beforeResult,
+				new DistDirectoryPathInputServiceFactory(), new DataBaseConfig(
+						propertiesFileLoad(tagetPath)));
 	}
 
 	/**
@@ -113,30 +101,21 @@ public class JdbcConfigFileReadService extends SettingCommandLineService {
 	 *
 	 * @param messageKey
 	 *            {@link RetryException}に設定するメッセージキー
+	 * @param beforeResult
+	 *            TODO
 	 */
-	private void throwRetryException(String messageKey) {
-		throw new RetryException(messageKey,
-				new JdbcConfigFileReadServiceFactory());
+	private void throwRetryException(String messageKey,
+			CommandLineServiceResultBo beforeResult) {
+		throw new RetryException(messageKey, beforeResult);
 	}
 
 	/**
-	 * <p>
-	 * Propertiesファイルを読み込みます。
-	 * </p>
+	 * データベース接続情報ファイルのデフォルトパスを取得します。
 	 *
-	 * @param jdbcConfigFile
-	 *            データベース接続情報{@link File}
-	 *
-	 * @return 読み込んだPropertiesのインスタンス
+	 * @return データベース接続情報ファイルのデフォルトパス
 	 */
-	private Properties propertiesFileLoad(File jdbcConfigFile) {
-		Properties properties = new Properties();
-		try {
-			properties.load(new FileInputStream(jdbcConfigFile));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return properties;
+	private String getDefaultPath() {
+		return ResourceUtil.getExecutePath("config", "jdbc.properties");
 	}
 
 }

@@ -18,10 +18,12 @@ public interface CommandLineService {
     /**
      * コマンドライン処理を実行します。
      *
+     * @param beforeResult 1つ前のサービスの処理結果
+     *
      * @param inputValue コマンドラインから入力された値
      *
      * @return コマンドラインの処理結果
      */
-    CommandLineServiceResultBo execute(InputValue inputValue);
+    CommandLineServiceResultBo execute(CommandLineServiceResultBo beforeResult, InputValue inputValue);
 
 }

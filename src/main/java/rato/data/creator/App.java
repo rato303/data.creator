@@ -3,6 +3,7 @@ package rato.data.creator;
 import java.io.IOException;
 
 import rato.data.creator.bo.CommandLineServiceResultBo;
+import rato.data.creator.config.DataBaseConfig;
 import rato.data.creator.io.ArgsReader;
 import rato.data.creator.service.CommandLineService;
 import rato.data.creator.service.setting.JdbcConfigFileReadService;
@@ -15,40 +16,48 @@ import rato.data.creator.service.setting.JdbcConfigFileReadService;
  */
 public class App {
 
-    public static void main(String[] args) {
+	public static void main(String[] args) {
 
-        try {
-            ArgsReader reader = new ArgsReader(System.in);
+		DataBaseConfig dataBaseConfig = null;
 
-            CommandLineService service = new JdbcConfigFileReadService();
-            CommandLineServiceResultBo result = null;
+		try {
+			ArgsReader reader = new ArgsReader(System.in);
 
-            service.question();
+			CommandLineService service = new JdbcConfigFileReadService();
+			CommandLineServiceResultBo result = new CommandLineServiceResultBo();
 
-            while (reader.readLine()) {
+			service.question();
 
-                result = service.execute(reader.getInputValue());
+			while (reader.readLine()) {
 
-                if (result.hasNotNextServiceFactory()) {
-                    break;
-                }
+				dataBaseConfig = result.getDataBaseConfig();
+				dataBaseConfig.begin();
 
-                service = result.getFactory().create();
+				result = service.execute(result, reader.getInputValue());
 
-                service.question();
-                /*
-                 * 設問終了時に行をさらに追加するか、終了するかを聞く
-                 */
-            }
+				if (result.hasNotNextServiceFactory()) {
+					break;
+				}
 
-            reader.close();
-            System.out.println("\nPROGRAM END");
+				service = result.getFactory().create();
 
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.exit(-1);
-        }
+				service.question();
 
-    }
+			}
+
+			reader.close();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.exit(-1);
+		} finally {
+			if (dataBaseConfig != null) {// メソッド化
+				dataBaseConfig.getLocalTransaction().rollback();
+				System.out.println("トランザクションをロールバックしました。");
+			}
+			System.out.println("\nPROGRAM END");
+		}
+
+	}
 
 }

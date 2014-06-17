@@ -19,24 +19,24 @@ public abstract class BaseCommandLineService implements CommandLineService {
     @Override
     public final void question() {
         ResourceBundle bundle = ResourceBundle.getBundle("message");
-        System.out.println(bundle.getString(this.getQuestionMessageKey()));
+        System.out.println(this.getQuestionMessage(bundle));
     }
 
     /* (non-Javadoc)
      * @see rato.data.creator.service.CommandLineService#execute(rato.data.creator.bo.InputValue)
      */
     @Override
-    public final CommandLineServiceResultBo execute(InputValue inputValue) {
+    public final CommandLineServiceResultBo execute(CommandLineServiceResultBo beforeResult, InputValue inputValue) {
         CommandLineServiceResultBo result;
 
         if ("q".equals(inputValue.getValue())) {    // TODO 列挙型にする
             return new CommandLineServiceResultBo();
         }
 
-        result = this.doValidate(inputValue);
+        result = this.doValidate(beforeResult, inputValue);
 
         if (result == null) {
-            result = this.mainProcess(inputValue);
+            result = this.mainProcess(beforeResult, inputValue);
         }
 
         return result;
@@ -45,29 +45,35 @@ public abstract class BaseCommandLineService implements CommandLineService {
     /**
      * 各コマンドライン処理のメッセージキーを取得します。
      *
+     * @param bundle メッセージ取得用リソース
+     *
      * @return 各コマンドライン処理のメッセージキー
      */
-    protected abstract String getQuestionMessageKey();
+    protected abstract String getQuestionMessage(ResourceBundle bundle);
 
     /**
      * 入力された値のチェックを行います。
      *
+     * @param beforeResult 1つ前のサービスの処理結果
+     *
      * @param inputValue 入力された値
      */
-    protected abstract void validateProcess(InputValue inputValue);
+    protected abstract void validateProcess(CommandLineServiceResultBo beforeResult, InputValue inputValue);
 
     /**
      * 各コマンドライン処理をするサービスの主処理を実行します。
+     *
+     * @param beforeResult 1つ前のサービスの処理結果
      *
      * @param inputValue コマンドラインから入力された値
      *
      * @return コマンドラインの処理結果
      */
-    protected abstract CommandLineServiceResultBo mainProcess(InputValue inputValue);
+    protected abstract CommandLineServiceResultBo mainProcess(CommandLineServiceResultBo beforeResult, InputValue inputValue);
 
-    private CommandLineServiceResultBo doValidate(InputValue inputValue) {
+    private CommandLineServiceResultBo doValidate(CommandLineServiceResultBo beforeResult, InputValue inputValue) {
         try {
-            this.validateProcess(inputValue);
+            this.validateProcess(beforeResult, inputValue);
         } catch (RetryException e) {
             System.out.println(e.getMessage());
             return e.getCommandLineServiceResultBo();
