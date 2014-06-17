@@ -1,7 +1,7 @@
 package rato.data.creator.service.setting;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.io.File;
 
@@ -70,7 +70,8 @@ public class DistDirectoryPathInputServiceTest {
     public void testGetQuestionMessageKey() {
         ConfigurationBo configurationBo = new ConfigurationBo();
         this.service = new DistDirectoryPathInputService(configurationBo);
-        assertEquals("question.dist.dir", this.service.getQuestionMessageKey());
+        String expected = "question.dist.dir";
+        assertThat(expected, is(this.service.getQuestionMessageKey()));
     }
 
     /**
@@ -94,7 +95,7 @@ public class DistDirectoryPathInputServiceTest {
         CommandLineServiceResultBo actual = this.service
                 .mainProcess(inputValue);
 
-        assertTrue(actual.getFactory() instanceof DistDirectoryPathInputServiceFactory);
+        assertThat(actual.getFactory() instanceof DistDirectoryPathInputServiceFactory, is(true));
     }
 
     /**
@@ -114,13 +115,13 @@ public class DistDirectoryPathInputServiceTest {
         ConfigurationBo configurationBo = new ConfigurationBo();
         this.service = new DistDirectoryPathInputService(configurationBo);
 
-        String input = getCurrentProjectPath(NOT_EXISTS_PATH);
+        String excepted = getCurrentProjectPath(NOT_EXISTS_PATH);
 
-        InputValue inputValue = new InputValue(input);
+        InputValue inputValue = new InputValue(excepted);
         this.service.mainProcess(inputValue);
 
-        assertTrue(new File(input).exists());
-        assertEquals(input, configurationBo.getDistDirectoryPath());
+        assertThat(new File(excepted).exists(), is(true));
+        assertThat(configurationBo.getDistDirectoryPath(), is(excepted));
     }
 
     /**
@@ -140,13 +141,13 @@ public class DistDirectoryPathInputServiceTest {
         ConfigurationBo configurationBo = new ConfigurationBo();
         this.service = new DistDirectoryPathInputService(configurationBo);
 
-        String input = getCurrentProjectPath(EXISTS_PATH);
+        String expected = getCurrentProjectPath(EXISTS_PATH);
 
-        InputValue inputValue = new InputValue(input);
+        InputValue inputValue = new InputValue(expected);
         this.service.mainProcess(inputValue);
 
-        assertTrue(new File(input).exists());
-        assertEquals(input, configurationBo.getDistDirectoryPath());
+        assertThat(new File(expected).exists(), is(true));
+        assertThat(configurationBo.getDistDirectoryPath(), is(expected));
     }
 
 }
