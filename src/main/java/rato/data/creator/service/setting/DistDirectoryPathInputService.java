@@ -6,7 +6,6 @@ import java.util.ResourceBundle;
 import rato.data.creator.bo.CommandLineServiceResultBo;
 import rato.data.creator.bo.InputValue;
 import rato.data.creator.service.BaseCommandLineService;
-import rato.data.creator.service.factory.DistDirectoryPathInputServiceFactory;
 import rato.data.creator.service.factory.FindSelectTableInputServiceFactory;
 
 /**
@@ -48,18 +47,14 @@ public class DistDirectoryPathInputService extends BaseCommandLineService {
 			CommandLineServiceResultBo beforeResult, InputValue inputValue) {
 
 		if (inputValue.isEmpty()) {
-			return new CommandLineServiceResultBo(
-					beforeResult.getConfigurationBo(),
-					new DistDirectoryPathInputServiceFactory());
+			return new CommandLineServiceResultBo(beforeResult);
 		}
 
 		this.createDistDirectory(inputValue.getValue());
 		beforeResult.getConfigurationBo().setDistDirectoryPath(
 				inputValue.getValue());
 
-		return new CommandLineServiceResultBo(
-				beforeResult.getConfigurationBo(),
-				beforeResult.getDataBaseConfig(),
+		return new CommandLineServiceResultBo(beforeResult,
 				new FindSelectTableInputServiceFactory());
 	}
 

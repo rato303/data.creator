@@ -49,6 +49,7 @@ public class JdbcConfigFileReadServiceTest {
 		this.thrown.expectMessage("データベース接続定義ファイルが見つかりませんでした。");
 		this.thrown.expect(new RetryExceptionMatcher(
 				new CommandLineServiceResultBo(
+						new CommandLineServiceResultBo(),
 						new JdbcConfigFileReadServiceFactory())));
 
 		this.service.validateProcess(new InputValue(testConfFile
@@ -62,6 +63,7 @@ public class JdbcConfigFileReadServiceTest {
 				.expectMessage("指定されたデータベース接続定義ファイルにはjdbc.driver.classが設定されていません。");
 		this.thrown.expect(new RetryExceptionMatcher(
 				new CommandLineServiceResultBo(
+						new CommandLineServiceResultBo(),
 						new JdbcConfigFileReadServiceFactory())));
 
 		this.service.validateProcess(new InputValue(this.testFixtureResource
@@ -75,6 +77,7 @@ public class JdbcConfigFileReadServiceTest {
 				.expectMessage("指定されたデータベース接続定義ファイルにはjdbc.driver.classが設定されていません。");
 		this.thrown.expect(new RetryExceptionMatcher(
 				new CommandLineServiceResultBo(
+						new CommandLineServiceResultBo(),
 						new JdbcConfigFileReadServiceFactory())));
 
 		this.service.validateProcess(new InputValue(this.testFixtureResource
@@ -87,6 +90,7 @@ public class JdbcConfigFileReadServiceTest {
 		this.thrown.expectMessage("指定されたデータベース接続定義ファイルにはjdbc.urlが設定されていません。");
 		this.thrown.expect(new RetryExceptionMatcher(
 				new CommandLineServiceResultBo(
+						new CommandLineServiceResultBo(),
 						new JdbcConfigFileReadServiceFactory())));
 
 		this.service.validateProcess(new InputValue(this.testFixtureResource
@@ -99,6 +103,7 @@ public class JdbcConfigFileReadServiceTest {
 		this.thrown.expectMessage("指定されたデータベース接続定義ファイルにはjdbc.urlが設定されていません。");
 		this.thrown.expect(new RetryExceptionMatcher(
 				new CommandLineServiceResultBo(
+						new CommandLineServiceResultBo(),
 						new JdbcConfigFileReadServiceFactory())));
 
 		this.service.validateProcess(new InputValue(this.testFixtureResource
@@ -112,6 +117,7 @@ public class JdbcConfigFileReadServiceTest {
 				.expectMessage("指定されたデータベース接続定義ファイルにはjdbc.schemaが設定されていません。");
 		this.thrown.expect(new RetryExceptionMatcher(
 				new CommandLineServiceResultBo(
+						new CommandLineServiceResultBo(),
 						new JdbcConfigFileReadServiceFactory())));
 
 		this.service.validateProcess(new InputValue(this.testFixtureResource
@@ -125,6 +131,7 @@ public class JdbcConfigFileReadServiceTest {
 				.expectMessage("指定されたデータベース接続定義ファイルにはjdbc.schemaが設定されていません。");
 		this.thrown.expect(new RetryExceptionMatcher(
 				new CommandLineServiceResultBo(
+						new CommandLineServiceResultBo(),
 						new JdbcConfigFileReadServiceFactory())));
 
 		this.service.validateProcess(new InputValue(this.testFixtureResource
@@ -137,6 +144,7 @@ public class JdbcConfigFileReadServiceTest {
 		this.thrown.expectMessage("指定されたデータベース接続定義ファイルにはjdbc.userが設定されていません。");
 		this.thrown.expect(new RetryExceptionMatcher(
 				new CommandLineServiceResultBo(
+						new CommandLineServiceResultBo(),
 						new JdbcConfigFileReadServiceFactory())));
 
 		this.service.validateProcess(new InputValue(this.testFixtureResource
@@ -149,6 +157,7 @@ public class JdbcConfigFileReadServiceTest {
 		this.thrown.expectMessage("指定されたデータベース接続定義ファイルにはjdbc.userが設定されていません。");
 		this.thrown.expect(new RetryExceptionMatcher(
 				new CommandLineServiceResultBo(
+						new CommandLineServiceResultBo(),
 						new JdbcConfigFileReadServiceFactory())));
 
 		this.service.validateProcess(new InputValue(this.testFixtureResource
@@ -162,6 +171,7 @@ public class JdbcConfigFileReadServiceTest {
 				.expectMessage("指定されたデータベース接続定義ファイルにはjdbc.passwordが設定されていません。");
 		this.thrown.expect(new RetryExceptionMatcher(
 				new CommandLineServiceResultBo(
+						new CommandLineServiceResultBo(),
 						new JdbcConfigFileReadServiceFactory())));
 
 		this.service.validateProcess(new InputValue(this.testFixtureResource
@@ -175,6 +185,7 @@ public class JdbcConfigFileReadServiceTest {
 				.expectMessage("指定されたデータベース接続定義ファイルにはjdbc.passwordが設定されていません。");
 		this.thrown.expect(new RetryExceptionMatcher(
 				new CommandLineServiceResultBo(
+						new CommandLineServiceResultBo(),
 						new JdbcConfigFileReadServiceFactory())));
 
 		this.service.validateProcess(new InputValue(this.testFixtureResource
@@ -212,6 +223,7 @@ public class JdbcConfigFileReadServiceTest {
 		properties.setProperty("jdbc.password", "ZKT005");
 
 		CommandLineServiceResultBo expected = new CommandLineServiceResultBo(
+				new CommandLineServiceResultBo(),
 				new DistDirectoryPathInputServiceFactory());
 
 		CommandLineServiceResultBo actual = this.service.mainProcess(

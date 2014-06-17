@@ -41,78 +41,37 @@ public class CommandLineServiceResultBo implements Serializable {
 	 * コンストラクタ
 	 */
 	public CommandLineServiceResultBo() {
-		this(new ConfigurationBo(), new DataBaseConfig(), null, new ArrayList<TableInfo>(0));
-	}
-
-	/**
-	 * コンストラクタ
-	 *
-	 * @param configurationBo
-	 *            アプリケーションの設定情報
-	 */
-	public CommandLineServiceResultBo(ConfigurationBo configurationBo) {
-		this(configurationBo, new DataBaseConfig(), null, new ArrayList<TableInfo>(0));
-	}
-
-	/**
-	 * コンストラクタ
-	 *
-	 * @param factory
-	 *            次のコマンドライン処理をするサービスのファクトリ
-	 */
-	public CommandLineServiceResultBo(
-			CommandLineServiceFactory<? extends CommandLineService> factory) {
-		this(new ConfigurationBo(), new DataBaseConfig(), factory, new ArrayList<TableInfo>(0));
-	}
-
-	/**
-	 * コンストラクタ
-	 *
-	 * @param factory
-	 *            次のコマンドライン処理をするサービスのファクトリ
-	 */
-	public CommandLineServiceResultBo(ConfigurationBo configurationBo,
-			DataBaseConfig dataBaseConfig,
-			CommandLineServiceFactory<? extends CommandLineService> factory) {
-		this(configurationBo, dataBaseConfig, factory,
-				new ArrayList<TableInfo>(0));
-	}
-
-	/**
-	 * コンストラクタ
-	 *
-	 * @param configurationBo
-	 *            アプリケーションの設定情報
-	 *
-	 * @param factory
-	 *            次のコマンドライン処理をするサービスのファクトリ
-	 */
-	public CommandLineServiceResultBo(ConfigurationBo configurationBo,
-			DataBaseConfig dataBaseConfig,
-			CommandLineServiceFactory<? extends CommandLineService> factory,
-			List<TableInfo> tableInfos) {
-		super();
-		this.configurationBo = configurationBo;
-		this.dataBaseConfig = dataBaseConfig;
-		this.factory = factory;
-		this.tableInfos = tableInfos;
-	}
-
-	/**
-	 * コンストラクタ
-	 *
-	 * @param configurationBo
-	 *            アプリケーションの設定情報
-	 *
-	 * @param factory
-	 *            次のコマンドライン処理をするサービスのファクトリ
-	 */
-	public CommandLineServiceResultBo(ConfigurationBo configurationBo,
-			CommandLineServiceFactory<? extends CommandLineService> factory) {
-		super();
-		this.configurationBo = configurationBo;
-		this.factory = factory;
+		this.factory = null;
+		this.configurationBo = new ConfigurationBo();
+		this.dataBaseConfig = new DataBaseConfig();
 		this.tableInfos = new ArrayList<TableInfo>(0);
+	}
+
+	public CommandLineServiceResultBo(CommandLineServiceResultBo beforeResult) {
+		this.factory = beforeResult.factory;
+		this.configurationBo = beforeResult.configurationBo;
+		this.dataBaseConfig = beforeResult.dataBaseConfig;
+		this.tableInfos = beforeResult.tableInfos;
+	}
+
+	public CommandLineServiceResultBo(CommandLineServiceResultBo beforeResult, CommandLineServiceFactory<? extends CommandLineService> factory) {
+		this(beforeResult);
+		this.factory = factory;
+	}
+
+	public CommandLineServiceResultBo(CommandLineServiceResultBo beforeResult, CommandLineServiceFactory<? extends CommandLineService> factory, DataBaseConfig dataBaseConfig) {
+		this(beforeResult, factory);
+		this.dataBaseConfig = dataBaseConfig;
+	}
+
+	public CommandLineServiceResultBo(CommandLineServiceResultBo beforeResult, ConfigurationBo configurationBo) {
+		this(beforeResult);
+		this.configurationBo = configurationBo;
+	}
+
+	public CommandLineServiceResultBo(CommandLineServiceResultBo beforeResult, List<TableInfo> tableInfos) {
+		this(beforeResult);
+		this.tableInfos = tableInfos;
 	}
 
 	/**
