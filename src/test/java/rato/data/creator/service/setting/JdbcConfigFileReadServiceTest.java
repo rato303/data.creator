@@ -219,7 +219,7 @@ public class JdbcConfigFileReadServiceTest {
 				new DistDirectoryPathInputServiceFactory());
 
 		CommandLineServiceResultBo actual = this.service.mainProcess(
-				configurationBo,
+				new CommandLineServiceResultBo(),
 				new InputValue(this.testFixtureResource
 						.getTestFixtureResource("jdbc.properties")));
 

@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import rato.data.creator.bo.CommandLineServiceResultBo;
-import rato.data.creator.bo.ConfigurationBo;
 import rato.data.creator.bo.InputValue;
 import rato.data.creator.dao.TableInfoDao;
 import rato.data.creator.dao.impl.TableInfoDaoImpl;
@@ -39,9 +38,9 @@ public class FindSelectTableInputService extends BaseCommandLineService {
 
 	@Override
 	protected CommandLineServiceResultBo mainProcess(
-			ConfigurationBo configurationBo, InputValue inputValue) {
-		this.tableInfoDao = new TableInfoDaoImpl(configurationBo
-				.getDataBaseConfig().getDataSource());
+			CommandLineServiceResultBo beforeResult, InputValue inputValue) {
+		this.tableInfoDao = new TableInfoDaoImpl(beforeResult
+				.getConfigurationBo().getDataBaseConfig().getDataSource());
 
 		List<TableInfo> tableInfos = this.tableInfoDao
 				.selectByTableInfo(inputValue.getUpperValue());
@@ -55,7 +54,8 @@ public class FindSelectTableInputService extends BaseCommandLineService {
 			System.out.println(i + ":" + tableInfo.tableName);
 		}
 
-		return new CommandLineServiceResultBo(configurationBo,
+		return new CommandLineServiceResultBo(
+				beforeResult.getConfigurationBo(),
 				new FindSelectTableInputServiceFactory(), tableInfos);
 	}
 

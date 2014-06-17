@@ -5,7 +5,6 @@ import static org.junit.Assert.*;
 import java.io.File;
 
 import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -57,11 +56,6 @@ public class DistDirectoryPathInputServiceTest {
                 + target;
     }
 
-    @Before
-    public void before () {
-    	this.configurationBo = new ConfigurationBo();
-    }
-
     /**
      * <p>
      * 入力値が未入力の場合のテスト
@@ -80,7 +74,7 @@ public class DistDirectoryPathInputServiceTest {
 
         InputValue inputValue = new InputValue();
         CommandLineServiceResultBo actual = this.service
-                .mainProcess(this.configurationBo, inputValue);
+                .mainProcess(new CommandLineServiceResultBo(), inputValue);
 
         assertTrue(actual.getFactory() instanceof DistDirectoryPathInputServiceFactory);
     }
@@ -104,7 +98,7 @@ public class DistDirectoryPathInputServiceTest {
         String input = getCurrentProjectPath(NOT_EXISTS_PATH);
 
         InputValue inputValue = new InputValue(input);
-        this.service.mainProcess(this.configurationBo, inputValue);
+        this.service.mainProcess(new CommandLineServiceResultBo(), inputValue);
 
         assertTrue(new File(input).exists());
         assertEquals(input, configurationBo.getDistDirectoryPath());
@@ -129,7 +123,7 @@ public class DistDirectoryPathInputServiceTest {
         String input = getCurrentProjectPath(EXISTS_PATH);
 
         InputValue inputValue = new InputValue(input);
-        this.service.mainProcess(this.configurationBo, inputValue);
+        this.service.mainProcess(new CommandLineServiceResultBo(), inputValue);
 
         assertTrue(new File(input).exists());
         assertEquals(input, configurationBo.getDistDirectoryPath());

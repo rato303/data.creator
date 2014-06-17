@@ -3,7 +3,6 @@ package rato.data.creator.service;
 import java.util.ResourceBundle;
 
 import rato.data.creator.bo.CommandLineServiceResultBo;
-import rato.data.creator.bo.ConfigurationBo;
 import rato.data.creator.bo.InputValue;
 import rato.data.creator.exception.RetryException;
 
@@ -27,7 +26,7 @@ public abstract class BaseCommandLineService implements CommandLineService {
      * @see rato.data.creator.service.CommandLineService#execute(rato.data.creator.bo.InputValue)
      */
     @Override
-    public final CommandLineServiceResultBo execute(ConfigurationBo configurationBo, InputValue inputValue) {
+    public final CommandLineServiceResultBo execute(CommandLineServiceResultBo beforeResult, InputValue inputValue) {
         CommandLineServiceResultBo result;
 
         if ("q".equals(inputValue.getValue())) {    // TODO 列挙型にする
@@ -37,7 +36,7 @@ public abstract class BaseCommandLineService implements CommandLineService {
         result = this.doValidate(inputValue);
 
         if (result == null) {
-            result = this.mainProcess(configurationBo, inputValue);
+            result = this.mainProcess(beforeResult, inputValue);
         }
 
         return result;
@@ -62,11 +61,13 @@ public abstract class BaseCommandLineService implements CommandLineService {
     /**
      * 各コマンドライン処理をするサービスの主処理を実行します。
      *
+     * @param beforeResult 1つ前のサービスの処理結果
+     *
      * @param inputValue コマンドラインから入力された値
      *
      * @return コマンドラインの処理結果
      */
-    protected abstract CommandLineServiceResultBo mainProcess(ConfigurationBo configurationBo, InputValue inputValue);
+    protected abstract CommandLineServiceResultBo mainProcess(CommandLineServiceResultBo beforeResult, InputValue inputValue);
 
     private CommandLineServiceResultBo doValidate(InputValue inputValue) {
         try {

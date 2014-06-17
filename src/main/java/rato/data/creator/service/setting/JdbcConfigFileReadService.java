@@ -11,7 +11,6 @@ import java.util.ResourceBundle;
 import org.apache.commons.lang3.StringUtils;
 
 import rato.data.creator.bo.CommandLineServiceResultBo;
-import rato.data.creator.bo.ConfigurationBo;
 import rato.data.creator.bo.InputValue;
 import rato.data.creator.config.DataBaseConfig;
 import rato.data.creator.exception.RetryException;
@@ -84,15 +83,16 @@ public class JdbcConfigFileReadService extends BaseCommandLineService {
 
 	@Override
 	protected CommandLineServiceResultBo mainProcess(
-			ConfigurationBo configurationBo, InputValue inputValue) {
+			CommandLineServiceResultBo beforeResult, InputValue inputValue) {
 
 		String tagetPath = StringUtils.defaultIfBlank(inputValue.getValue(),
 				this.getDefaultPath());
 
-		configurationBo.setDataBaseConfig(new DataBaseConfig(
-				propertiesFileLoad(tagetPath)));
+		beforeResult.getConfigurationBo().setDataBaseConfig(
+				new DataBaseConfig(propertiesFileLoad(tagetPath)));
 
-		return new CommandLineServiceResultBo(configurationBo,
+		return new CommandLineServiceResultBo(
+				beforeResult.getConfigurationBo(),
 				new DistDirectoryPathInputServiceFactory());
 	}
 

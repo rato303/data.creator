@@ -37,7 +37,7 @@ public class CommandLineServiceResultBo implements Serializable {
 	 * コンストラクタ
 	 */
 	public CommandLineServiceResultBo() {
-		this(null, null, new ArrayList<TableInfo>(0));
+		this(new ConfigurationBo(), null, new ArrayList<TableInfo>(0));
 	}
 
 	/**
@@ -58,7 +58,7 @@ public class CommandLineServiceResultBo implements Serializable {
 	 */
 	public CommandLineServiceResultBo(
 			CommandLineServiceFactory<? extends CommandLineService> factory) {
-		this(null, factory, new ArrayList<TableInfo>(0));
+		this(new ConfigurationBo(), factory, new ArrayList<TableInfo>(0));
 	}
 
 	/**

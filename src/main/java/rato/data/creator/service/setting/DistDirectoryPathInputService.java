@@ -4,8 +4,8 @@ import java.io.File;
 import java.util.ResourceBundle;
 
 import rato.data.creator.bo.CommandLineServiceResultBo;
-import rato.data.creator.bo.ConfigurationBo;
 import rato.data.creator.bo.InputValue;
+import rato.data.creator.service.BaseCommandLineService;
 import rato.data.creator.service.factory.DistDirectoryPathInputServiceFactory;
 import rato.data.creator.service.factory.FindSelectTableInputServiceFactory;
 
@@ -16,7 +16,7 @@ import rato.data.creator.service.factory.FindSelectTableInputServiceFactory;
  *
  * @author toshiya
  */
-public class DistDirectoryPathInputService extends SettingCommandLineService {
+public class DistDirectoryPathInputService extends BaseCommandLineService {
 
 	@Override
 	protected String getQuestionMessage(ResourceBundle bundle) {
@@ -35,8 +35,8 @@ public class DistDirectoryPathInputService extends SettingCommandLineService {
 	 * 入力された出力先ディレクトリパスを設定情報に格納します。
 	 * </p>
 	 *
-	 * @param configurationBo
-	 *            アプリケーション設定情報
+	 * @param beforeResult
+	 *            TODO
 	 *
 	 * @param inputValue
 	 *            入力された出力先ディレクトリパス
@@ -44,18 +44,22 @@ public class DistDirectoryPathInputService extends SettingCommandLineService {
 	 * @return コマンドラインの処理結果
 	 */
 	@Override
-	protected CommandLineServiceResultBo configurationMainProcess(
-			ConfigurationBo configurationBo, InputValue inputValue) {
+	protected CommandLineServiceResultBo mainProcess(
+			CommandLineServiceResultBo beforeResult, InputValue inputValue) {
 
 		if (inputValue.isEmpty()) {
-			return new CommandLineServiceResultBo(configurationBo,
+			return new CommandLineServiceResultBo(
+					beforeResult.getConfigurationBo(),
 					new DistDirectoryPathInputServiceFactory());
 		}
 
 		this.createDistDirectory(inputValue.getValue());
-		configurationBo.setDistDirectoryPath(inputValue.getValue());
+		beforeResult.getConfigurationBo().setDistDirectoryPath(
+				inputValue.getValue());
 
-		return new CommandLineServiceResultBo(configurationBo, new FindSelectTableInputServiceFactory());
+		return new CommandLineServiceResultBo(
+				beforeResult.getConfigurationBo(),
+				new FindSelectTableInputServiceFactory());
 	}
 
 	/**
