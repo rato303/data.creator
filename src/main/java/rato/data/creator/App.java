@@ -15,40 +15,39 @@ import rato.data.creator.service.setting.JdbcConfigFileReadService;
  */
 public class App {
 
-    public static void main(String[] args) {
+	public static void main(String[] args) {
 
-        try {
-            ArgsReader reader = new ArgsReader(System.in);
+		try {
+			ArgsReader reader = new ArgsReader(System.in);
 
-            CommandLineService service = new JdbcConfigFileReadService();
-            CommandLineServiceResultBo result = null;
+			CommandLineService service = new JdbcConfigFileReadService();
+			CommandLineServiceResultBo result = null;
 
-            service.question();
+			service.question();
 
-            while (reader.readLine()) {
+			while (reader.readLine()) {
 
-                result = service.execute(reader.getInputValue());
+				result = service.execute(reader.getInputValue());
 
-                if (result.hasNotNextServiceFactory()) {
-                    break;
-                }
+				if (result.hasNotNextServiceFactory()) {
+					break;
+				}
 
-                service = result.getFactory().create();
+				service = result.getFactory().create();
 
-                service.question();
-                /*
-                 * 設問終了時に行をさらに追加するか、終了するかを聞く
-                 */
-            }
+				service.question();
 
-            reader.close();
-            System.out.println("\nPROGRAM END");
+			}
 
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.exit(-1);
-        }
+			reader.close();
 
-    }
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.exit(-1);
+		} finally {
+			System.out.println("\nPROGRAM END");
+		}
+
+	}
 
 }

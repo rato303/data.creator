@@ -1,22 +1,17 @@
 package rato.data.creator.service.setting;
 
-import static rato.data.creator.bo.DatabaseConnectionInfoBo.PROPERTY_KEY_JDBC_DRIVER_CLASS;
-import static rato.data.creator.bo.DatabaseConnectionInfoBo.PROPERTY_KEY_JDBC_PASSWORD;
-import static rato.data.creator.bo.DatabaseConnectionInfoBo.PROPERTY_KEY_JDBC_SCHEMA;
-import static rato.data.creator.bo.DatabaseConnectionInfoBo.PROPERTY_KEY_JDBC_URL;
-import static rato.data.creator.bo.DatabaseConnectionInfoBo.PROPERTY_KEY_JDBC_USER;
+import static rato.data.creator.config.DataBaseConfig.*;
+import static rato.data.creator.util.ResourceUtil.*;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.Properties;
 
 import org.apache.commons.lang3.StringUtils;
 
 import rato.data.creator.bo.CommandLineServiceResultBo;
 import rato.data.creator.bo.ConfigurationBo;
-import rato.data.creator.bo.DatabaseConnectionInfoBo;
 import rato.data.creator.bo.InputValue;
+import rato.data.creator.config.DataBaseConfig;
 import rato.data.creator.exception.RetryException;
 import rato.data.creator.service.factory.DistDirectoryPathInputServiceFactory;
 import rato.data.creator.service.factory.JdbcConfigFileReadServiceFactory;
@@ -65,7 +60,7 @@ public class JdbcConfigFileReadService extends SettingCommandLineService {
 			this.throwRetryException("error.jdbc.file.not.found");
 		}
 
-		Properties properties = this.propertiesFileLoad(jdbcConfigFile);
+		Properties properties = propertiesFileLoad(jdbcConfigFile);
 
 		if (StringUtils.isBlank(properties
 				.getProperty(PROPERTY_KEY_JDBC_DRIVER_CLASS))) {
@@ -98,9 +93,8 @@ public class JdbcConfigFileReadService extends SettingCommandLineService {
 	protected CommandLineServiceResultBo configurationMainProcess(
 			ConfigurationBo configurationBo, InputValue inputValue) {
 
-		configurationBo
-				.setDatabaseConnectionInfoBo(new DatabaseConnectionInfoBo(this
-						.propertiesFileLoad(new File(inputValue.getValue()))));
+		configurationBo.setDataBaseConfig(new DataBaseConfig(
+				propertiesFileLoad(inputValue.getValue())));
 
 		return new CommandLineServiceResultBo(
 				new DistDirectoryPathInputServiceFactory(configurationBo));
@@ -117,26 +111,6 @@ public class JdbcConfigFileReadService extends SettingCommandLineService {
 	private void throwRetryException(String messageKey) {
 		throw new RetryException(messageKey,
 				new JdbcConfigFileReadServiceFactory());
-	}
-
-	/**
-	 * <p>
-	 * Propertiesファイルを読み込みます。
-	 * </p>
-	 *
-	 * @param jdbcConfigFile
-	 *            データベース接続情報{@link File}
-	 *
-	 * @return 読み込んだPropertiesのインスタンス
-	 */
-	private Properties propertiesFileLoad(File jdbcConfigFile) {
-		Properties properties = new Properties();
-		try {
-			properties.load(new FileInputStream(jdbcConfigFile));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return properties;
 	}
 
 }
