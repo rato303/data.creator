@@ -13,6 +13,19 @@ mvn package appassembler:assemble assembly:assembly -DdescriptorId=bin
 	<name>data.creator</name>
 	<url>http://maven.apache.org</url>
 
+	<repositories>
+		<repository>
+			<id>maven.seasar.org</id>
+			<name>The Seasar Foundation Maven2 Repository</name>
+			<url>http://maven.seasar.org/maven2</url>
+		</repository>
+		<repository>
+			<id>maven.snapshot.seasar.org</id>
+			<name>The Seasar Foundation Maven2 Repository(snapshot)</name>
+			<url>http://maven.seasar.org/maven2-snapshot</url>
+		</repository>
+	</repositories>
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<jdk.version>1.7</jdk.version>
@@ -103,6 +116,12 @@ mvn package appassembler:assemble assembly:assembly -DdescriptorId=bin
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 			<version>3.3.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.seasar.doma</groupId>
+			<artifactId>doma</artifactId>
+			<version>1.35.0</version>
+			<type>jar</type>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
