@@ -4,7 +4,6 @@ import java.util.ResourceBundle;
 
 import rato.data.creator.bo.CommandLineServiceResultBo;
 import rato.data.creator.service.CommandLineService;
-import rato.data.creator.service.factory.CommandLineServiceFactory;
 
 /**
  * <p>
@@ -30,13 +29,13 @@ public class RetryException extends RuntimeException {
 	 * @param messageKey
 	 *            入力例外発生時に出力するメッセージのメッセージキー
 	 *
-	 * @param factory
+	 * @param beforeResult
 	 *            入力例外発生後に呼び出される{@link CommandLineService}を生成するファクトリ
 	 *
 	 */
 	public RetryException(String messageKey,
-			CommandLineServiceFactory<?> factory) {
-		this(messageKey, "message", factory);
+			CommandLineServiceResultBo beforeResult) {
+		this(messageKey, "message", beforeResult);
 	}
 
 	/**
@@ -48,15 +47,14 @@ public class RetryException extends RuntimeException {
 	 * @param paramString
 	 *            {@link ResourceBundle#getBundle(String)}に設定する値
 	 *
-	 * @param factory
+	 * @param beforeResult
 	 *            入力例外発生後に呼び出される{@link CommandLineService}を生成するファクトリ
 	 *
 	 */
 	public RetryException(String messageKey, String paramString,
-			CommandLineServiceFactory<?> factory) {
+			CommandLineServiceResultBo beforeResult) {
 		super();
-		this.commandLineServiceResultBo = new CommandLineServiceResultBo(
-				new CommandLineServiceResultBo(), factory);
+		this.commandLineServiceResultBo = beforeResult;
 		this.message = ResourceBundle.getBundle(paramString).getString(
 				messageKey);
 	}

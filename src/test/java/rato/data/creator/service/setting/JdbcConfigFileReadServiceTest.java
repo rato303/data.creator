@@ -52,7 +52,7 @@ public class JdbcConfigFileReadServiceTest {
 						new CommandLineServiceResultBo(),
 						new JdbcConfigFileReadServiceFactory())));
 
-		this.service.validateProcess(new InputValue(testConfFile
+		this.service.validateProcess(new CommandLineServiceResultBo(), new InputValue(testConfFile
 				.getAbsolutePath()));
 	}
 
@@ -66,7 +66,7 @@ public class JdbcConfigFileReadServiceTest {
 						new CommandLineServiceResultBo(),
 						new JdbcConfigFileReadServiceFactory())));
 
-		this.service.validateProcess(new InputValue(this.testFixtureResource
+		this.service.validateProcess(new CommandLineServiceResultBo(), new InputValue(this.testFixtureResource
 				.getTestFixtureResource("jdbc.properties")));
 	}
 
@@ -80,7 +80,7 @@ public class JdbcConfigFileReadServiceTest {
 						new CommandLineServiceResultBo(),
 						new JdbcConfigFileReadServiceFactory())));
 
-		this.service.validateProcess(new InputValue(this.testFixtureResource
+		this.service.validateProcess(new CommandLineServiceResultBo(), new InputValue(this.testFixtureResource
 				.getTestFixtureResource("jdbc.properties")));
 	}
 
@@ -93,7 +93,7 @@ public class JdbcConfigFileReadServiceTest {
 						new CommandLineServiceResultBo(),
 						new JdbcConfigFileReadServiceFactory())));
 
-		this.service.validateProcess(new InputValue(this.testFixtureResource
+		this.service.validateProcess(new CommandLineServiceResultBo(), new InputValue(this.testFixtureResource
 				.getTestFixtureResource("jdbc.properties")));
 	}
 
@@ -106,7 +106,7 @@ public class JdbcConfigFileReadServiceTest {
 						new CommandLineServiceResultBo(),
 						new JdbcConfigFileReadServiceFactory())));
 
-		this.service.validateProcess(new InputValue(this.testFixtureResource
+		this.service.validateProcess(new CommandLineServiceResultBo(), new InputValue(this.testFixtureResource
 				.getTestFixtureResource("jdbc.properties")));
 	}
 
@@ -120,7 +120,7 @@ public class JdbcConfigFileReadServiceTest {
 						new CommandLineServiceResultBo(),
 						new JdbcConfigFileReadServiceFactory())));
 
-		this.service.validateProcess(new InputValue(this.testFixtureResource
+		this.service.validateProcess(new CommandLineServiceResultBo(), new InputValue(this.testFixtureResource
 				.getTestFixtureResource("jdbc.properties")));
 	}
 
@@ -134,7 +134,7 @@ public class JdbcConfigFileReadServiceTest {
 						new CommandLineServiceResultBo(),
 						new JdbcConfigFileReadServiceFactory())));
 
-		this.service.validateProcess(new InputValue(this.testFixtureResource
+		this.service.validateProcess(new CommandLineServiceResultBo(), new InputValue(this.testFixtureResource
 				.getTestFixtureResource("jdbc.properties")));
 	}
 
@@ -147,7 +147,7 @@ public class JdbcConfigFileReadServiceTest {
 						new CommandLineServiceResultBo(),
 						new JdbcConfigFileReadServiceFactory())));
 
-		this.service.validateProcess(new InputValue(this.testFixtureResource
+		this.service.validateProcess(new CommandLineServiceResultBo(), new InputValue(this.testFixtureResource
 				.getTestFixtureResource("jdbc.properties")));
 	}
 
@@ -160,7 +160,7 @@ public class JdbcConfigFileReadServiceTest {
 						new CommandLineServiceResultBo(),
 						new JdbcConfigFileReadServiceFactory())));
 
-		this.service.validateProcess(new InputValue(this.testFixtureResource
+		this.service.validateProcess(new CommandLineServiceResultBo(), new InputValue(this.testFixtureResource
 				.getTestFixtureResource("jdbc.properties")));
 	}
 
@@ -174,7 +174,7 @@ public class JdbcConfigFileReadServiceTest {
 						new CommandLineServiceResultBo(),
 						new JdbcConfigFileReadServiceFactory())));
 
-		this.service.validateProcess(new InputValue(this.testFixtureResource
+		this.service.validateProcess(new CommandLineServiceResultBo(), new InputValue(this.testFixtureResource
 				.getTestFixtureResource("jdbc.properties")));
 	}
 
@@ -188,7 +188,7 @@ public class JdbcConfigFileReadServiceTest {
 						new CommandLineServiceResultBo(),
 						new JdbcConfigFileReadServiceFactory())));
 
-		this.service.validateProcess(new InputValue(this.testFixtureResource
+		this.service.validateProcess(new CommandLineServiceResultBo(), new InputValue(this.testFixtureResource
 				.getTestFixtureResource("jdbc.properties")));
 	}
 

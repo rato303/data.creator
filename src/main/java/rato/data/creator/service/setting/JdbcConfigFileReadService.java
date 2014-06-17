@@ -16,7 +16,6 @@ import rato.data.creator.config.DataBaseConfig;
 import rato.data.creator.exception.RetryException;
 import rato.data.creator.service.BaseCommandLineService;
 import rato.data.creator.service.factory.DistDirectoryPathInputServiceFactory;
-import rato.data.creator.service.factory.JdbcConfigFileReadServiceFactory;
 import rato.data.creator.util.ResourceUtil;
 
 /**
@@ -36,7 +35,8 @@ public class JdbcConfigFileReadService extends BaseCommandLineService {
 	}
 
 	@Override
-	protected void validateProcess(InputValue inputValue) {
+	protected void validateProcess(CommandLineServiceResultBo beforeResult,
+			InputValue inputValue) {
 
 		String tagetPath;
 
@@ -49,32 +49,33 @@ public class JdbcConfigFileReadService extends BaseCommandLineService {
 		File jdbcConfigFile = new File(tagetPath);
 
 		if (!jdbcConfigFile.exists()) {
-			this.throwRetryException("error.jdbc.file.not.found");
+			this.throwRetryException("error.jdbc.file.not.found", beforeResult);
 		}
 
 		Properties properties = propertiesFileLoad(jdbcConfigFile);
 
 		if (StringUtils.isBlank(properties
 				.getProperty(PROPERTY_KEY_JDBC_DRIVER_CLASS))) {
-			this.throwRetryException("error.jdbc.driver.class.name.empty");
+			this.throwRetryException("error.jdbc.driver.class.name.empty",
+					beforeResult);
 		}
 
 		if (StringUtils.isBlank(properties.getProperty(PROPERTY_KEY_JDBC_URL))) {
-			this.throwRetryException("error.jdbc.url.empty");
+			this.throwRetryException("error.jdbc.url.empty", beforeResult);
 		}
 
 		if (StringUtils.isBlank(properties
 				.getProperty(PROPERTY_KEY_JDBC_SCHEMA))) {
-			this.throwRetryException("error.jdbc.schema.empty");
+			this.throwRetryException("error.jdbc.schema.empty", beforeResult);
 		}
 
 		if (StringUtils.isBlank(properties.getProperty(PROPERTY_KEY_JDBC_USER))) {
-			this.throwRetryException("error.jdbc.user.empty");
+			this.throwRetryException("error.jdbc.user.empty", beforeResult);
 		}
 
 		if (StringUtils.isBlank(properties
 				.getProperty(PROPERTY_KEY_JDBC_PASSWORD))) {
-			this.throwRetryException("error.jdbc.password.empty");
+			this.throwRetryException("error.jdbc.password.empty", beforeResult);
 		}
 
 		// TODO jdbcドライバクラスが読み込めるかチェック
@@ -100,10 +101,12 @@ public class JdbcConfigFileReadService extends BaseCommandLineService {
 	 *
 	 * @param messageKey
 	 *            {@link RetryException}に設定するメッセージキー
+	 * @param beforeResult
+	 *            TODO
 	 */
-	private void throwRetryException(String messageKey) {
-		throw new RetryException(messageKey,
-				new JdbcConfigFileReadServiceFactory());
+	private void throwRetryException(String messageKey,
+			CommandLineServiceResultBo beforeResult) {
+		throw new RetryException(messageKey, beforeResult);
 	}
 
 	/**

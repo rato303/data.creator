@@ -33,7 +33,7 @@ public abstract class BaseCommandLineService implements CommandLineService {
             return new CommandLineServiceResultBo();
         }
 
-        result = this.doValidate(inputValue);
+        result = this.doValidate(beforeResult, inputValue);
 
         if (result == null) {
             result = this.mainProcess(beforeResult, inputValue);
@@ -54,9 +54,11 @@ public abstract class BaseCommandLineService implements CommandLineService {
     /**
      * 入力された値のチェックを行います。
      *
+     * @param beforeResult 1つ前のサービスの処理結果
+     *
      * @param inputValue 入力された値
      */
-    protected abstract void validateProcess(InputValue inputValue);
+    protected abstract void validateProcess(CommandLineServiceResultBo beforeResult, InputValue inputValue);
 
     /**
      * 各コマンドライン処理をするサービスの主処理を実行します。
@@ -69,9 +71,9 @@ public abstract class BaseCommandLineService implements CommandLineService {
      */
     protected abstract CommandLineServiceResultBo mainProcess(CommandLineServiceResultBo beforeResult, InputValue inputValue);
 
-    private CommandLineServiceResultBo doValidate(InputValue inputValue) {
+    private CommandLineServiceResultBo doValidate(CommandLineServiceResultBo beforeResult, InputValue inputValue) {
         try {
-            this.validateProcess(inputValue);
+            this.validateProcess(beforeResult, inputValue);
         } catch (RetryException e) {
             System.out.println(e.getMessage());
             return e.getCommandLineServiceResultBo();

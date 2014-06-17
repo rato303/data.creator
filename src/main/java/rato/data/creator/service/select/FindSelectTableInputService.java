@@ -32,7 +32,7 @@ public class FindSelectTableInputService extends BaseCommandLineService {
 	 * チェック処理はありません。
 	 */
 	@Override
-	protected void validateProcess(InputValue inputValue) {
+	protected void validateProcess(CommandLineServiceResultBo beforeResult, InputValue inputValue) {
 	}
 
 	@Override
@@ -45,6 +45,7 @@ public class FindSelectTableInputService extends BaseCommandLineService {
 				.selectByTableInfo(inputValue.getUpperValue());
 
 		if (tableInfos.size() == 0) {
+			// TODO 入力した名称のテーブルがありませんでした。入力しなおしてください。
 			return new CommandLineServiceResultBo(beforeResult);
 		}
 
