@@ -26,7 +26,7 @@ public class App {
 			CommandLineService service = new JdbcConfigFileReadService();
 			CommandLineServiceResultBo result = CommandLineServiceResultBo.create();
 
-			service.question();
+			service.question(result);
 
 			while (reader.readLine()) {
 
@@ -41,7 +41,10 @@ public class App {
 
 				service = result.getFactory().create();
 
-				service.question();
+				System.out.println("");
+				System.out.println("");
+
+				service.question(result);
 
 			}
 
@@ -51,7 +54,7 @@ public class App {
 			e.printStackTrace();
 			System.exit(-1);
 		} finally {
-			if (dataBaseConfig.getDataSource() != null) {// メソッド化
+			if (dataBaseConfig.getDataSource() != null) {// TODO メソッド化
 				dataBaseConfig.getLocalTransaction().rollback();
 				System.out.println("トランザクションをロールバックしました。");
 			}

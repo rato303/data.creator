@@ -12,8 +12,10 @@ public interface CommandLineService {
 
     /**
      * コマンドライン処理の質問を出力します。
+     *
+     * @param beforeResult 1つ前のサービスの処理結果
      */
-    void question();
+    void question(CommandLineServiceResultBo beforeResult);
 
     /**
      * コマンドライン処理を実行します。

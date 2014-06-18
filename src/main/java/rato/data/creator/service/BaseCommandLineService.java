@@ -17,9 +17,9 @@ public abstract class BaseCommandLineService implements CommandLineService {
      * @see rato.data.creator.service.CommandLineService#question()
      */
     @Override
-    public final void question() {
+    public final void question(CommandLineServiceResultBo beforeResult) {
         ResourceBundle bundle = ResourceBundle.getBundle("message");
-        System.out.println(this.getQuestionMessage(bundle));
+        System.out.println(this.getQuestionMessage(beforeResult, bundle));
     }
 
     /* (non-Javadoc)
@@ -45,11 +45,13 @@ public abstract class BaseCommandLineService implements CommandLineService {
     /**
      * 各コマンドライン処理のメッセージキーを取得します。
      *
+     * @param beforeResult 1つ前のサービスの処理結果
+     *
      * @param bundle メッセージ取得用リソース
      *
      * @return 各コマンドライン処理のメッセージキー
      */
-    protected abstract String getQuestionMessage(ResourceBundle bundle);
+    protected abstract String getQuestionMessage(CommandLineServiceResultBo beforeResult, ResourceBundle bundle);
 
     /**
      * 入力された値のチェックを行います。

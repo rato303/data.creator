@@ -14,6 +14,7 @@ import rato.data.creator.entity.ColumnInfo;
 import rato.data.creator.entity.TableInfo;
 import rato.data.creator.exception.RetryException;
 import rato.data.creator.service.BaseCommandLineService;
+import rato.data.creator.service.factory.ColumnValueInputServiceFactory;
 
 /**
  * <p>
@@ -28,7 +29,8 @@ public class SelectTableInputService extends BaseCommandLineService {
 	private TableInfoDao tableInfoDao;
 
 	@Override
-	protected String getQuestionMessage(ResourceBundle bundle) {
+	protected String getQuestionMessage(
+			CommandLineServiceResultBo beforeResult, ResourceBundle bundle) {
 		return bundle.getString("question.table.index");
 	}
 
@@ -71,8 +73,9 @@ public class SelectTableInputService extends BaseCommandLineService {
 
 		this.deleteChildTableData(chosenTable.tableName);
 
-		return CommandLineServiceResultBo.create(beforeResult).setColumnsInfos(
-				columnInfos);
+		return CommandLineServiceResultBo.create(beforeResult)
+				.setFactory(new ColumnValueInputServiceFactory())
+				.setColumnsInfos(columnInfos);
 	}
 
 	/**

@@ -25,7 +25,7 @@ public class FindTableInputService extends BaseCommandLineService {
 	private TableInfoDao tableInfoDao;
 
 	@Override
-	protected String getQuestionMessage(ResourceBundle bundle) {
+	protected String getQuestionMessage(CommandLineServiceResultBo beforeResult,ResourceBundle bundle) {
 		return bundle.getString("question.find.table.name");
 	}
 

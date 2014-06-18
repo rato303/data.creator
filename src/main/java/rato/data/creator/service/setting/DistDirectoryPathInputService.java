@@ -18,7 +18,7 @@ import rato.data.creator.service.factory.FindTableInputServiceFactory;
 public class DistDirectoryPathInputService extends BaseCommandLineService {
 
 	@Override
-	protected String getQuestionMessage(ResourceBundle bundle) {
+	protected String getQuestionMessage(CommandLineServiceResultBo beforeResult,ResourceBundle bundle) {
 		return bundle.getString("question.dist.dir");
 	}
 

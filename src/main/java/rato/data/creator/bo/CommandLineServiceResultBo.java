@@ -41,8 +41,13 @@ public class CommandLineServiceResultBo implements Serializable {
 	/** カラム情報 */
 	private List<ColumnInfo> columnInfos;
 
+	/** 読み込み中のカラムのインデックス */
+	private int columnIndex;
+
 	/**
+	 * <p>
 	 * コンストラクタ
+	 * </p>
 	 */
 	private CommandLineServiceResultBo() {
 		this.factory = null;
@@ -50,43 +55,125 @@ public class CommandLineServiceResultBo implements Serializable {
 		this.dataBaseConfig = new DataBaseConfig();
 		this.tableInfos = new ArrayList<TableInfo>(0);
 		this.columnInfos = new ArrayList<ColumnInfo>(0);
+		this.columnIndex = 0;
 	}
 
+	/**
+	 * <p>
+	 * コマンドライン処理をするサービスの処理結果のインスタンスを生成します。
+	 * </p>
+	 *
+	 * @return コマンドライン処理をするサービスの処理結果のインスタンス
+	 */
 	public static CommandLineServiceResultBo create() {
 		return new CommandLineServiceResultBo();
 	}
 
-	public static CommandLineServiceResultBo create(CommandLineServiceResultBo beforeResult) {
+	/**
+	 * <p>
+	 * 引数で渡された処理結果の内容を引き継いだインスタンスを生成します。
+	 * </p>
+	 *
+	 * @param beforeResult
+	 *            引き継ぎ対象の処理結果
+	 *
+	 * @return 引数で渡された処理結果の内容を引き継いだインスタンス
+	 */
+	public static CommandLineServiceResultBo create(
+			CommandLineServiceResultBo beforeResult) {
 		CommandLineServiceResultBo instance = create();
 		instance.factory = beforeResult.factory;
 		instance.configurationBo = beforeResult.configurationBo;
 		instance.dataBaseConfig = beforeResult.dataBaseConfig;
 		instance.tableInfos = beforeResult.tableInfos;
 		instance.columnInfos = beforeResult.columnInfos;
+		instance.columnIndex = beforeResult.columnIndex;
 		return instance;
 	}
 
-	public CommandLineServiceResultBo setFactory(CommandLineServiceFactory<? extends CommandLineService> factory) {
+	/**
+	 * <p>
+	 * 次のコマンドライン処理をするサービスのファクトリを設定したインスタンスを取得します。
+	 * </p>
+	 *
+	 * @param factory
+	 *            次のコマンドライン処理をするサービスのファクトリ
+	 *
+	 * @return 次のコマンドライン処理をするサービスのファクトリを設定したインスタンス
+	 */
+	public CommandLineServiceResultBo setFactory(
+			CommandLineServiceFactory<? extends CommandLineService> factory) {
 		this.factory = factory;
 		return this;
 	}
 
-	public CommandLineServiceResultBo setDatabaseConfig(DataBaseConfig dataBaseConfig) {
+	/**
+	 * <p>
+	 * データベース接続情報を設定したインスタンスを取得します。
+	 * </p>
+	 *
+	 * @param dataBaseConfig
+	 *            データベース接続情報
+	 * @return データベース接続情報を設定したインスタンス
+	 */
+	public CommandLineServiceResultBo setDatabaseConfig(
+			DataBaseConfig dataBaseConfig) {
 		this.dataBaseConfig = dataBaseConfig;
 		return this;
 	}
 
+	/**
+	 * <p>
+	 * テーブル情報検索結果を設定したインスタンスを取得します。
+	 * </p>
+	 *
+	 * @param tableInfos
+	 *            テーブル情報検索結果
+	 *
+	 * @return テーブル情報検索結果を設定したインスタンス
+	 */
 	public CommandLineServiceResultBo setTableInfos(List<TableInfo> tableInfos) {
 		this.tableInfos = tableInfos;
 		return this;
 	}
 
-	public CommandLineServiceResultBo setColumnsInfos(List<ColumnInfo> columnInfos) {
+	/**
+	 * <p>
+	 * カラム情報を設定したインスタンスを取得します。
+	 * </p>
+	 *
+	 * @param columnInfos
+	 *            カラム情報
+	 * @return カラム情報を設定したインスタンス
+	 */
+	public CommandLineServiceResultBo setColumnsInfos(
+			List<ColumnInfo> columnInfos) {
 		this.columnInfos = columnInfos;
 		return this;
 	}
 
-	// TODO メソッドチェーン式に変更する？
+	/**
+	 * <p>
+	 * 読み込み中のカラムのインデックスを増加します。
+	 * </p>
+	 *
+	 * @return 読み込み中のカラムのインデックスを増加したインスタンス
+	 */
+	public CommandLineServiceResultBo addColumnIndex() {
+		this.columnIndex++;
+		return this;
+	}
+
+	/**
+	 * <p>
+	 * 読み込み中のカラム情報を取得します。
+	 * </p>
+	 *
+	 * @return 読み込み中のカラム情報
+	 */
+	public ColumnInfo getReadingColumnInfo() throws IndexOutOfBoundsException {
+		return this.columnInfos.get(columnIndex);
+	}
 
 	/**
 	 * 次のコマンドライン処理をするサービスのファクトリを取得します。
@@ -104,26 +191,6 @@ public class CommandLineServiceResultBo implements Serializable {
 	 */
 	public boolean hasNotNextServiceFactory() {
 		return this.factory == null;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	@Override
-	public boolean equals(Object paramObject) {
-		return EqualsBuilder.reflectionEquals(this, paramObject);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see java.lang.Object#hashCode()
-	 */
-	@Override
-	public int hashCode() {
-		return HashCodeBuilder.reflectionHashCode(this);
 	}
 
 	/**
@@ -155,10 +222,40 @@ public class CommandLineServiceResultBo implements Serializable {
 
 	/**
 	 * カラム情報を取得します。
+	 *
 	 * @return カラム情報
 	 */
 	public List<ColumnInfo> getColumnInfos() {
-	    return columnInfos;
+		return columnInfos;
+	}
+
+	/**
+	 * 読み込み中のカラムのインデックスを取得します。
+	 *
+	 * @return 読み込み中のカラムのインデックス
+	 */
+	public int getColumnIndex() {
+		return columnIndex;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object paramObject) {
+		return EqualsBuilder.reflectionEquals(this, paramObject);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		return HashCodeBuilder.reflectionHashCode(this);
 	}
 
 }
