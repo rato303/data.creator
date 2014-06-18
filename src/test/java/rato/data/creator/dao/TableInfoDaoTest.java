@@ -61,5 +61,11 @@ public class TableInfoDaoTest {
 		}
 		// TODO テスト用のddlを作成
 	}
+	
+	@Test
+	public void testDelete() {
+		String parameter = "M_CD";
+		System.out.println(this.tableInfoDao.delete(parameter));
+	}
 
 }
