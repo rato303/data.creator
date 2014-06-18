@@ -6,7 +6,7 @@ import java.util.ResourceBundle;
 import rato.data.creator.bo.CommandLineServiceResultBo;
 import rato.data.creator.bo.InputValue;
 import rato.data.creator.service.BaseCommandLineService;
-import rato.data.creator.service.factory.FindSelectTableInputServiceFactory;
+import rato.data.creator.service.factory.FindTableInputServiceFactory;
 
 /**
  * <p>
@@ -55,7 +55,7 @@ public class DistDirectoryPathInputService extends BaseCommandLineService {
 				inputValue.getValue());
 
 		return new CommandLineServiceResultBo(beforeResult,
-				new FindSelectTableInputServiceFactory());
+				new FindTableInputServiceFactory());
 	}
 
 	/**

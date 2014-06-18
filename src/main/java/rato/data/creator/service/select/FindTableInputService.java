@@ -12,13 +12,13 @@ import rato.data.creator.service.BaseCommandLineService;
 
 /**
  * <p>
- * データを生成するテーブル名を検索します。
+ * テーブルを検索するサービスです。
  * </p>
  *
  * @author toshiya
  *
  */
-public class FindSelectTableInputService extends BaseCommandLineService {
+public class FindTableInputService extends BaseCommandLineService {
 
 	/** テーブル情報Dao */
 	private TableInfoDao tableInfoDao;
@@ -32,7 +32,8 @@ public class FindSelectTableInputService extends BaseCommandLineService {
 	 * チェック処理はありません。
 	 */
 	@Override
-	protected void validateProcess(CommandLineServiceResultBo beforeResult, InputValue inputValue) {
+	protected void validateProcess(CommandLineServiceResultBo beforeResult,
+			InputValue inputValue) {
 	}
 
 	@Override

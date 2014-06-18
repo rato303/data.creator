@@ -3,14 +3,14 @@ package rato.data.creator.service.factory;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import rato.data.creator.service.select.FindSelectTableInputService;
+import rato.data.creator.service.select.FindTableInputService;
 
-public class FindSelectTableInputServiceFactory implements
-		CommandLineServiceFactory<FindSelectTableInputService> {
+public class FindTableInputServiceFactory implements
+		CommandLineServiceFactory<FindTableInputService> {
 
 	@Override
-	public FindSelectTableInputService create() {
-		return new FindSelectTableInputService();
+	public FindTableInputService create() {
+		return new FindTableInputService();
 	}
 
 	/*
