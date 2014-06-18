@@ -1,7 +1,11 @@
 package rato.data.creator.service.setting;
 
-import static rato.data.creator.config.DataBaseConfig.*;
-import static rato.data.creator.util.ResourceUtil.*;
+import static rato.data.creator.config.DataBaseConfig.PROPERTY_KEY_JDBC_DRIVER_CLASS;
+import static rato.data.creator.config.DataBaseConfig.PROPERTY_KEY_JDBC_PASSWORD;
+import static rato.data.creator.config.DataBaseConfig.PROPERTY_KEY_JDBC_SCHEMA;
+import static rato.data.creator.config.DataBaseConfig.PROPERTY_KEY_JDBC_URL;
+import static rato.data.creator.config.DataBaseConfig.PROPERTY_KEY_JDBC_USER;
+import static rato.data.creator.util.ResourceUtil.propertiesFileLoad;
 
 import java.io.File;
 import java.text.MessageFormat;
@@ -115,7 +119,7 @@ public class JdbcConfigFileReadService extends BaseCommandLineService {
 	 * @return データベース接続情報ファイルのデフォルトパス
 	 */
 	private String getDefaultPath() {
-		return ResourceUtil.getExecutePath("config", "jdbc.properties");
+		return ResourceUtil.getExecutePath("..", "config", "jdbc.properties");
 	}
 
 }

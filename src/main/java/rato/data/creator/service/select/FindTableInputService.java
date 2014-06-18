@@ -9,6 +9,7 @@ import rato.data.creator.dao.TableInfoDao;
 import rato.data.creator.dao.impl.TableInfoDaoImpl;
 import rato.data.creator.entity.TableInfo;
 import rato.data.creator.service.BaseCommandLineService;
+import rato.data.creator.service.factory.SelectTableInputServiceFactory;
 
 /**
  * <p>
@@ -55,7 +56,7 @@ public class FindTableInputService extends BaseCommandLineService {
 			System.out.println(i + ":" + tableInfo.tableName);
 		}
 
-		return new CommandLineServiceResultBo(beforeResult, tableInfos);
+		return new CommandLineServiceResultBo(beforeResult, new SelectTableInputServiceFactory(), tableInfos);
 	}
 
 }

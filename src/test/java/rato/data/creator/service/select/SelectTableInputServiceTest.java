@@ -187,7 +187,7 @@ public class SelectTableInputServiceTest {
 		CommandLineServiceResultBo beforeResult = new CommandLineServiceResultBo();
 		beforeResult = new CommandLineServiceResultBo(beforeResult,
 				new SelectTableInputServiceFactory());
-		beforeResult = new CommandLineServiceResultBo(beforeResult, tableInfos);
+		beforeResult = new CommandLineServiceResultBo(beforeResult, new SelectTableInputServiceFactory(), tableInfos);
 
 		return beforeResult;
 	}

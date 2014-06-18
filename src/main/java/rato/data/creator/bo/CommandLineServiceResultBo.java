@@ -80,8 +80,8 @@ public class CommandLineServiceResultBo implements Serializable {
 	}
 
 	// TODO JavaDocコメント
-	public CommandLineServiceResultBo(CommandLineServiceResultBo beforeResult, List<TableInfo> tableInfos) {
-		this(beforeResult);
+	public CommandLineServiceResultBo(CommandLineServiceResultBo beforeResult, CommandLineServiceFactory<? extends CommandLineService> factory, List<TableInfo> tableInfos) {
+		this(beforeResult, factory);
 		this.tableInfos = tableInfos;
 	}
 
@@ -90,6 +90,8 @@ public class CommandLineServiceResultBo implements Serializable {
 		this(beforeResult);
 		this.columnInfos = columnInfos;
 	}
+
+	// TODO メソッドチェーン式に変更する？
 
 	/**
 	 * 次のコマンドライン処理をするサービスのファクトリを取得します。
