@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><templates><template autoinsert="false" context="java-members" deleted="false" description="テスト・メソッド (JUnit 4)" enabled="true" id="org.eclipse.jdt.ui.templates.test_junit4" name="test">@${testType:newType(org.junit.Test)}
+public void ${testName}() throws Exception {
+	// SetUp
+
+	// Exercice
+
+	// Verify
+	fail("まだ実装されていません");
+	${staticImport:importStatic('org.junit.Assert.*')}${cursor}
+}</template></templates>
