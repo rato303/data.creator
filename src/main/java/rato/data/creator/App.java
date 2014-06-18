@@ -51,7 +51,7 @@ public class App {
 			e.printStackTrace();
 			System.exit(-1);
 		} finally {
-			if (dataBaseConfig != null) {// メソッド化
+			if (dataBaseConfig.getDataSource() != null) {// メソッド化
 				dataBaseConfig.getLocalTransaction().rollback();
 				System.out.println("トランザクションをロールバックしました。");
 			}

@@ -20,6 +20,7 @@ import rato.data.creator.config.DataBaseConfig;
 import rato.data.creator.exception.RetryException;
 import rato.data.creator.service.BaseCommandLineService;
 import rato.data.creator.service.factory.DistDirectoryPathInputServiceFactory;
+import rato.data.creator.service.factory.JdbcConfigFileReadServiceFactory;
 import rato.data.creator.util.ResourceUtil;
 
 /**
@@ -112,7 +113,8 @@ public class JdbcConfigFileReadService extends BaseCommandLineService {
 	 */
 	private void throwRetryException(String messageKey,
 			CommandLineServiceResultBo beforeResult) {
-		throw new RetryException(messageKey, beforeResult);
+		throw new RetryException(messageKey,
+				beforeResult.setFactory(new JdbcConfigFileReadServiceFactory()));
 	}
 
 	/**

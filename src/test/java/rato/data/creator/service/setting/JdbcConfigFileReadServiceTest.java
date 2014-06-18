@@ -97,10 +97,6 @@ public class JdbcConfigFileReadServiceTest {
 					.expectMessage("指定されたデータベース接続定義ファイルにはjdbc.driver.classが設定されていません。");
 
 			// Exercice
-			// this.service.validateProcess(
-			// this.beforeResult,
-			// new InputValue(this.testFixtureResource
-			// .getTestFixtureResource("jdbc.properties")));
 			this.service.validateProcess(this.beforeResult, this.inputValue);
 
 			// Verify
@@ -111,11 +107,14 @@ public class JdbcConfigFileReadServiceTest {
 		public void testExecuteJdbcDriverClassNameが設定されていない場合再実行用の結果が取得できる事()
 				throws Exception {
 			// SetUp
+			this.thrown
+					.expectMessage("指定されたデータベース接続定義ファイルにはjdbc.driver.classが設定されていません。");
 
 			// Exercice
+			CommandLineServiceResultBo actual = this.service.execute(this.beforeResult, this.inputValue);
 
 			// Verify
-			fail("まだ実装されていません");
+			assertThat(actual, is(this.beforeResult));
 		}
 
 		@Test
