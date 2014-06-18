@@ -63,9 +63,9 @@ public class DistDirectoryPathInputServiceTest {
 	@Before
 	public void setUp() {
 		this.service = new DistDirectoryPathInputService();
-		this.beforeCommandLineServiceResultBo = new CommandLineServiceResultBo(
-				new CommandLineServiceResultBo(),
-				new DistDirectoryPathInputServiceFactory());
+		this.beforeCommandLineServiceResultBo = CommandLineServiceResultBo
+				.create()
+				.setFactory(new DistDirectoryPathInputServiceFactory());
 	}
 
 	@Test

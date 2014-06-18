@@ -30,7 +30,7 @@ public abstract class BaseCommandLineService implements CommandLineService {
         CommandLineServiceResultBo result;
 
         if ("q".equals(inputValue.getValue())) {    // TODO 列挙型にする
-            return new CommandLineServiceResultBo();
+            return CommandLineServiceResultBo.create();
         }
 
         result = this.doValidate(beforeResult, inputValue);

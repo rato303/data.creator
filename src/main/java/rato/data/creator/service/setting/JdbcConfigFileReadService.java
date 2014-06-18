@@ -93,9 +93,11 @@ public class JdbcConfigFileReadService extends BaseCommandLineService {
 		String tagetPath = StringUtils.defaultIfBlank(inputValue.getValue(),
 				this.getDefaultPath());
 
-		return new CommandLineServiceResultBo(beforeResult,
-				new DistDirectoryPathInputServiceFactory(), new DataBaseConfig(
-						propertiesFileLoad(tagetPath)));
+		return CommandLineServiceResultBo
+				.create(beforeResult)
+				.setFactory(new DistDirectoryPathInputServiceFactory())
+				.setDatabaseConfig(
+						new DataBaseConfig(propertiesFileLoad(tagetPath)));
 	}
 
 	/**

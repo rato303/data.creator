@@ -1,238 +1,414 @@
 package rato.data.creator.service.setting;
 
-import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.fail;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Properties;
 
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.experimental.runners.Enclosed;
 import org.junit.rules.ExpectedException;
 import org.junit.rules.TemporaryFolder;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 
 import rato.data.creator.bo.CommandLineServiceResultBo;
 import rato.data.creator.bo.InputValue;
 import rato.data.creator.exception.RetryException;
-import rato.data.creator.matcher.RetryExceptionMatcher;
 import rato.data.creator.rules.TestFixtureResource;
 import rato.data.creator.service.factory.DistDirectoryPathInputServiceFactory;
-import rato.data.creator.service.factory.JdbcConfigFileReadServiceFactory;
 
+@RunWith(Enclosed.class)
 public class JdbcConfigFileReadServiceTest {
 
-	private JdbcConfigFileReadService service;
+	@RunWith(JUnit4.class)
+	public static class データベース接続定義ファイルが存在しない場合のテスト {
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
+		private JdbcConfigFileReadService service;
 
-	@Rule
-	public TemporaryFolder folder = new TemporaryFolder();
+		private CommandLineServiceResultBo beforeResult;
 
-	@Rule
-	public TestFixtureResource testFixtureResource = new TestFixtureResource();
+		@Rule
+		public ExpectedException thrown = ExpectedException.none();
 
-	@Before
-	public void before() {
-		this.service = new JdbcConfigFileReadService();
+		@Rule
+		public TemporaryFolder folder = new TemporaryFolder();
+
+		@Before
+		public void setUp() {
+			this.service = new JdbcConfigFileReadService();
+			this.beforeResult = CommandLineServiceResultBo.create();
+		}
+
+		@Test
+		public void testValidateProcess継続可能例外が発行される事() throws Exception {
+			// SetUp
+			this.thrown.expect(RetryException.class);
+			this.thrown.expectMessage("データベース接続定義ファイルが見つかりませんでした。");
+
+			File testDir = folder.newFolder("unknown");
+			File testConfFile = new File(testDir.getAbsolutePath()
+					+ System.getProperty("file.separator") + "jdbc.properties");
+
+			// Exercice
+			this.service.validateProcess(this.beforeResult, new InputValue(
+					testConfFile.getAbsolutePath()));
+
+			// Verify
+		}
+
 	}
 
-	@Test
-	public void test設定ファイルが存在しない場合() throws IOException {
-		File testDir = folder.newFolder("unknown");
-		File testConfFile = new File(testDir.getAbsolutePath()
-				+ System.getProperty("file.separator") + "jdbc.properties");
+	@RunWith(JUnit4.class)
+	public static class データベース接続定義ファイルの記述が誤っている場合のテスト {
 
-		this.thrown.expect(RetryException.class);
-		this.thrown.expectMessage("データベース接続定義ファイルが見つかりませんでした。");
-		this.thrown.expect(new RetryExceptionMatcher(
-				new CommandLineServiceResultBo(
-						new CommandLineServiceResultBo(),
-						new JdbcConfigFileReadServiceFactory())));
+		private JdbcConfigFileReadService service;
 
-		this.service.validateProcess(new CommandLineServiceResultBo(), new InputValue(testConfFile
-				.getAbsolutePath()));
+		private CommandLineServiceResultBo beforeResult;
+
+		private InputValue inputValue;
+
+		@Rule
+		public ExpectedException thrown = ExpectedException.none();
+
+		@Rule
+		public TestFixtureResource testFixtureResource = new TestFixtureResource();
+
+		@Before
+		public void setUp() {
+			this.service = new JdbcConfigFileReadService();
+			this.beforeResult = CommandLineServiceResultBo.create();
+			this.thrown.expect(RetryException.class);
+			this.inputValue = new InputValue(
+					this.testFixtureResource
+							.getTestFixtureResource("jdbc.properties"));
+		}
+
+		@Test
+		public void testValidateProcessJdbcDriverClassNameが設定されていない場合継続可能例外が発行される事()
+				throws Exception {
+			// SetUp
+			this.thrown
+					.expectMessage("指定されたデータベース接続定義ファイルにはjdbc.driver.classが設定されていません。");
+
+			// Exercice
+			// this.service.validateProcess(
+			// this.beforeResult,
+			// new InputValue(this.testFixtureResource
+			// .getTestFixtureResource("jdbc.properties")));
+			this.service.validateProcess(this.beforeResult, this.inputValue);
+
+			// Verify
+		}
+
+		@Test
+		@Ignore
+		public void testExecuteJdbcDriverClassNameが設定されていない場合再実行用の結果が取得できる事()
+				throws Exception {
+			// SetUp
+
+			// Exercice
+
+			// Verify
+			fail("まだ実装されていません");
+		}
+
+		@Test
+		public void testValidateProcessJdbcDriverClassNameが記述されていない場合継続可能例外が発行される事() {
+			// SetUp
+			this.thrown
+					.expectMessage("指定されたデータベース接続定義ファイルにはjdbc.driver.classが設定されていません。");
+
+			// Exercice
+			this.service.validateProcess(this.beforeResult, this.inputValue);
+
+			// Verify
+		}
+
+		@Test
+		@Ignore
+		public void testExecuteJdbcDriverClassNameが記述されていない場合再実行用の結果が取得できる事()
+				throws Exception {
+			// SetUp
+
+			// Exercice
+
+			// Verify
+			fail("まだ実装されていません");
+		}
+
+		@Test
+		public void testValidateProcessJdbcUrlが設定されていない場合継続可能例外が発行される事() {
+			// SetUp
+			this.thrown
+					.expectMessage("指定されたデータベース接続定義ファイルにはjdbc.urlが設定されていません。");
+
+			// Exercice
+			this.service.validateProcess(this.beforeResult, this.inputValue);
+
+			// Verify
+		}
+
+		@Test
+		@Ignore
+		public void testExecuteJdbcUrlが設定されていない場合再実行用の結果が取得できる事()
+				throws Exception {
+			// SetUp
+
+			// Exercice
+
+			// Verify
+			fail("まだ実装されていません");
+		}
+
+		@Test
+		public void testValidateProcessJdbcUrlが記述されていない場合継続可能例外が発行される事() {
+			// SetUp
+			this.thrown
+					.expectMessage("指定されたデータベース接続定義ファイルにはjdbc.urlが設定されていません。");
+
+			// Exercice
+			this.service.validateProcess(this.beforeResult, this.inputValue);
+
+			// Verify
+		}
+
+		@Test
+		@Ignore
+		public void testExecuteJdbcUrlが記述されていない場合再実行用の結果が取得できる事()
+				throws Exception {
+			// SetUp
+
+			// Exercice
+
+			// Verify
+			fail("まだ実装されていません");
+		}
+
+		@Test
+		public void testValidateProcessスキーマ名が設定されていない場合継続可能例外が発行される事() {
+			// SetUp
+			this.thrown
+					.expectMessage("指定されたデータベース接続定義ファイルにはjdbc.schemaが設定されていません。");
+
+			// Exercice
+			this.service.validateProcess(this.beforeResult, this.inputValue);
+
+			// Verify
+		}
+
+		@Test
+		@Ignore
+		public void testExecuteスキーマ名が設定されていない場合再実行用の結果が取得できる事()
+				throws Exception {
+			// SetUp
+
+			// Exercice
+
+			// Verify
+			fail("まだ実装されていません");
+		}
+
+		@Test
+		public void testValidateProcessスキーマ名が記述されていない場合継続可能例外が発行される事() {
+			// SetUp
+			this.thrown
+					.expectMessage("指定されたデータベース接続定義ファイルにはjdbc.schemaが設定されていません。");
+
+			// Exercice
+			this.service.validateProcess(this.beforeResult, this.inputValue);
+
+			// Verify
+		}
+
+		@Test
+		@Ignore
+		public void testExecuteスキーマ名が記述されていない場合再実行用の結果が取得できる事()
+				throws Exception {
+			// SetUp
+
+			// Exercice
+
+			// Verify
+			fail("まだ実装されていません");
+		}
+
+		@Test
+		public void testValidateProcessユーザー名が設定されていない場合継続可能例外が発行される事() {
+			// SetUp
+			this.thrown
+					.expectMessage("指定されたデータベース接続定義ファイルにはjdbc.userが設定されていません。");
+
+			// Exercice
+			this.service.validateProcess(this.beforeResult, this.inputValue);
+
+			// Verify
+		}
+
+		@Test
+		@Ignore
+		public void testExecuteユーザー名が設定されていない場合再実行用の結果が取得できる事()
+				throws Exception {
+			// SetUp
+
+			// Exercice
+
+			// Verify
+			fail("まだ実装されていません");
+		}
+
+		@Test
+		public void testValidateProcessユーザー名が記述されていない場合継続可能例外が発行される事() {
+			// SetUp
+			this.thrown
+					.expectMessage("指定されたデータベース接続定義ファイルにはjdbc.userが設定されていません。");
+
+			// Exercice
+			this.service.validateProcess(this.beforeResult, this.inputValue);
+
+			// Verify
+		}
+
+		@Test
+		@Ignore
+		public void testExecuteユーザー名が記述されていない場合再実行用の結果が取得できる事()
+				throws Exception {
+			// SetUp
+
+			// Exercice
+
+			// Verify
+			fail("まだ実装されていません");
+		}
+
+		@Test
+		public void testValidateProcessパスワードが設定されていない場合継続可能例外が発行される事() {
+			// SetUp
+			this.thrown
+					.expectMessage("指定されたデータベース接続定義ファイルにはjdbc.passwordが設定されていません。");
+
+			// Exercice
+			this.service.validateProcess(this.beforeResult, this.inputValue);
+
+			// Verify
+		}
+
+		@Test
+		@Ignore
+		public void testExecuteパスワードが設定されていない場合再実行用の結果が取得できる事()
+				throws Exception {
+			// SetUp
+
+			// Exercice
+
+			// Verify
+			fail("まだ実装されていません");
+		}
+
+		@Test
+		public void testValidateProcessパスワードが記述されていない場合継続可能例外が発行される事() {
+			// SetUp
+			this.thrown
+					.expectMessage("指定されたデータベース接続定義ファイルにはjdbc.passwordが設定されていません。");
+
+			// Exercice
+			this.service.validateProcess(this.beforeResult, this.inputValue);
+
+			// Verify
+		}
+
+		@Test
+		@Ignore
+		public void testExecuteパスワードが記述されていない場合再実行用の結果が取得できる事()
+				throws Exception {
+			// SetUp
+
+			// Exercice
+
+			// Verify
+			fail("まだ実装されていません");
+		}
+
+		@Test
+		@Ignore
+		public void 設定ファイルに記述されているJDBCDriverClassNameが読み込めない場合()
+				throws Exception {
+			// SetUp
+
+			// Exercice
+
+			// Verify
+			fail("まだ実装されていません");
+		}
+
+		@Test
+		@Ignore
+		public void 設定ファイルに記述されている情報でデータベースに接続できない場合() throws Exception {
+			// SetUp
+
+			// Exercice
+
+			// Verify
+			fail("まだ実装されていません");
+
+		}
+
 	}
 
-	@Test
-	public void test設定ファイルにjdbcDriverClassNameが設定されていない場合() {
-		this.thrown.expect(RetryException.class);
-		this.thrown
-				.expectMessage("指定されたデータベース接続定義ファイルにはjdbc.driver.classが設定されていません。");
-		this.thrown.expect(new RetryExceptionMatcher(
-				new CommandLineServiceResultBo(
-						new CommandLineServiceResultBo(),
-						new JdbcConfigFileReadServiceFactory())));
+	@RunWith(JUnit4.class)
+	public static class データベース接続定義ファイルが正しく記述されていた場合のテスト {
 
-		this.service.validateProcess(new CommandLineServiceResultBo(), new InputValue(this.testFixtureResource
-				.getTestFixtureResource("jdbc.properties")));
-	}
+		private JdbcConfigFileReadService service;
 
-	@Test
-	public void test設定ファイルにjdbcDriverClassNameが記述されていない場合() {
-		this.thrown.expect(RetryException.class);
-		this.thrown
-				.expectMessage("指定されたデータベース接続定義ファイルにはjdbc.driver.classが設定されていません。");
-		this.thrown.expect(new RetryExceptionMatcher(
-				new CommandLineServiceResultBo(
-						new CommandLineServiceResultBo(),
-						new JdbcConfigFileReadServiceFactory())));
+		private CommandLineServiceResultBo beforeResult;
 
-		this.service.validateProcess(new CommandLineServiceResultBo(), new InputValue(this.testFixtureResource
-				.getTestFixtureResource("jdbc.properties")));
-	}
+		private InputValue inputValue;
 
-	@Test
-	public void test設定ファイルにjdbcUrlが設定されていない場合() {
-		this.thrown.expect(RetryException.class);
-		this.thrown.expectMessage("指定されたデータベース接続定義ファイルにはjdbc.urlが設定されていません。");
-		this.thrown.expect(new RetryExceptionMatcher(
-				new CommandLineServiceResultBo(
-						new CommandLineServiceResultBo(),
-						new JdbcConfigFileReadServiceFactory())));
+		@Rule
+		public TestFixtureResource testFixtureResource = new TestFixtureResource();
 
-		this.service.validateProcess(new CommandLineServiceResultBo(), new InputValue(this.testFixtureResource
-				.getTestFixtureResource("jdbc.properties")));
-	}
+		@Before
+		public void setUp() {
+			this.service = new JdbcConfigFileReadService();
+			this.beforeResult = CommandLineServiceResultBo.create();
+			this.inputValue = new InputValue(
+					this.testFixtureResource
+							.getTestFixtureResource("jdbc.properties"));
+		}
 
-	@Test
-	public void test設定ファイルにjdbcUrlが記述されていない場合() {
-		this.thrown.expect(RetryException.class);
-		this.thrown.expectMessage("指定されたデータベース接続定義ファイルにはjdbc.urlが設定されていません。");
-		this.thrown.expect(new RetryExceptionMatcher(
-				new CommandLineServiceResultBo(
-						new CommandLineServiceResultBo(),
-						new JdbcConfigFileReadServiceFactory())));
+		@Test
+		@Ignore
+		public void testExecute設定ファイルが正しく記述されていた場合設定情報を格納した結果が取得できる事()
+				throws Exception {
+			// SetUp
+			Properties properties = new Properties();
+			properties.setProperty("jdbc.driver.class",
+					"oracle.jdbc.driver.OracleDriver");
+			properties.setProperty("jdbc.url",
+					"jdbc:oracle:thin:@172.20.95.45:1522:orcl");
+			properties.setProperty("jdbc.schema", "ZKT005");
+			properties.setProperty("jdbc.user", "ZKT005");
+			properties.setProperty("jdbc.password", "ZKT005");
 
-		this.service.validateProcess(new CommandLineServiceResultBo(), new InputValue(this.testFixtureResource
-				.getTestFixtureResource("jdbc.properties")));
-	}
+			// Exercice
 
-	@Test
-	public void test設定ファイルにスキーマ名が設定されていない場合() {
-		this.thrown.expect(RetryException.class);
-		this.thrown
-				.expectMessage("指定されたデータベース接続定義ファイルにはjdbc.schemaが設定されていません。");
-		this.thrown.expect(new RetryExceptionMatcher(
-				new CommandLineServiceResultBo(
-						new CommandLineServiceResultBo(),
-						new JdbcConfigFileReadServiceFactory())));
+			// Verify
+			CommandLineServiceResultBo expected = CommandLineServiceResultBo
+					.create(this.beforeResult).setFactory(
+							new DistDirectoryPathInputServiceFactory());
 
-		this.service.validateProcess(new CommandLineServiceResultBo(), new InputValue(this.testFixtureResource
-				.getTestFixtureResource("jdbc.properties")));
-	}
+			CommandLineServiceResultBo actual = this.service.mainProcess(
+					this.beforeResult, this.inputValue);
 
-	@Test
-	public void test設定ファイルにスキーマ名が記述されていない場合() {
-		this.thrown.expect(RetryException.class);
-		this.thrown
-				.expectMessage("指定されたデータベース接続定義ファイルにはjdbc.schemaが設定されていません。");
-		this.thrown.expect(new RetryExceptionMatcher(
-				new CommandLineServiceResultBo(
-						new CommandLineServiceResultBo(),
-						new JdbcConfigFileReadServiceFactory())));
+			// TODO DataSourceのequalsメソッドが標準の為エラーになる
+			assertThat(actual, is(expected));
+		}
 
-		this.service.validateProcess(new CommandLineServiceResultBo(), new InputValue(this.testFixtureResource
-				.getTestFixtureResource("jdbc.properties")));
-	}
-
-	@Test
-	public void test設定ファイルにユーザー名が設定されていない場合() {
-		this.thrown.expect(RetryException.class);
-		this.thrown.expectMessage("指定されたデータベース接続定義ファイルにはjdbc.userが設定されていません。");
-		this.thrown.expect(new RetryExceptionMatcher(
-				new CommandLineServiceResultBo(
-						new CommandLineServiceResultBo(),
-						new JdbcConfigFileReadServiceFactory())));
-
-		this.service.validateProcess(new CommandLineServiceResultBo(), new InputValue(this.testFixtureResource
-				.getTestFixtureResource("jdbc.properties")));
-	}
-
-	@Test
-	public void test設定ファイルにユーザー名が記述されていない場合() {
-		this.thrown.expect(RetryException.class);
-		this.thrown.expectMessage("指定されたデータベース接続定義ファイルにはjdbc.userが設定されていません。");
-		this.thrown.expect(new RetryExceptionMatcher(
-				new CommandLineServiceResultBo(
-						new CommandLineServiceResultBo(),
-						new JdbcConfigFileReadServiceFactory())));
-
-		this.service.validateProcess(new CommandLineServiceResultBo(), new InputValue(this.testFixtureResource
-				.getTestFixtureResource("jdbc.properties")));
-	}
-
-	@Test
-	public void test設定ファイルにパスワードが設定されていない場合() {
-		this.thrown.expect(RetryException.class);
-		this.thrown
-				.expectMessage("指定されたデータベース接続定義ファイルにはjdbc.passwordが設定されていません。");
-		this.thrown.expect(new RetryExceptionMatcher(
-				new CommandLineServiceResultBo(
-						new CommandLineServiceResultBo(),
-						new JdbcConfigFileReadServiceFactory())));
-
-		this.service.validateProcess(new CommandLineServiceResultBo(), new InputValue(this.testFixtureResource
-				.getTestFixtureResource("jdbc.properties")));
-	}
-
-	@Test
-	public void test設定ファイルにパスワードが記述されていない場合() {
-		this.thrown.expect(RetryException.class);
-		this.thrown
-				.expectMessage("指定されたデータベース接続定義ファイルにはjdbc.passwordが設定されていません。");
-		this.thrown.expect(new RetryExceptionMatcher(
-				new CommandLineServiceResultBo(
-						new CommandLineServiceResultBo(),
-						new JdbcConfigFileReadServiceFactory())));
-
-		this.service.validateProcess(new CommandLineServiceResultBo(), new InputValue(this.testFixtureResource
-				.getTestFixtureResource("jdbc.properties")));
-	}
-
-	@Test
-	@Ignore
-	public void test設定ファイルに記述されているJDBCDriverClassNameが読み込めない場合() {
-		fail("まだ実装されていません");
-	}
-
-	@Test
-	@Ignore
-	public void test設定ファイルに記述されている情報でデータベースに接続できない場合() {
-		fail("まだ実装されていません");
-	}
-
-	@Test
-	@Ignore
-	public void test設定ファイルの入力値が未入力の場合() {
-		// TODO
-	}
-
-	@Test
-	@Ignore
-	public void test設定ファイルが正しく記述されていた場合() {
-		Properties properties = new Properties();
-		properties.setProperty("jdbc.driver.class",
-				"oracle.jdbc.driver.OracleDriver");
-		properties.setProperty("jdbc.url",
-				"jdbc:oracle:thin:@172.20.95.45:1522:orcl");
-		properties.setProperty("jdbc.schema", "ZKT005");
-		properties.setProperty("jdbc.user", "ZKT005");
-		properties.setProperty("jdbc.password", "ZKT005");
-
-		CommandLineServiceResultBo expected = new CommandLineServiceResultBo(
-				new CommandLineServiceResultBo(),
-				new DistDirectoryPathInputServiceFactory());
-
-		CommandLineServiceResultBo actual = this.service.mainProcess(
-				new CommandLineServiceResultBo(),
-				new InputValue(this.testFixtureResource
-						.getTestFixtureResource("jdbc.properties")));
-
-		// TODO DataSourceのequalsメソッドが標準の為エラーになる
-		assertEquals(expected, actual);
 	}
 
 }

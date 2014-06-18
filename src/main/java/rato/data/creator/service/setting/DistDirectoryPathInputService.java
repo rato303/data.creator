@@ -26,7 +26,8 @@ public class DistDirectoryPathInputService extends BaseCommandLineService {
 	 * チェック処理はありません。
 	 */
 	@Override
-	protected void validateProcess(CommandLineServiceResultBo beforeResult, InputValue inputValue) {
+	protected void validateProcess(CommandLineServiceResultBo beforeResult,
+			InputValue inputValue) {
 	}
 
 	/**
@@ -47,14 +48,14 @@ public class DistDirectoryPathInputService extends BaseCommandLineService {
 			CommandLineServiceResultBo beforeResult, InputValue inputValue) {
 
 		if (inputValue.isEmpty()) {
-			return new CommandLineServiceResultBo(beforeResult);
+			return CommandLineServiceResultBo.create(beforeResult);
 		}
 
 		this.createDistDirectory(inputValue.getValue());
 		beforeResult.getConfigurationBo().setDistDirectoryPath(
 				inputValue.getValue());
 
-		return new CommandLineServiceResultBo(beforeResult,
+		return CommandLineServiceResultBo.create(beforeResult).setFactory(
 				new FindTableInputServiceFactory());
 	}
 

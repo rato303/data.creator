@@ -157,7 +157,8 @@ public class SelectTableInputServiceTest {
 		}
 
 		@Theory
-		public void testExecute再実行用の結果が取得できる事(String inputValue) throws Exception {
+		public void testExecute再実行用の結果が取得できる事(String inputValue)
+				throws Exception {
 			// SetUp
 			CommandLineServiceResultBo expected = this.beforeResult;
 
@@ -183,12 +184,9 @@ public class SelectTableInputServiceTest {
 		tableInfos.add(new TableInfo());
 		tableInfos.add(new TableInfo());
 		tableInfos.add(new TableInfo());
-
-		CommandLineServiceResultBo beforeResult = new CommandLineServiceResultBo();
-		beforeResult = new CommandLineServiceResultBo(beforeResult,
-				new SelectTableInputServiceFactory());
-		beforeResult = new CommandLineServiceResultBo(beforeResult, new SelectTableInputServiceFactory(), tableInfos);
-
+		CommandLineServiceResultBo beforeResult = CommandLineServiceResultBo
+				.create().setFactory(new SelectTableInputServiceFactory())
+				.setTableInfos(tableInfos);
 		return beforeResult;
 	}
 

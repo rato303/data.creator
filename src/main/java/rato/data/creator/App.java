@@ -24,7 +24,7 @@ public class App {
 			ArgsReader reader = new ArgsReader(System.in);
 
 			CommandLineService service = new JdbcConfigFileReadService();
-			CommandLineServiceResultBo result = new CommandLineServiceResultBo();
+			CommandLineServiceResultBo result = CommandLineServiceResultBo.create();
 
 			service.question();
 

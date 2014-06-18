@@ -44,7 +44,7 @@ public class CommandLineServiceResultBo implements Serializable {
 	/**
 	 * コンストラクタ
 	 */
-	public CommandLineServiceResultBo() {
+	private CommandLineServiceResultBo() {
 		this.factory = null;
 		this.configurationBo = new ConfigurationBo();
 		this.dataBaseConfig = new DataBaseConfig();
@@ -52,43 +52,38 @@ public class CommandLineServiceResultBo implements Serializable {
 		this.columnInfos = new ArrayList<ColumnInfo>(0);
 	}
 
-	// TODO JavaDocコメント
-	public CommandLineServiceResultBo(CommandLineServiceResultBo beforeResult) {
-		this.factory = beforeResult.factory;
-		this.configurationBo = beforeResult.configurationBo;
-		this.dataBaseConfig = beforeResult.dataBaseConfig;
-		this.tableInfos = beforeResult.tableInfos;
-		this.columnInfos = beforeResult.columnInfos;
+	public static CommandLineServiceResultBo create() {
+		return new CommandLineServiceResultBo();
 	}
 
-	// TODO JavaDocコメント
-	public CommandLineServiceResultBo(CommandLineServiceResultBo beforeResult, CommandLineServiceFactory<? extends CommandLineService> factory) {
-		this(beforeResult);
+	public static CommandLineServiceResultBo create(CommandLineServiceResultBo beforeResult) {
+		CommandLineServiceResultBo instance = create();
+		instance.factory = beforeResult.factory;
+		instance.configurationBo = beforeResult.configurationBo;
+		instance.dataBaseConfig = beforeResult.dataBaseConfig;
+		instance.tableInfos = beforeResult.tableInfos;
+		instance.columnInfos = beforeResult.columnInfos;
+		return instance;
+	}
+
+	public CommandLineServiceResultBo setFactory(CommandLineServiceFactory<? extends CommandLineService> factory) {
 		this.factory = factory;
+		return this;
 	}
 
-	// TODO JavaDocコメント
-	public CommandLineServiceResultBo(CommandLineServiceResultBo beforeResult, CommandLineServiceFactory<? extends CommandLineService> factory, DataBaseConfig dataBaseConfig) {
-		this(beforeResult, factory);
+	public CommandLineServiceResultBo setDatabaseConfig(DataBaseConfig dataBaseConfig) {
 		this.dataBaseConfig = dataBaseConfig;
+		return this;
 	}
 
-	// TODO JavaDocコメント
-	public CommandLineServiceResultBo(CommandLineServiceResultBo beforeResult, ConfigurationBo configurationBo) {
-		this(beforeResult);
-		this.configurationBo = configurationBo;
-	}
-
-	// TODO JavaDocコメント
-	public CommandLineServiceResultBo(CommandLineServiceResultBo beforeResult, CommandLineServiceFactory<? extends CommandLineService> factory, List<TableInfo> tableInfos) {
-		this(beforeResult, factory);
+	public CommandLineServiceResultBo setTableInfos(List<TableInfo> tableInfos) {
 		this.tableInfos = tableInfos;
+		return this;
 	}
 
-	// TODO JavaDocコメント
-	public CommandLineServiceResultBo(List<ColumnInfo> columnInfos, CommandLineServiceResultBo beforeResult) {// TODO 引数の順番以外で解決する方法を考える
-		this(beforeResult);
+	public CommandLineServiceResultBo setColumnsInfos(List<ColumnInfo> columnInfos) {
 		this.columnInfos = columnInfos;
+		return this;
 	}
 
 	// TODO メソッドチェーン式に変更する？

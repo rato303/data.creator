@@ -71,25 +71,29 @@ public class SelectTableInputService extends BaseCommandLineService {
 
 		this.deleteChildTableData(chosenTable.tableName);
 
-		return new CommandLineServiceResultBo(columnInfos, beforeResult); // TODO
-																			// 戻り値を設定する
+		return CommandLineServiceResultBo.create(beforeResult).setColumnsInfos(
+				columnInfos);
 	}
 
 	/**
 	 * <p>
 	 * 指定されたテーブルのFK関係にあるテーブルのデータを削除します。
 	 * </p>
-	 * @param tableName テーブル名
+	 *
+	 * @param tableName
+	 *            テーブル名
 	 */
 	private void deleteChildTableData(String tableName) {
 		List<TableInfo> deleteTargets = this.tableInfoDao
 				.findByFkTables(tableName);
 
 		// TODO メッセージプロパティ化
-		System.out.println(MessageFormat.format("{0}とFK関係にあるテーブルのデータを削除します。", tableName));
+		System.out.println(MessageFormat.format("{0}とFK関係にあるテーブルのデータを削除します。",
+				tableName));
 
 		for (TableInfo tableInfo : deleteTargets) {
-			System.out.println(MessageFormat.format("{0}のデータを削除します。", tableInfo.tableName));
+			System.out.println(MessageFormat.format("{0}のデータを削除します。",
+					tableInfo.tableName));
 		}
 
 	}

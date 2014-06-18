@@ -48,7 +48,7 @@ public class FindTableInputService extends BaseCommandLineService {
 
 		if (tableInfos.size() == 0) {
 			// TODO 入力した名称のテーブルがありませんでした。入力しなおしてください。
-			return new CommandLineServiceResultBo(beforeResult);
+			return CommandLineServiceResultBo.create(beforeResult);
 		}
 
 		for (int i = 0; i < tableInfos.size(); i++) {
@@ -56,7 +56,9 @@ public class FindTableInputService extends BaseCommandLineService {
 			System.out.println(i + ":" + tableInfo.tableName);
 		}
 
-		return new CommandLineServiceResultBo(beforeResult, new SelectTableInputServiceFactory(), tableInfos);
+		return CommandLineServiceResultBo.create(beforeResult)
+				.setFactory(new SelectTableInputServiceFactory())
+				.setTableInfos(tableInfos);
 	}
 
 }
