@@ -8,6 +8,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import rato.data.creator.config.DataBaseConfig;
+import rato.data.creator.entity.ColumnInfo;
 import rato.data.creator.entity.TableInfo;
 import rato.data.creator.service.CommandLineService;
 import rato.data.creator.service.factory.CommandLineServiceFactory;
@@ -37,6 +38,9 @@ public class CommandLineServiceResultBo implements Serializable {
 	/** テーブル情報検索結果 */
 	private List<TableInfo> tableInfos;
 
+	/** カラム情報 */
+	private List<ColumnInfo> columnInfos;
+
 	/**
 	 * コンストラクタ
 	 */
@@ -45,33 +49,46 @@ public class CommandLineServiceResultBo implements Serializable {
 		this.configurationBo = new ConfigurationBo();
 		this.dataBaseConfig = new DataBaseConfig();
 		this.tableInfos = new ArrayList<TableInfo>(0);
+		this.columnInfos = new ArrayList<ColumnInfo>(0);
 	}
 
+	// TODO JavaDocコメント
 	public CommandLineServiceResultBo(CommandLineServiceResultBo beforeResult) {
 		this.factory = beforeResult.factory;
 		this.configurationBo = beforeResult.configurationBo;
 		this.dataBaseConfig = beforeResult.dataBaseConfig;
 		this.tableInfos = beforeResult.tableInfos;
+		this.columnInfos = beforeResult.columnInfos;
 	}
 
+	// TODO JavaDocコメント
 	public CommandLineServiceResultBo(CommandLineServiceResultBo beforeResult, CommandLineServiceFactory<? extends CommandLineService> factory) {
 		this(beforeResult);
 		this.factory = factory;
 	}
 
+	// TODO JavaDocコメント
 	public CommandLineServiceResultBo(CommandLineServiceResultBo beforeResult, CommandLineServiceFactory<? extends CommandLineService> factory, DataBaseConfig dataBaseConfig) {
 		this(beforeResult, factory);
 		this.dataBaseConfig = dataBaseConfig;
 	}
 
+	// TODO JavaDocコメント
 	public CommandLineServiceResultBo(CommandLineServiceResultBo beforeResult, ConfigurationBo configurationBo) {
 		this(beforeResult);
 		this.configurationBo = configurationBo;
 	}
 
+	// TODO JavaDocコメント
 	public CommandLineServiceResultBo(CommandLineServiceResultBo beforeResult, List<TableInfo> tableInfos) {
 		this(beforeResult);
 		this.tableInfos = tableInfos;
+	}
+
+	// TODO JavaDocコメント
+	public CommandLineServiceResultBo(List<ColumnInfo> columnInfos, CommandLineServiceResultBo beforeResult) {// TODO 引数の順番以外で解決する方法を考える
+		this(beforeResult);
+		this.columnInfos = columnInfos;
 	}
 
 	/**
@@ -137,6 +154,14 @@ public class CommandLineServiceResultBo implements Serializable {
 	 */
 	public List<TableInfo> getTableInfos() {
 		return tableInfos;
+	}
+
+	/**
+	 * カラム情報を取得します。
+	 * @return カラム情報
+	 */
+	public List<ColumnInfo> getColumnInfos() {
+	    return columnInfos;
 	}
 
 }

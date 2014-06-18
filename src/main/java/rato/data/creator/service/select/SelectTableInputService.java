@@ -1,5 +1,6 @@
 package rato.data.creator.service.select;
 
+import java.text.MessageFormat;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -68,10 +69,29 @@ public class SelectTableInputService extends BaseCommandLineService {
 		List<ColumnInfo> columnInfos = this.tableInfoDao
 				.selectByColmnInfo(chosenTable.tableName);
 
-		// TODO 選択されたテーブルのFK一覧を取得
-		// TODO 関連するテーブルのデータを削除
+		this.deleteChildTableData(chosenTable.tableName);
 
-		return new CommandLineServiceResultBo(beforeResult); // TODO 戻り値を設定する
+		return new CommandLineServiceResultBo(columnInfos, beforeResult); // TODO
+																			// 戻り値を設定する
+	}
+
+	/**
+	 * <p>
+	 * 指定されたテーブルのFK関係にあるテーブルのデータを削除します。
+	 * </p>
+	 * @param tableName テーブル名
+	 */
+	private void deleteChildTableData(String tableName) {
+		List<TableInfo> deleteTargets = this.tableInfoDao
+				.findByFkTables(tableName);
+
+		// TODO メッセージプロパティ化
+		System.out.println(MessageFormat.format("{0}とFK関係にあるテーブルのデータを削除します。", tableName));
+
+		for (TableInfo tableInfo : deleteTargets) {
+			System.out.println(MessageFormat.format("{0}のデータを削除します。", tableInfo.tableName));
+		}
+
 	}
 
 }
