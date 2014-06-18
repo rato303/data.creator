@@ -52,7 +52,12 @@ public class TableInfoDaoTest {
 	public void testFindByTableInfo() {
 		List<ColumnInfo> actualList = this.tableInfoDao.selectByColmnInfo("T_TOCHI_TOKI");
 		for (ColumnInfo columnInfo : actualList) {
-			System.out.println(columnInfo.columnName);
+//			System.out.println(columnInfo.columnName);
+//			System.out.println(columnInfo.dataType);
+//			System.out.println(columnInfo.dataLength);
+//			System.out.println(columnInfo.dataPrecision);
+//			System.out.println(columnInfo.dataScale);
+			System.out.println(columnInfo.nullable);
 		}
 		// TODO テスト用のddlを作成
 	}
