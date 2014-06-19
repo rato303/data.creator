@@ -6,6 +6,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hamcrest.beans.SamePropertyValuesAs;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -16,8 +17,6 @@ import org.junit.runners.JUnit4;
 
 import rato.data.creator.bo.CommandLineServiceResultBo;
 import rato.data.creator.bo.InputValue;
-import rato.data.creator.domain.ColumnName;
-import rato.data.creator.domain.DataLength;
 import rato.data.creator.domain.Nullable;
 import rato.data.creator.entity.ColumnInfo;
 import rato.data.creator.exception.RetryException;
@@ -27,7 +26,7 @@ import rato.data.creator.service.factory.ColumnValueInputServiceFactory;
 public class ColumnValueInputServiceTest {
 
 	@RunWith(JUnit4.class)
-	public static class 入力対象のカラムが文字列型で入力値が不正な場合のテスト {
+	public static class 入力対象のカラムが必須入力の場合のテスト {
 
 		private ColumnValueInputService service;
 
@@ -39,21 +38,7 @@ public class ColumnValueInputServiceTest {
 		@Before
 		public void setUp() {
 			this.service = new ColumnValueInputService();
-
-			List<ColumnInfo> columnInfos = new ArrayList<ColumnInfo>(1);
-
-			ColumnInfo columnInfo;
-			columnInfo = new ColumnInfo();
-			columnInfo.columnName = new ColumnName("TEST_COL");
-			columnInfo.dataLength = new DataLength(10);
-			columnInfo.dataPrecision = null;
-			columnInfo.dataScale = null;
-			columnInfo.nullable = Nullable.N;
-			columnInfos.add(columnInfo);
-
-			this.beforeResult = CommandLineServiceResultBo.create()
-					.setFactory(new ColumnValueInputServiceFactory())
-					.setColumnsInfos(columnInfos);
+			this.beforeResult = create();
 		}
 
 		@Test
@@ -78,6 +63,38 @@ public class ColumnValueInputServiceTest {
 
 			// Verify
 			assertThat(actual, is(expected));
+		}
+
+		@Test
+		public void testExecute入力値がある場合() throws Exception {
+			// SetUp
+			CommandLineServiceResultBo expected = create().addColumnIndex();
+
+			// Exercice
+			CommandLineServiceResultBo actual = this.service.execute(this.beforeResult, new InputValue("hoge"));
+
+			// Verify
+			assertThat(actual, is(SamePropertyValuesAs.samePropertyValuesAs(expected)));
+		}
+
+		/**
+		 * <p>
+		 * テスト前の事前条件を作成します。
+		 * </p>
+		 *
+		 * @return 事前条件
+		 */
+		public static CommandLineServiceResultBo create() {
+			List<ColumnInfo> columnInfos = new ArrayList<ColumnInfo>(1);
+
+			ColumnInfo columnInfo;
+			columnInfo = new ColumnInfo();
+			columnInfo.nullable = Nullable.N;
+			columnInfos.add(columnInfo);
+
+			return CommandLineServiceResultBo.create()
+					.setFactory(new ColumnValueInputServiceFactory())
+					.setColumnsInfos(columnInfos);
 		}
 
 	}

@@ -1,5 +1,7 @@
 package rato.data.creator.entity;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.seasar.doma.Column;
 import org.seasar.doma.Entity;
 
@@ -44,5 +46,25 @@ public class ColumnInfo {
 	/** 列にNULLを指定できるかどうか */
 	@Column(name = "NULLABLE")
 	public Nullable nullable;
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object paramObject) {
+		return EqualsBuilder.reflectionEquals(this, paramObject);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		return HashCodeBuilder.reflectionHashCode(this);
+	}
 
 }

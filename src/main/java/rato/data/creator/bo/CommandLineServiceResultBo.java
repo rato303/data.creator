@@ -172,7 +172,11 @@ public class CommandLineServiceResultBo implements Serializable {
 	 * @return 読み込み中のカラム情報
 	 */
 	public ColumnInfo getReadingColumnInfo() throws IndexOutOfBoundsException {
-		return this.columnInfos.get(columnIndex);
+		// TODO columnInfosを拡張リストにしてmaxIndexの比較メソッドが欲しい
+		if (columnIndex < this.columnInfos.size()) {
+			return this.columnInfos.get(columnIndex);
+		}
+		return null;
 	}
 
 	/**
