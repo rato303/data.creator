@@ -6,6 +6,7 @@ import java.util.ResourceBundle;
 import rato.data.creator.bo.CommandLineServiceResultBo;
 import rato.data.creator.bo.InputValue;
 import rato.data.creator.entity.ColumnInfo;
+import rato.data.creator.exception.RetryException;
 import rato.data.creator.service.BaseCommandLineService;
 import rato.data.creator.service.factory.ColumnValueInputServiceFactory;
 
@@ -25,7 +26,18 @@ public class ColumnValueInputService extends BaseCommandLineService {
 	@Override
 	protected void validateProcess(CommandLineServiceResultBo beforeResult,
 			InputValue inputValue) {
+
+		ColumnInfo readingColumnInfo = beforeResult.getReadingColumnInfo();
+
+		if (readingColumnInfo.nullable.isRequired()) {
+			if (inputValue.isEmpty()) {
+				throw new RetryException("error.column.input.required", beforeResult);
+			}
+		}
+
 		// TODO 自動生成されたメソッド・スタブ
+
+		// TODO 入力値の検証
 
 	}
 
