@@ -1,8 +1,10 @@
 package rato.data.creator.exception;
 
+import java.text.MessageFormat;
 import java.util.ResourceBundle;
 
 import rato.data.creator.bo.CommandLineServiceResultBo;
+import rato.data.creator.bo.MessageBo;
 import rato.data.creator.service.CommandLineService;
 
 /**
@@ -23,41 +25,88 @@ public class RetryException extends RuntimeException {
 	/** 入力例外発生後に呼び出される{@link CommandLineService}を生成するファクトリ */
 	private CommandLineServiceResultBo commandLineServiceResultBo;
 
+	/** メッセージ情報 */
+	private MessageBo messageBo;
+
 	/**
-	 * {@link RetryException}を生成します。
+	 * <p>
+	 * 継続可能例外を生成します。
+	 * </p>
 	 *
-	 * @param messageKey
-	 *            入力例外発生時に出力するメッセージのメッセージキー
-	 *
+	 * @param messageBo
+	 *            メッセージ情報
 	 * @param beforeResult
-	 *            入力例外発生後に呼び出される{@link CommandLineService}を生成するファクトリ
-	 *
+	 *            継続可能処理結果
 	 */
-	public RetryException(String messageKey,
+	public RetryException(MessageBo messageBo,
 			CommandLineServiceResultBo beforeResult) {
-		this(messageKey, "message", beforeResult);
+		this(messageBo, "message", beforeResult);
 	}
 
 	/**
-	 * {@link RetryException}を生成します。
+	 * <p>
+	 * 継続可能例外を生成します。
+	 * </p>
 	 *
-	 * @param messageKey
-	 *            入力例外発生時に出力するメッセージのメッセージキー
-	 *
-	 * @param paramString
-	 *            {@link ResourceBundle#getBundle(String)}に設定する値
-	 *
+	 * @param messageBo
+	 *            メッセージ情報
+	 * @param messagePrefix
+	 *            メッセージ取得先プロパティファイルの接頭辞
 	 * @param beforeResult
-	 *            入力例外発生後に呼び出される{@link CommandLineService}を生成するファクトリ
-	 *
+	 *            継続可能処理結果
 	 */
-	public RetryException(String messageKey, String paramString,
+	public RetryException(MessageBo messageBo, String messagePrefix,
 			CommandLineServiceResultBo beforeResult) {
 		super();
+		this.messageBo = messageBo;
 		this.commandLineServiceResultBo = beforeResult;
-		this.message = ResourceBundle.getBundle(paramString).getString(
-				messageKey);
+
+		String messageValue = ResourceBundle.getBundle(messagePrefix)
+				.getString(this.messageBo.getMessageKey());
+
+		if (this.messageBo.isNotNullMessageArgs()) {
+			this.message = MessageFormat.format(messageValue,
+					messageBo.getMessageArgs());
+		} else {
+			this.message = messageValue;
+		}
 	}
+
+//	/**
+//	 * {@link RetryException}を生成します。
+//	 *
+//	 * @param messageKey
+//	 *            入力例外発生時に出力するメッセージのメッセージキー
+//	 *
+//	 * @param beforeResult
+//	 *            入力例外発生後に呼び出される{@link CommandLineService}を生成するファクトリ
+//	 *
+//	 */
+//	public RetryException(String messageKey,
+//			CommandLineServiceResultBo beforeResult) {
+//		this(messageKey, "message", beforeResult);
+//	}
+//
+//	/**
+//	 * {@link RetryException}を生成します。
+//	 *
+//	 * @param messageKey
+//	 *            入力例外発生時に出力するメッセージのメッセージキー
+//	 *
+//	 * @param paramString
+//	 *            {@link ResourceBundle#getBundle(String)}に設定する値
+//	 *
+//	 * @param beforeResult
+//	 *            入力例外発生後に呼び出される{@link CommandLineService}を生成するファクトリ
+//	 *
+//	 */
+//	public RetryException(String messageKey, String paramString,
+//			CommandLineServiceResultBo beforeResult) {
+//		super();
+//		this.commandLineServiceResultBo = beforeResult;
+//		this.message = ResourceBundle.getBundle(paramString).getString(
+//				messageKey);
+//	}
 
 	/*
 	 * (non-Javadoc)

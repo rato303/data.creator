@@ -40,7 +40,7 @@ public final class StringCheckUtil {
 				i++;
 			}
 
-			if (targetLength < i) {
+			if (maxLength <= i) {
 				return true;
 			}
 		}

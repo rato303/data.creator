@@ -1,5 +1,6 @@
 package rato.data.creator.service.setting;
 
+import static rato.data.creator.bo.MessageBo.create;
 import static rato.data.creator.config.DataBaseConfig.PROPERTY_KEY_JDBC_DRIVER_CLASS;
 import static rato.data.creator.config.DataBaseConfig.PROPERTY_KEY_JDBC_PASSWORD;
 import static rato.data.creator.config.DataBaseConfig.PROPERTY_KEY_JDBC_SCHEMA;
@@ -114,7 +115,7 @@ public class JdbcConfigFileReadService extends BaseCommandLineService {
 	 */
 	private void throwRetryException(String messageKey,
 			CommandLineServiceResultBo beforeResult) {
-		throw new RetryException(messageKey,
+		throw new RetryException(create(messageKey),
 				beforeResult.setFactory(new JdbcConfigFileReadServiceFactory()));
 	}
 

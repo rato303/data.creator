@@ -1,5 +1,7 @@
 package rato.data.creator.service.select;
 
+import static rato.data.creator.bo.MessageBo.create;
+
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -38,11 +40,12 @@ public class SelectTableInputService extends BaseCommandLineService {
 			InputValue inputValue) {
 
 		if (inputValue.isEmpty()) {
-			throw new RetryException("error.table.index.empty", beforeResult);
+			throw new RetryException(create("error.table.index.empty"),
+					beforeResult);
 		}
 
 		if (!NumberUtils.isDigits(inputValue.getValue())) {
-			throw new RetryException("error.table.index.not.integer",
+			throw new RetryException(create("error.table.index.not.integer"),
 					beforeResult);
 		}
 
@@ -51,7 +54,7 @@ public class SelectTableInputService extends BaseCommandLineService {
 
 		if (maxIndex < inputValue.getIntegerValue()) {
 			// MessageBoクラスを作成(メッセージキー、メッセージ引数)
-			throw new RetryException("error.table.index.out.of.range",
+			throw new RetryException(create("error.table.index.out.of.range"),
 					beforeResult);
 		}
 

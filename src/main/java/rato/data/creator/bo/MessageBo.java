@@ -2,6 +2,9 @@ package rato.data.creator.bo;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 /**
  * <p>
  * メッセージ情報です。
@@ -64,19 +67,52 @@ public class MessageBo implements Serializable {
 	}
 
 	/**
+	 * <p>
+	 * メッセージ引数を保有しているか判定します。
+	 * </p>
+	 *
+	 * @return メッセージ引数を保有している場合は「true」保有していない場合は「false」
+	 */
+	public boolean isNotNullMessageArgs() {
+		return this.messageArgs != null;
+	}
+
+	/**
 	 * メッセージキーを取得します。
+	 *
 	 * @return メッセージキー
 	 */
 	public String getMessageKey() {
-	    return messageKey;
+		return messageKey;
 	}
 
 	/**
 	 * メッセージ引数を取得します。
+	 *
 	 * @return メッセージ引数
 	 */
 	public Object[] getMessageArgs() {
-	    return messageArgs;
+		return messageArgs;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object paramObject) {
+		return EqualsBuilder.reflectionEquals(this, paramObject);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		return HashCodeBuilder.reflectionHashCode(this);
 	}
 
 }

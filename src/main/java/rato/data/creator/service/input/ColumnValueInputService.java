@@ -1,5 +1,8 @@
 package rato.data.creator.service.input;
 
+import static rato.data.creator.bo.MessageBo.create;
+import static rato.data.creator.validation.StringCheckUtil.exceedLength;
+
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
 
@@ -29,15 +32,49 @@ public class ColumnValueInputService extends BaseCommandLineService {
 
 		ColumnInfo readingColumnInfo = beforeResult.getReadingColumnInfo();
 
+		// TODO メソッド化？
 		if (readingColumnInfo.nullable.isRequired()) {
 			if (inputValue.isEmpty()) {
-				throw new RetryException("error.column.input.required", beforeResult);
+				throw new RetryException(create("error.column.input.required"),
+						beforeResult);
 			}
 		}
 
-		// TODO 自動生成されたメソッド・スタブ
+		String value = inputValue.getValue();
+		Integer dataLength = readingColumnInfo.dataLength.getValue();
 
-		// TODO 入力値の検証
+		// TODO メソッド化
+		switch (readingColumnInfo.dataType.getCategory()) {
+
+		case CHAR:
+			if (exceedLength(value, dataLength)) {
+				// TODO value.length() サロゲートペアの文字列長ではない？
+				throw new RetryException(
+						create("error.column.input.char.exceed.length", value.length()),
+						beforeResult);
+			}
+			// TODO 文字列の長さが不足している場合に警告する
+			break;
+		case VARCHAR:
+			if (exceedLength(value, dataLength)) {
+				// TODO value.length() サロゲートペアの文字列長ではない？
+				throw new RetryException(
+						create("error.column.input.char.exceed.length"),
+						beforeResult);
+			}
+			break;
+		case NUMBER:
+			// TODO 文字種チェック
+			// TODO 数値型の精度チェック
+			// TODO 数値型の小数点以下のチェック
+			break;
+		case DATE:
+			// TODO 日付型チェック
+			break;
+		case TIMESTAMP:
+			// TODO 日時型チェック
+			break;
+		}
 
 	}
 
