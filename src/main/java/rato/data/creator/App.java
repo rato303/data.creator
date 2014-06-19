@@ -2,6 +2,9 @@ package rato.data.creator;
 
 import java.io.IOException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import rato.data.creator.bo.CommandLineServiceResultBo;
 import rato.data.creator.config.DataBaseConfig;
 import rato.data.creator.io.ArgsReader;
@@ -16,8 +19,14 @@ import rato.data.creator.service.setting.JdbcConfigFileReadService;
  */
 public class App {
 
-	public static void main(String[] args) {
+	private Logger logger = LoggerFactory.getLogger(App.class);
 
+	public static void main(String[] args) {
+		App app = new App();
+		app.mainProcess(args);
+	}
+
+	private void mainProcess(String[] args) {
 		DataBaseConfig dataBaseConfig = null;
 
 		try {
@@ -41,8 +50,8 @@ public class App {
 
 				service = result.getFactory().create();
 
-				System.out.println("");
-				System.out.println("");
+				this.logger.info("");
+				this.logger.info("");
 
 				service.question(result);
 
@@ -56,11 +65,10 @@ public class App {
 		} finally {
 			if (dataBaseConfig.getDataSource() != null) {// TODO メソッド化
 				dataBaseConfig.getLocalTransaction().rollback();
-				System.out.println("トランザクションをロールバックしました。");
+				this.logger.info("トランザクションをロールバックしました。");
 			}
-			System.out.println("\nPROGRAM END");
+			this.logger.info("PROGRAM END");
 		}
-
 	}
 
 }

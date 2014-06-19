@@ -1,6 +1,5 @@
 package rato.data.creator.service.select;
 
-import java.text.MessageFormat;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -91,12 +90,10 @@ public class SelectTableInputService extends BaseCommandLineService {
 				.findByFkTables(tableName);
 
 		// TODO メッセージプロパティ化
-		System.out.println(MessageFormat.format("{0}とFK関係にあるテーブルのデータを削除します。",
-				tableName));
+		super.logger.info("{}とFK関係にあるテーブルのデータを削除します。", tableName);
 
 		for (TableInfo tableInfo : deleteTargets) {
-			System.out.println(MessageFormat.format("{0}のデータを削除します。",
-					tableInfo.tableName));
+			super.logger.info("{}のデータを削除します。", tableInfo.tableName);
 		}
 
 	}

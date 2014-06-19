@@ -53,7 +53,7 @@ public class FindTableInputService extends BaseCommandLineService {
 
 		for (int i = 0; i < tableInfos.size(); i++) {
 			TableInfo tableInfo = tableInfos.get(i);
-			System.out.println(i + ":" + tableInfo.tableName);
+			super.logger.info("{}:{}", i, tableInfo.tableName);
 		}
 
 		return CommandLineServiceResultBo.create(beforeResult)

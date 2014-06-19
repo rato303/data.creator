@@ -2,6 +2,9 @@ package rato.data.creator.service;
 
 import java.util.ResourceBundle;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import rato.data.creator.bo.CommandLineServiceResultBo;
 import rato.data.creator.bo.InputValue;
 import rato.data.creator.exception.RetryException;
@@ -13,13 +16,15 @@ import rato.data.creator.exception.RetryException;
  */
 public abstract class BaseCommandLineService implements CommandLineService {
 
+	protected Logger logger = LoggerFactory.getLogger(this.getClass());
+
     /* (non-Javadoc)
      * @see rato.data.creator.service.CommandLineService#question()
      */
     @Override
     public final void question(CommandLineServiceResultBo beforeResult) {
         ResourceBundle bundle = ResourceBundle.getBundle("message");
-        System.out.println(this.getQuestionMessage(beforeResult, bundle));
+        this.logger.info(this.getQuestionMessage(beforeResult, bundle));
     }
 
     /* (non-Javadoc)
@@ -77,7 +82,7 @@ public abstract class BaseCommandLineService implements CommandLineService {
         try {
             this.validateProcess(beforeResult, inputValue);
         } catch (RetryException e) {
-            System.out.println(e.getMessage());
+            this.logger.warn(e.getMessage());
             return e.getCommandLineServiceResultBo();
         }
         return null;    // TODO CommandLineServiceResultBoにNullパターンオブジェクトを適用する

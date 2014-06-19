@@ -7,11 +7,14 @@ import javax.sql.DataSource;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.seasar.doma.jdbc.DomaAbstractConfig;
+import org.seasar.doma.jdbc.JdbcLogger;
 import org.seasar.doma.jdbc.SimpleDataSource;
 import org.seasar.doma.jdbc.dialect.Dialect;
 import org.seasar.doma.jdbc.dialect.OracleDialect;
 import org.seasar.doma.jdbc.tx.LocalTransaction;
 import org.seasar.doma.jdbc.tx.LocalTransactionalDataSource;
+
+import rato.data.creator.config.logger.DomaLogbackLogger;
 
 /**
  * <p>
@@ -117,6 +120,16 @@ public class DataBaseConfig extends DomaAbstractConfig {
 	public LocalTransaction getLocalTransaction() {
 		return dataSource.getLocalTransaction(defaultJdbcLogger);
 	}
+
+	/*
+	 * (非 Javadoc)
+	 * @see org.seasar.doma.jdbc.DomaAbstractConfig#getJdbcLogger()
+	 */
+	@Override
+	public JdbcLogger getJdbcLogger() {
+		return new DomaLogbackLogger();
+	}
+
 
 	/**
 	 * <p>

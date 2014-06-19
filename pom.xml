@@ -7,7 +7,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<description>ビルドコマンド
-mvn package appassembler:assemble assembly:assembly -DdescriptorId=bin
+mvn clean:clean package appassembler:assemble assembly:assembly -DdescriptorId=bin
 
 eclipseでデバッグする場合は「実行の構成」の「引数」タブで「作業ディレクトリ」を「その他」に設定し値を「${workspace_loc:data.creator/bin}」とする事。</description>
 
@@ -32,6 +32,24 @@ eclipseでデバッグする場合は「実行の構成」の「引数」タブ�
 		<jdk.version>1.7</jdk.version>
 	</properties>
 
+	<profiles>
+		<profile>
+			<id>local</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<src.main.resources>${basedir}/src/main/resources</src.main.resources>
+			</properties>
+		</profile>
+		<profile>
+			<id>release</id>
+			<properties>
+				<src.main.resources>${basedir}/profiles/release/src/main/resources</src.main.resources>
+			</properties>
+		</profile>
+	</profiles>
+
 	<pluginRepositories>
 		<pluginRepository>
 			<id>Codehaus repository</id>
@@ -40,27 +58,27 @@ eclipseでデバッグする場合は「実行の構成」の「引数」タブ�
 	</pluginRepositories>
 
 	<build>
+		<sourceDirectory>src/main/java</sourceDirectory>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>**/*</include>
+				</includes>
+				<excludes>
+					<exclude>logback.xml</exclude>
+				</excludes>
+			</resource>
+
+			<resource>
+				<directory>${src.main.resources}</directory>
+				<includes>
+					<include>logback.xml</include>
+				</includes>
+			</resource>
+		</resources>
 		<pluginManagement>
 			<plugins>
-				<plugin>
-					<groupId>org.bsc.maven</groupId>
-					<artifactId>maven-processor-plugin</artifactId>
-					<version>2.0.5</version>
-					<executions>
-						<execution>
-							<id>process</id>
-							<goals>
-								<goal>process</goal>
-							</goals>
-							<phase>process-resources</phase>
-							<configuration>
-								<outputDirectory>${project.build.directory}/apt_generated</outputDirectory>
-								<compilerArguments>-Adao.subpackage=impl -Adao.suffix=Impl</compilerArguments>
-								<failOnError>false</failOnError>
-							</configuration>
-						</execution>
-					</executions>
-				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
@@ -130,6 +148,28 @@ eclipseでデバッグする場合は「実行の構成」の「引数」タブ�
 				</plugin>
 			</plugins>
 		</pluginManagement>
+		<plugins>
+			<plugin>
+				<groupId>org.bsc.maven</groupId>
+				<artifactId>maven-processor-plugin</artifactId>
+				<version>2.0.5</version>
+				<executions>
+					<execution>
+						<id>process</id>
+						<goals>
+							<goal>process</goal>
+						</goals>
+						<phase>process-resources</phase>
+						<configuration>
+							<sourceDirectory>src/main/java</sourceDirectory>
+							<outputDirectory>${project.build.directory}/apt_generated</outputDirectory>
+							<compilerArguments>-encoding ${project.build.sourceEncoding} -Adao.subpackage=impl -Adao.suffix=Impl</compilerArguments>
+							<failOnError>false</failOnError>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
 	</build>
 
 	<dependencies>
@@ -143,6 +183,16 @@ eclipseでデバッグする場合は「実行の構成」の「引数」タブ�
 			<artifactId>doma</artifactId>
 			<version>1.35.0</version>
 			<type>jar</type>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.7</version>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>1.1.2</version>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
