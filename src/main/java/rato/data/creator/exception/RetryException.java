@@ -72,42 +72,6 @@ public class RetryException extends RuntimeException {
 		}
 	}
 
-//	/**
-//	 * {@link RetryException}を生成します。
-//	 *
-//	 * @param messageKey
-//	 *            入力例外発生時に出力するメッセージのメッセージキー
-//	 *
-//	 * @param beforeResult
-//	 *            入力例外発生後に呼び出される{@link CommandLineService}を生成するファクトリ
-//	 *
-//	 */
-//	public RetryException(String messageKey,
-//			CommandLineServiceResultBo beforeResult) {
-//		this(messageKey, "message", beforeResult);
-//	}
-//
-//	/**
-//	 * {@link RetryException}を生成します。
-//	 *
-//	 * @param messageKey
-//	 *            入力例外発生時に出力するメッセージのメッセージキー
-//	 *
-//	 * @param paramString
-//	 *            {@link ResourceBundle#getBundle(String)}に設定する値
-//	 *
-//	 * @param beforeResult
-//	 *            入力例外発生後に呼び出される{@link CommandLineService}を生成するファクトリ
-//	 *
-//	 */
-//	public RetryException(String messageKey, String paramString,
-//			CommandLineServiceResultBo beforeResult) {
-//		super();
-//		this.commandLineServiceResultBo = beforeResult;
-//		this.message = ResourceBundle.getBundle(paramString).getString(
-//				messageKey);
-//	}
-
 	/*
 	 * (non-Javadoc)
 	 *
