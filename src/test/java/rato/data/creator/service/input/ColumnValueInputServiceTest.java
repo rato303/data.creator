@@ -66,7 +66,7 @@ public class ColumnValueInputServiceTest {
 		}
 
 		@Test
-		public void testExecute入力値がある場合() throws Exception {
+		public void testExecute入力値がある場合読み込み中のカラムのインデックスが1つ増加している事() throws Exception {
 			// SetUp
 			CommandLineServiceResultBo expected = create().addColumnIndex();
 
