@@ -33,7 +33,8 @@ import rato.data.creator.util.ResourceUtil;
 public class JdbcConfigFileReadService extends BaseCommandLineService {
 
 	@Override
-	protected String getQuestionMessage(CommandLineServiceResultBo beforeResult,ResourceBundle bundle) {
+	protected String getQuestionMessage(
+			CommandLineServiceResultBo beforeResult, ResourceBundle bundle) {
 		return MessageFormat.format(
 				bundle.getString("question.table.conf.file"),
 				this.getDefaultPath());
@@ -123,9 +124,7 @@ public class JdbcConfigFileReadService extends BaseCommandLineService {
 	 * @return データベース接続情報ファイルのデフォルトパス
 	 */
 	private String getDefaultPath() {
-		return ResourceUtil.getExecutePath("config", "jdbc.properties");
-		//		TODO 本番だと".."をつけないとconfigディレクトリに触れられない
-		//return ResourceUtil.getExecutePath("..", "config", "jdbc.properties");
+		return ResourceUtil.getExecutePath("..", "config", "jdbc.properties");
 	}
 
 }

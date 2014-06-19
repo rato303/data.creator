@@ -106,7 +106,14 @@ public final class ResourceUtil {
 	 * @return パスの配列を全てシステムのファイル区切り文字で連結したパス
 	 */
 	public static String getFilePath(String... pathArr) {
-		return getCurrentFilePath(ResourceUtil.class);
+		// TODO getFilePath(Class<?> clazz, String... pathArr)と重複コード
+		StrBuilder result = new StrBuilder();
+		result.append(getCurrentFilePath(ResourceUtil.class));
+		for (String path : pathArr) {
+			result.append(FILE_SEPARATOR);
+			result.append(path);
+		}
+		return result.toString();
 	}
 
 	/**
