@@ -32,6 +32,7 @@ public class DataType {
 	 * <p>
 	 * 列のデータ型の種別を表す列挙型です。
 	 * </p>
+	 *
 	 * @author toshiya
 	 *
 	 */
@@ -218,12 +219,44 @@ public class DataType {
 
 		final Set<String> set = new HashSet<String>();
 		set.add("DATE");
+
+		for (String string : set) {
+			if (StringUtils.startsWith(target, string)) {
+				result = true;
+				break;
+			}
+		}
+
+		return result;
+	}
+
+	/**
+	 * <p>
+	 * 日付型かどうか判定します。
+	 * </p>
+	 *
+	 * @return 日付型の場合は「true」それ以外の場合は「false」
+	 */
+	public boolean isTimeStampType() {
+		return this.isTimeStampType(this.value);
+	}
+
+	/**
+	 * <p>
+	 * 日時型かどうか判定します。
+	 * </p>
+	 *
+	 * @param value
+	 *
+	 * @return 日時型の場合は「true」それ以外の場合は「false」
+	 */
+	public boolean isTimeStampType(String value) {
+		boolean result = false;
+
+		String target = upperCase(value);
+
+		final Set<String> set = new HashSet<String>();
 		set.add("TIMESTAMP");
-//		set.add("TIMESTAMP ORACLE 9I");
-//		set.add("TIMESTAMP WITH TIMEZONE");
-//		set.add("TIMESTAMP WITH LOCAL TIMEZONE");
-		set.add("INTERVAL YEAR TO MONTH");
-		set.add("INTERVAL DAY TO SECOND");
 
 		for (String string : set) {
 			if (StringUtils.startsWith(target, string)) {
@@ -248,15 +281,19 @@ public class DataType {
 		if (this.isDateType(value)) {
 			return DataTypeCategory.DATE;
 		}
-		throw new IllegalArgumentException();	// TODO メッセージ
+		if (this.isTimeStampType(value)) {
+			return DataTypeCategory.TIMESTAMP;
+		}
+		throw new IllegalArgumentException(); // TODO メッセージ
 	}
 
 	/**
 	 * データ型のカテゴリを取得します。
+	 *
 	 * @return データ型のカテゴリ
 	 */
 	public DataTypeCategory getCategory() {
-	    return category;
+		return category;
 	}
 
 	/*

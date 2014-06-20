@@ -40,8 +40,7 @@ public class TimeStampCheckUtilTest {
 	public static class CheckFormat日付型に変換できない場合のテスト {
 
 		@DataPoints
-		public static final String[] INPUT_VALUES = { "2012010100000001",
-				"201212312360599", "20121231235959", "20121231", "あ", "a" };
+		public static final String[] INPUT_VALUES = { "20120101", "20121231", "あ", "a" };
 
 		@Theory
 		public void falseになる事(String inputValue) {

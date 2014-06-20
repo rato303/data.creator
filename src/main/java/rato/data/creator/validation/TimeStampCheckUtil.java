@@ -2,8 +2,8 @@ package rato.data.creator.validation;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.HashSet;
-import java.util.Set;
+
+import org.apache.commons.lang3.text.StrBuilder;
 
 /**
  * <p>
@@ -16,17 +16,9 @@ import java.util.Set;
 public final class TimeStampCheckUtil {
 
 	/** 日時型変換で許容するパターン */
-	private static final Set<String> ALLOW_PATTERNS;
-
-	static {
-		ALLOW_PATTERNS = new HashSet<String>(3);
-		ALLOW_PATTERNS.add("yyyyMMddHHmmssS");
-		ALLOW_PATTERNS.add("yyyyMdHmsS");
-		ALLOW_PATTERNS.add("yyyy-MM-dd HH:mm:ss.S");
-		ALLOW_PATTERNS.add("yyyy-M-d H:m:s.S");
-		ALLOW_PATTERNS.add("yyyy/MM/dd HH:mm:ss.S");
-		ALLOW_PATTERNS.add("yyyy/M/d H:m:s.S");
-	}
+	public static final String[] ALLOW_PATTERNS = { "yyyyMMddHHmmssS",
+			"yyyyMdHmsS", "yyyy-MM-dd HH:mm:ss.S", "yyyy-M-d H:m:s.S",
+			"yyyy/MM/dd HH:mm:ss.S", "yyyy/M/d H:m:s.S" };
 
 	/**
 	 * <p>
@@ -35,6 +27,14 @@ public final class TimeStampCheckUtil {
 	 * ユーティリティクラスなのでインスタンス不可
 	 */
 	private TimeStampCheckUtil() {
+	}
+
+	public static final String getAllowPatterns() {
+		StrBuilder str = new StrBuilder(100);
+		for (String allowPattern : ALLOW_PATTERNS) {
+			str.appendln(allowPattern);
+		}
+		return str.toString();
 	}
 
 	/**

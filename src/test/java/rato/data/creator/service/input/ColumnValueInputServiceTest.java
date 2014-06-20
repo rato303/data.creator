@@ -29,6 +29,7 @@ import rato.data.creator.domain.Nullable;
 import rato.data.creator.entity.ColumnInfo;
 import rato.data.creator.exception.RetryException;
 import rato.data.creator.service.factory.ColumnValueInputServiceFactory;
+import rato.data.creator.validation.TimeStampCheckUtil;
 
 @RunWith(Enclosed.class)
 public class ColumnValueInputServiceTest {
@@ -367,6 +368,75 @@ public class ColumnValueInputServiceTest {
 		}
 	}
 
+	@RunWith(Theories.class)
+	public static class 入力対象のカラムが日時型で入力文字列が日付フォーマットとして不正な場合のテスト {
+
+		@Rule
+		public ExpectedException thrown = ExpectedException.none();
+
+		@DataPoints
+		public static final String[] INPUT_VALUES = { "20120101", "20121231", "あ", "a" };
+
+		private ColumnValueInputService service;
+
+		private CommandLineServiceResultBo beforeResult;
+
+		@Before
+		public void setUp() {
+			this.service = new ColumnValueInputService();
+			this.beforeResult = create();
+		}
+
+		@Theory
+		public void testValidationProcess継続可能例外が発行される事(String inputValue) throws Exception {
+			// SetUp
+			thrown.expect(RetryException.class);
+			thrown.expectMessage(format("日付型は以下のフォーマットを指定してください。\n{0}",
+					TimeStampCheckUtil.getAllowPatterns()));
+
+			// Exercice
+			this.service.validateProcess(this.beforeResult, new InputValue(
+					inputValue));
+
+		}
+
+		@Theory
+		public void testExecute再実行用の結果が取得できる事(String inputValue) throws Exception {
+			// SetUp
+			CommandLineServiceResultBo expected = this.beforeResult;
+
+			// Exercice
+			CommandLineServiceResultBo actual = this.service.execute(this.beforeResult, new InputValue(inputValue));
+
+			// Verify
+			assertThat(actual, is(expected));
+		}
+
+		/**
+		 * <p>
+		 * テスト前の事前条件を作成します。
+		 * </p>
+		 *
+		 * @return 事前条件
+		 */
+		protected static CommandLineServiceResultBo create() {
+			List<ColumnInfo> columnInfos = new ArrayList<ColumnInfo>(1);
+
+			ColumnInfo columnInfo;
+			columnInfo = new ColumnInfo();
+			columnInfo.nullable = Nullable.N;
+			columnInfo.dataType = new DataType("TIMESTAMP(6)");
+			columnInfo.dataLength = new DataLength(11);
+			columnInfo.dataScale = new DataScale(6);
+			columnInfos.add(columnInfo);
+
+			return CommandLineServiceResultBo.create()
+					.setFactory(new ColumnValueInputServiceFactory())
+					.setColumnsInfos(columnInfos);
+		}
+
+	}
+
 	/**
 	 * <p>
 	 * テスト前の事前条件を作成します。
@@ -374,7 +444,7 @@ public class ColumnValueInputServiceTest {
 	 *
 	 * @return 事前条件
 	 */
-	public static CommandLineServiceResultBo create() {
+	protected static CommandLineServiceResultBo create() {
 		List<ColumnInfo> columnInfos = new ArrayList<ColumnInfo>(1);
 
 		ColumnInfo columnInfo;
@@ -400,7 +470,7 @@ public class ColumnValueInputServiceTest {
 	 *            小数点以下の桁数
 	 * @return 事前条件
 	 */
-	public static CommandLineServiceResultBo create(int precision, int scale) {
+	protected static CommandLineServiceResultBo create(int precision, int scale) {
 		List<ColumnInfo> columnInfos = new ArrayList<ColumnInfo>(1);
 
 		ColumnInfo columnInfo;

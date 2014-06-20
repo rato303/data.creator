@@ -5,6 +5,8 @@ import static rato.data.creator.validation.NumberCheckUtil.getDecimalLength;
 import static rato.data.creator.validation.NumberCheckUtil.isDecimal;
 import static rato.data.creator.validation.NumberCheckUtil.isNumber;
 import static rato.data.creator.validation.StringCheckUtil.exceedLength;
+import static rato.data.creator.validation.TimeStampCheckUtil.checkFormat;
+import static rato.data.creator.validation.TimeStampCheckUtil.getAllowPatterns;
 
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
@@ -96,7 +98,11 @@ public class ColumnValueInputService extends BaseCommandLineService {
 			// TODO 日付型チェック
 			break;
 		case TIMESTAMP:
-			// TODO 日時型チェック
+			if ( ! checkFormat(value)) {
+				throw new RetryException(create("error.column.input.timestamp.format", getAllowPatterns()), beforeResult);
+			}
+
+//			TODO 最終出力フォーマット 2013-10-23 09:58:01.0
 			break;
 		}
 
