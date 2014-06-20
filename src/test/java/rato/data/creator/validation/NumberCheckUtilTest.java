@@ -79,7 +79,7 @@ public class NumberCheckUtilTest {
 
 			private final int decimalLength;
 
-			public Fixture(String inputValue, int decimalLength) {
+			Fixture(String inputValue, int decimalLength) {
 				this.inputValue = inputValue;
 				this.decimalLength = decimalLength;
 			}
