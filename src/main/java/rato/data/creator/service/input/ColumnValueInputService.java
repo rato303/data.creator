@@ -1,6 +1,9 @@
 package rato.data.creator.service.input;
 
 import static rato.data.creator.bo.MessageBo.create;
+import static rato.data.creator.validation.NumberCheckUtil.getDecimalLength;
+import static rato.data.creator.validation.NumberCheckUtil.isDecimal;
+import static rato.data.creator.validation.NumberCheckUtil.isNumber;
 import static rato.data.creator.validation.StringCheckUtil.exceedLength;
 
 import java.text.MessageFormat;
@@ -47,11 +50,11 @@ public class ColumnValueInputService extends BaseCommandLineService {
 		switch (readingColumnInfo.dataType.getCategory()) {
 
 		case CHAR:
-			if (exceedLength(value, dataLength)) {
+			if (exceedLength(value, dataLength)) { // TODO
 				// TODO value.length() サロゲートペアの文字列長ではない？
 				throw new RetryException(
-						create("error.column.input.char.exceed.length", value.length()),
-						beforeResult);
+						create("error.column.input.char.exceed.length",
+								value.length()), beforeResult);
 			}
 			// TODO 文字列の長さが不足している場合に警告する
 			break;
@@ -64,9 +67,26 @@ public class ColumnValueInputService extends BaseCommandLineService {
 			}
 			break;
 		case NUMBER:
-			// TODO 文字種チェック
-			// TODO 数値型の精度チェック
-			// TODO 数値型の小数点以下のチェック
+			if (!isNumber(value)) {
+				throw new RetryException(create(
+						"error.column.input.not.number", value), beforeResult);
+			}
+			int decimalLength = 0;
+
+			if (isDecimal(value)) {
+				decimalLength = getDecimalLength(value);
+
+				if (readingColumnInfo.dataScale.getValue() < decimalLength) {
+					throw new RetryException(create(
+							"error.column.input.decimal.length.over",
+							readingColumnInfo.dataScale, value), beforeResult);
+				}
+
+				// TODO 小数に負の数が設定された場合も考慮する
+			}
+
+			int positiveNumberLength = dataLength - decimalLength;
+			// TODO 精度のチェック
 			break;
 		case DATE:
 			// TODO 日付型チェック

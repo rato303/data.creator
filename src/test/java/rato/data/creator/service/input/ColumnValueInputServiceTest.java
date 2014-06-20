@@ -22,6 +22,8 @@ import org.junit.runners.JUnit4;
 import rato.data.creator.bo.CommandLineServiceResultBo;
 import rato.data.creator.bo.InputValue;
 import rato.data.creator.domain.DataLength;
+import rato.data.creator.domain.DataPrecision;
+import rato.data.creator.domain.DataScale;
 import rato.data.creator.domain.DataType;
 import rato.data.creator.domain.Nullable;
 import rato.data.creator.entity.ColumnInfo;
@@ -90,7 +92,7 @@ public class ColumnValueInputServiceTest {
 	}
 
 	@RunWith(Theories.class)
-	public static class 入力対象のカラムが文字列型で入力文字列が許容範囲外の場合のテスト {
+	public static class 入力対象のカラムが文字列型で入力文字列が項目長超過の場合のテスト {
 
 		@DataPoints
 		public static final Fixture[] FIXTURES = { new Fixture("abcd", 4),
@@ -156,6 +158,88 @@ public class ColumnValueInputServiceTest {
 				return this.codePointLength;
 			}
 
+		}
+
+	}
+
+	@RunWith(Theories.class)
+	public static class 入力対象のカラムが数値型で入力文字列が不正な場合のテスト {
+
+		@Rule
+		public ExpectedException thrown = ExpectedException.none();
+
+		@DataPoints
+		public static final Fixture[] FIXTURES = { new Fixture("1.0", 2, 0),
+				new Fixture("1.123", 4, 2), new Fixture("100.1", 4, 0),
+				new Fixture("0.0001",5,  3), new Fixture("000.0", 4, 0) };
+
+		private ColumnValueInputService service;
+
+		private CommandLineServiceResultBo beforeResult;
+
+		@Before
+		public void setUp() {
+			this.service = new ColumnValueInputService();
+		}
+
+		@Theory
+		public void testValidateProcess継続可能例外が発行される事(Fixture fixture) throws Exception {
+			// SetUp
+			this.beforeResult = create(fixture.precision, fixture.scale);
+
+			thrown.expect(RetryException.class);
+			thrown.expectMessage(format("小数点以下の桁数は{0}です。\n入力された値{1}",
+					fixture.scale, fixture.inputValue));
+
+			// Exercice
+			this.service.validateProcess(this.beforeResult, new InputValue(fixture.inputValue));
+
+			// Verify
+		}
+
+		@Theory
+		public void testExcute再実行用の結果が取得できる事(Fixture fixture) throws Exception {
+			// SetUp
+			this.beforeResult = create(fixture.precision, fixture.scale);
+
+			// Exercice
+			CommandLineServiceResultBo actual = this.service.execute(this.beforeResult, new InputValue(fixture.inputValue));
+
+			// Verify
+			assertThat(actual, is(this.beforeResult));
+		}
+
+		static class Fixture {
+
+			private final String inputValue;
+
+			private final int precision;
+
+			private final int scale;
+
+			public Fixture(String inputValue, int precision, int scale) {
+				this.inputValue = inputValue;
+				this.precision = precision;
+				this.scale = scale;
+			}
+
+		}
+
+		public static CommandLineServiceResultBo create(int precision, int scale) {
+			List<ColumnInfo> columnInfos = new ArrayList<ColumnInfo>(1);
+
+			ColumnInfo columnInfo;
+			columnInfo = new ColumnInfo();
+			columnInfo.nullable = Nullable.N;
+			columnInfo.dataType = new DataType("NUMBER");
+			columnInfo.dataLength = new DataLength(22);
+			columnInfo.dataPrecision = new DataPrecision(precision);
+			columnInfo.dataScale = new DataScale(scale);
+			columnInfos.add(columnInfo);
+
+			return CommandLineServiceResultBo.create()
+					.setFactory(new ColumnValueInputServiceFactory())
+					.setColumnsInfos(columnInfos);
 		}
 
 	}

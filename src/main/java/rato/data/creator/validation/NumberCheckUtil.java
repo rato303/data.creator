@@ -1,6 +1,9 @@
 package rato.data.creator.validation;
 
-import org.apache.commons.lang3.StringUtils;
+import static org.apache.commons.lang3.StringUtils.defaultIfBlank;
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
+
+import org.apache.commons.lang3.math.NumberUtils;
 
 /**
  * <p>
@@ -21,6 +24,11 @@ public final class NumberCheckUtil {
 	private NumberCheckUtil() {
 	}
 
+	public static boolean isNumber(String target) {
+		String newInstance = defaultIfBlank(target, "").replaceAll("^0+", "0");
+		return NumberUtils.isNumber(newInstance);
+	}
+
 	/**
 	 * <p>
 	 * 小数か判定します。
@@ -32,7 +40,7 @@ public final class NumberCheckUtil {
 	 * @return 小数の場合は「true」それ以外の場合は「false」
 	 */
 	public static boolean isDecimal(String target) {
-		int length = StringUtils.isNotEmpty(target) ? target.length() : 0;
+		int length = isNotEmpty(target) ? target.length() : 0;
 		int dotCount = 0;
 		final int dotCodeuint = 46;
 		for (int i = 0; i < length; i++) {
@@ -57,7 +65,7 @@ public final class NumberCheckUtil {
 	 * @return 小数点以下の桁数
 	 */
 	public static int getDecimalLength(String target) {
-		int length = StringUtils.isNotEmpty(target) ? target.length() : 0;
+		int length = isNotEmpty(target) ? target.length() : 0;
 		int dotCount = 0;
 		int decimalLength = 0;
 		final int dotCodeuint = 46;
