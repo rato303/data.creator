@@ -47,4 +47,30 @@ public final class NumberCheckUtil {
 		return dotCount == 1;
 	}
 
+	/**
+	 * <p>
+	 * 小数点以下の桁数を取得します。
+	 * </p>
+	 *
+	 * @param target
+	 *            小数点以下の桁数を取得する値
+	 * @return 小数点以下の桁数
+	 */
+	public static int getDecimalLength(String target) {
+		int length = StringUtils.isNotEmpty(target) ? target.length() : 0;
+		int dotCount = 0;
+		int decimalLength = 0;
+		final int dotCodeuint = 46;
+		for (int i = 0; i < length; i++) {
+			if (0 < dotCount) {
+				decimalLength++;
+			}
+			int codeuint = target.codePointAt(i);
+			if (dotCodeuint == codeuint) {
+				dotCount++;
+			}
+		}
+		return decimalLength;
+	}
+
 }

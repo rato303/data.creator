@@ -53,4 +53,47 @@ public class NumberCheckUtilTest {
 
 	}
 
+	@RunWith(Theories.class)
+	public static class GetDecimalLengthのテスト {
+
+		@DataPoints
+		public static final Fixture[] FIXTURES = { new Fixture("1.0", 1),
+				new Fixture("1.123", 3), new Fixture("100", 0),
+				new Fixture("0.000", 3), new Fixture("000", 0) };
+
+		@Theory
+		public void testGetDecimalLength(Fixture fixture) throws Exception {
+			// SetUp
+			int expected = fixture.decimalLength;
+
+			// Exercice
+			int actual = NumberCheckUtil.getDecimalLength(fixture.inputValue);
+
+			// Verify
+			assertThat(actual, is(expected));
+		}
+
+		static class Fixture {
+
+			private final String inputValue;
+
+			private final int decimalLength;
+
+			public Fixture(String inputValue, int decimalLength) {
+				this.inputValue = inputValue;
+				this.decimalLength = decimalLength;
+			}
+
+			public String getInputValue() {
+				return this.inputValue;
+			}
+
+			public int getDecimalLength() {
+				return this.decimalLength;
+			}
+
+		}
+
+	}
+
 }
