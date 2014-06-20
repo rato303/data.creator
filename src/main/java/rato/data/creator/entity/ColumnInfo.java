@@ -5,6 +5,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.seasar.doma.Column;
 import org.seasar.doma.Entity;
 
+import rato.data.creator.domain.CharColDeclLength;
 import rato.data.creator.domain.ColumnName;
 import rato.data.creator.domain.DataLength;
 import rato.data.creator.domain.DataPrecision;
@@ -34,6 +35,9 @@ public class ColumnInfo {
 	/** データ長 */
 	@Column(name = "DATA_LENGTH")
 	public DataLength dataLength;
+
+	@Column(name = "CHAR_COL_DECL_LENGTH")
+	public CharColDeclLength charColDeclLength;
 
 	/** 精度 */
 	@Column(name = "DATA_PRECISION")

@@ -21,6 +21,7 @@ import org.junit.runners.JUnit4;
 
 import rato.data.creator.bo.CommandLineServiceResultBo;
 import rato.data.creator.bo.InputValue;
+import rato.data.creator.domain.CharColDeclLength;
 import rato.data.creator.domain.DataLength;
 import rato.data.creator.domain.DataPrecision;
 import rato.data.creator.domain.DataScale;
@@ -451,7 +452,8 @@ public class ColumnValueInputServiceTest {
 		columnInfo = new ColumnInfo();
 		columnInfo.nullable = Nullable.N;
 		columnInfo.dataType = new DataType("NCHAR");
-		columnInfo.dataLength = new DataLength(3);
+		columnInfo.dataLength = new DataLength(6);
+		columnInfo.charColDeclLength = new CharColDeclLength(3);
 		columnInfos.add(columnInfo);
 
 		return CommandLineServiceResultBo.create()

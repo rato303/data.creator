@@ -8,32 +8,31 @@ import org.seasar.doma.Domain;
 
 /**
  * <p>
- * データの長さを表すドメインです。
+ * 文字列型の項目長を表すドメインです。
  * </p>
- *
  * @author toshiya
  *
  */
 @Domain(valueType = Integer.class)
-public class DataLength {
+public class CharColDeclLength {
 
 	/** ドメインの値 */
 	private final Integer value;
 
 	/**
-	 * データの長さを表すドメインを生成します。
+	 * 文字列型の項目長を表すドメインを生成します。
 	 *
 	 * @param value
-	 *            データの長さ
+	 *            文字列型の項目長
 	 */
-	public DataLength(Integer value) {
+	public CharColDeclLength(Integer value) {
 		this.value = value;
 	}
 
 	/**
-	 * データの長さを取得します。
+	 * 文字列型の項目長を取得します。
 	 *
-	 * @return データの長さ
+	 * @return 文字列型の項目長
 	 */
 	public Integer getValue() {
 		return this.value;

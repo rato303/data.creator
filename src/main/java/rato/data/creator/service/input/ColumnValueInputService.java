@@ -27,8 +27,9 @@ public class ColumnValueInputService extends BaseCommandLineService {
 		return MessageFormat.format(
 				bundle.getString("question.column.value.input"),
 				columnInfo.columnName, columnInfo.dataType,
-				columnInfo.dataLength, columnInfo.dataPrecision,
-				columnInfo.dataScale, columnInfo.nullable);
+				columnInfo.dataLength, columnInfo.charColDeclLength,
+				columnInfo.dataPrecision, columnInfo.dataScale,
+				columnInfo.nullable);
 	}
 
 	@Override
@@ -51,7 +52,8 @@ public class ColumnValueInputService extends BaseCommandLineService {
 		switch (readingColumnInfo.dataType.getCategory()) {
 
 		case CHAR:
-			if (exceedLength(value, readingColumnInfo.dataLength.getValue())) { // TODO
+			if (exceedLength(value,
+					readingColumnInfo.charColDeclLength.getValue())) { // TODO
 				// TODO value.length() サロゲートペアの文字列長ではない？
 				throw new RetryException(
 						create("error.column.input.char.exceed.length",
@@ -60,7 +62,8 @@ public class ColumnValueInputService extends BaseCommandLineService {
 			// TODO 文字列の長さが不足している場合に警告する
 			break;
 		case VARCHAR:
-			if (exceedLength(value, readingColumnInfo.dataLength.getValue())) {
+			if (exceedLength(value,
+					readingColumnInfo.charColDeclLength.getValue())) {
 				// TODO value.length() サロゲートペアの文字列長ではない？
 				throw new RetryException(
 						create("error.column.input.char.exceed.length"),
@@ -98,11 +101,13 @@ public class ColumnValueInputService extends BaseCommandLineService {
 			// TODO 日付型チェック
 			break;
 		case TIMESTAMP:
-			if ( ! checkFormat(value)) {
-				throw new RetryException(create("error.column.input.timestamp.format", getAllowPatterns()), beforeResult);
+			if (!checkFormat(value)) {
+				throw new RetryException(create(
+						"error.column.input.timestamp.format",
+						getAllowPatterns()), beforeResult);
 			}
 
-//			TODO 最終出力フォーマット 2013-10-23 09:58:01.0
+			// TODO 最終出力フォーマット 2013-10-23 09:58:01.0
 			break;
 		}
 
