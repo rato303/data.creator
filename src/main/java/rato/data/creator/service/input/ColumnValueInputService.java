@@ -44,13 +44,12 @@ public class ColumnValueInputService extends BaseCommandLineService {
 		}
 
 		String value = inputValue.getValue();
-		Integer dataLength = readingColumnInfo.dataLength.getValue();
 
 		// TODO メソッド化
 		switch (readingColumnInfo.dataType.getCategory()) {
 
 		case CHAR:
-			if (exceedLength(value, dataLength)) { // TODO
+			if (exceedLength(value, readingColumnInfo.dataLength.getValue())) { // TODO
 				// TODO value.length() サロゲートペアの文字列長ではない？
 				throw new RetryException(
 						create("error.column.input.char.exceed.length",
@@ -59,7 +58,7 @@ public class ColumnValueInputService extends BaseCommandLineService {
 			// TODO 文字列の長さが不足している場合に警告する
 			break;
 		case VARCHAR:
-			if (exceedLength(value, dataLength)) {
+			if (exceedLength(value, readingColumnInfo.dataLength.getValue())) {
 				// TODO value.length() サロゲートペアの文字列長ではない？
 				throw new RetryException(
 						create("error.column.input.char.exceed.length"),
@@ -85,8 +84,13 @@ public class ColumnValueInputService extends BaseCommandLineService {
 				// TODO 小数に負の数が設定された場合も考慮する
 			}
 
-			int positiveNumberLength = dataLength - decimalLength;
-			// TODO 精度のチェック
+			int positiveNumberLength = value.length() - decimalLength;
+			if (readingColumnInfo.dataPrecision.getValue() < positiveNumberLength) {
+				throw new RetryException(create(
+						"error.column.input.positive.number.length",
+						readingColumnInfo.dataPrecision, value), beforeResult);
+			}
+
 			break;
 		case DATE:
 			// TODO 日付型チェック
@@ -107,6 +111,8 @@ public class ColumnValueInputService extends BaseCommandLineService {
 				.create(beforeResult)
 				.setFactory(new ColumnValueInputServiceFactory())
 				.addColumnIndex();
+
+		// TODO 1週したら行データを保持する
 
 		return result;
 	}
