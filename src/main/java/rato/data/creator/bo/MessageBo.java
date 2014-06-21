@@ -15,6 +15,9 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
  */
 public class MessageBo implements Serializable {
 
+	/** シリアルID */
+	private static final long serialVersionUID = 871960158729458786L;
+
 	/** メッセージキー */
 	private String messageKey;
 
