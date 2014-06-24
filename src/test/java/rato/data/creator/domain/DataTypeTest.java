@@ -31,12 +31,13 @@ public class DataTypeTest {
 			"binary_float(4)", "binary_double(3)" };
 
 	/** 日付型の入力値 */
-	public static String[] DATE_TYPE_INPUT_VALUES = { "DATE",
+	public static String[] DATE_TYPE_INPUT_VALUES = { "DATE", "date", };
+
+	/** 日時型の入力値 */
+	public static String[] TIMESTAMP_TYPE_INPUT_VALUES = {
 			"TIMESTAMP ORACLE 9I", "TIMESTAMP WITH TIMEZONE",
-			"TIMESTAMP WITH LOCAL TIMEZONE", "INTERVAL YEAR TO MONTH",
-			"INTERVAL DAY TO SECOND", "date", "timestamp oracle 9i",
-			"timestamp with timezone", "timestamp with local timezone",
-			"interval year to month", "interval day to second" };
+			"TIMESTAMP WITH LOCAL TIMEZONE", "timestamp oracle 9i",
+			"timestamp with timezone", "timestamp with local timezone", };
 
 	/**
 	 * <p>
@@ -69,6 +70,7 @@ public class DataTypeTest {
 				FIXED_LENGTH_STRING_TYPE_INPUT_VALUES);
 		result = ArrayUtils.addAll(result, NUMBER_TYPE_INPUT_VALUES);
 		result = ArrayUtils.addAll(result, DATE_TYPE_INPUT_VALUES);
+		result = ArrayUtils.addAll(result, TIMESTAMP_TYPE_INPUT_VALUES);
 		return result;
 	}
 
