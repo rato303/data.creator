@@ -58,7 +58,7 @@ public class InputValue implements Serializable {
 	 * 入力値を{@link Integer}型で取得します。
 	 * </p>
 	 *
-	 * @return
+	 * @return 入力値を{@link Integer}型に変換した値
 	 * @throws NumberFormatException
 	 */
 	public Integer getIntegerValue() throws NumberFormatException {
