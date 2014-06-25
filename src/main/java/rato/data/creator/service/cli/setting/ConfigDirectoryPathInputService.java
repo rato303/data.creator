@@ -1,4 +1,4 @@
-package rato.data.creator.service.setting;
+package rato.data.creator.service.cli.setting;
 
 import static java.text.MessageFormat.format;
 import static rato.data.creator.util.ResourceUtil.getExecutePath;
