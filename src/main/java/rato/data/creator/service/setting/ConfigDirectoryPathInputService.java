@@ -1,5 +1,8 @@
 package rato.data.creator.service.setting;
 
+import static java.text.MessageFormat.format;
+import static rato.data.creator.util.ResourceUtil.getExecutePath;
+
 import java.util.ResourceBundle;
 
 import rato.data.creator.bo.CommandLineServiceResultBo;
@@ -13,13 +16,12 @@ import rato.data.creator.service.BaseCommandLineService;
  * @author toshiya
  *
  */
-public class ConfigDirectoryPathInputServer extends BaseCommandLineService {
+public class ConfigDirectoryPathInputService extends BaseCommandLineService {
 
 	@Override
 	protected String getQuestionMessage(
 			CommandLineServiceResultBo beforeResult, ResourceBundle bundle) {
-		// TODO 自動生成されたメソッド・スタブ
-		return null;
+		return format(bundle.getString("question.conf.dir"), this.getDefaultPath());
 	}
 
 	@Override
@@ -33,7 +35,17 @@ public class ConfigDirectoryPathInputServer extends BaseCommandLineService {
 	protected CommandLineServiceResultBo mainProcess(
 			CommandLineServiceResultBo beforeResult, InputValue inputValue) {
 		// TODO 自動生成されたメソッド・スタブ
-		return null;
+		return beforeResult;
+	}
+
+	/**
+	 * <p>
+	 * 設定ファイルの配置してあるデフォルトパスを取得します。
+	 * </p>
+	 * @return 設定ファイルの配置してあるディレクトリのデフォルトパス
+	 */
+	private String getDefaultPath() {
+		return getExecutePath("..", "config");
 	}
 
 }
