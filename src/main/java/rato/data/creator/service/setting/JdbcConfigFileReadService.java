@@ -19,7 +19,7 @@ import rato.data.creator.bo.CommandLineServiceResultBo;
 import rato.data.creator.bo.InputValue;
 import rato.data.creator.config.DataBaseConfig;
 import rato.data.creator.exception.RetryException;
-import rato.data.creator.service.BaseCommandLineService;
+import rato.data.creator.service.cli.base.BaseCommandLineService;
 import rato.data.creator.service.factory.DistDirectoryPathInputServiceFactory;
 import rato.data.creator.service.factory.JdbcConfigFileReadServiceFactory;
 import rato.data.creator.util.ResourceUtil;

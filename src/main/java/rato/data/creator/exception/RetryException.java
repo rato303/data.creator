@@ -5,7 +5,7 @@ import java.util.ResourceBundle;
 
 import rato.data.creator.bo.CommandLineServiceResultBo;
 import rato.data.creator.bo.MessageBo;
-import rato.data.creator.service.CommandLineService;
+import rato.data.creator.service.cli.base.CommandLineService;
 
 /**
  * <p>

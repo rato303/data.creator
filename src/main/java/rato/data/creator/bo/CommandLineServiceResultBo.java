@@ -10,7 +10,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import rato.data.creator.config.DataBaseConfig;
 import rato.data.creator.entity.ColumnInfo;
 import rato.data.creator.entity.TableInfo;
-import rato.data.creator.service.CommandLineService;
+import rato.data.creator.service.cli.base.CommandLineService;
 import rato.data.creator.service.factory.CommandLineServiceFactory;
 
 /**

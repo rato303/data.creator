@@ -1,6 +1,6 @@
 package rato.data.creator.service.factory;
 
-import rato.data.creator.service.CommandLineService;
+import rato.data.creator.service.cli.base.CommandLineService;
 
 /**
  * <p>コマンドライン処理をするサービスのファクトリです。</p>

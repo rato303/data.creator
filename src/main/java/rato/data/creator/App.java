@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 import rato.data.creator.bo.CommandLineServiceResultBo;
 import rato.data.creator.config.DataBaseConfig;
 import rato.data.creator.io.ArgsReader;
-import rato.data.creator.service.CommandLineService;
+import rato.data.creator.service.cli.base.CommandLineService;
 import rato.data.creator.service.setting.JdbcConfigFileReadService;
 
 /**
